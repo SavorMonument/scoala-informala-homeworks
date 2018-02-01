@@ -1,2 +1,2 @@
-# scoala-informala-homeworks
+#scoala-informala-homeworks
 Goia Alexandru

@@ -1,5 +1,7 @@
 package ro.siit.java10.evp;
 
+import java.util.Objects;
+
 public class Vehicle {
 
     private String manufacturer;
@@ -30,15 +32,6 @@ public class Vehicle {
         energy_consumption = 0;
         motor = new Motor();
         battery = new Battery();
-    }
-
-    public boolean is_same_vehicle(Vehicle contestant){
-
-        return ((manufacturer.matches(contestant.manufacturer)) &&
-                (model.matches(contestant.model)) &&
-                (production_year == contestant.production_year) &&
-                (energy_consumption == contestant.energy_consumption) &&
-                (fast_charging == contestant.fast_charging));
     }
 
     public boolean has_fast_charging() {
@@ -86,5 +79,38 @@ public class Vehicle {
     public void setEnergy_consumption(int energy_consumption) {
 
         this.energy_consumption = energy_consumption;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", production_year=" + production_year +
+                ", energy_consumption=" + energy_consumption +
+                ", fast_charging=" + fast_charging +
+                ", motor=" + motor +
+                ", battery=" + battery +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vehicle)) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return production_year == vehicle.production_year &&
+                energy_consumption == vehicle.energy_consumption &&
+                fast_charging == vehicle.fast_charging &&
+                Objects.equals(manufacturer, vehicle.manufacturer) &&
+                Objects.equals(model, vehicle.model) &&
+                Objects.equals(motor, vehicle.motor) &&
+                Objects.equals(battery, vehicle.battery);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(manufacturer, model, production_year, energy_consumption, fast_charging);
     }
 }

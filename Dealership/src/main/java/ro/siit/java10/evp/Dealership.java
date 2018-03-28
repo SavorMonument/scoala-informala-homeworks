@@ -1,4 +1,5 @@
 package ro.siit.java10.evp;
+
 import java.util.*;
 
 public class Dealership {
@@ -18,7 +19,7 @@ public class Dealership {
         stock.add(new Stock(vehicle, price));
     }
 
-    public ArrayList<Vehicle> inStockList(){
+    public ArrayList<Vehicle> getStockList(){
 
         ArrayList<Vehicle> instock = new ArrayList<Vehicle>();
 
@@ -29,7 +30,7 @@ public class Dealership {
         return instock;
     }
 
-    public ArrayList<Vehicle> fastChargingList(){
+    public ArrayList<Vehicle> getFastChargingList(){
 
         ArrayList<Vehicle> fast_charging = new ArrayList<Vehicle>();
 

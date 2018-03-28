@@ -1,6 +1,5 @@
 package ro.siit.java10.evp;
 
-
 public class Stock {
 
     private Vehicle vehicle;

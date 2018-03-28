@@ -7,9 +7,9 @@ public class Invoice {
     private String dealership;
     private Vehicle vehicle;
 
-    public Invoice(int invoice_number,Client client, String dealership, Vehicle vehicle) {
+    public Invoice(int invoiceNumber,Client client, String dealership, Vehicle vehicle) {
 
-        this.invoiceNumber = invoice_number;
+        this.invoiceNumber = invoiceNumber;
         this.client = client;
         this.dealership = dealership;
         this.vehicle = vehicle;

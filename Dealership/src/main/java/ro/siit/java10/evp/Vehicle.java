@@ -6,40 +6,40 @@ public class Vehicle {
 
     private String manufacturer;
     private String model;
-    private int production_year;
-    private int energy_consumption;
-    private boolean fast_charging;
+    private int productionYear;
+    private int energyConsumption;
+    private boolean fastCharging;
     private Motor motor;
     private Battery battery;
 
-    public Vehicle(String manufacturer, String model, int production_year,boolean fast_charging, int energy_consumption, Motor motor, Battery battery) {
+    public Vehicle(String manufacturer, String model, int productionYear,boolean fastCharging, int energyConsumption, Motor motor, Battery battery) {
 
         this.manufacturer = manufacturer;
         this.model = model;
-        this.production_year = production_year;
-        this.energy_consumption = energy_consumption;
-        this.fast_charging = fast_charging;
+        this.productionYear = productionYear;
+        this.energyConsumption = energyConsumption;
+        this.fastCharging = fastCharging;
         this.motor = motor;
         this.battery = battery;
     }
 
-    public Vehicle(String manufacturer, String model, int production_year) {
+    public Vehicle(String manufacturer, String model, int productionYear) {
 
         this.manufacturer = manufacturer;
         this.model = model;
-        this.production_year = production_year;
+        this.productionYear = productionYear;
 
-        energy_consumption = 0;
+        energyConsumption = 0;
         motor = new Motor();
         battery = new Battery();
     }
 
-    public boolean has_fast_charging() {
-        return fast_charging;
+    public boolean hasFastCharging() {
+        return fastCharging;
     }
 
-    public void setFast_charging(boolean fast_charging) {
-        this.fast_charging = fast_charging;
+    public void setFastCharging(boolean fastCharging) {
+        this.fastCharging = fastCharging;
     }
 
     public String getManufacturer() {
@@ -50,12 +50,12 @@ public class Vehicle {
         return model;
     }
 
-    public int getProduction_year() {
-        return production_year;
+    public int getProductionYear() {
+        return productionYear;
     }
 
-    public int getEnergy_consumption() {
-        return energy_consumption;
+    public int getEnergyConsumption() {
+        return energyConsumption;
     }
 
     public Motor getMotor() {
@@ -66,19 +66,19 @@ public class Vehicle {
         return battery;
     }
 
-    public void setMotor(Motor new_motor){
+    public void setMotor(Motor newMotor){
 
-        motor = new_motor;
+        motor = newMotor;
     }
 
-    public void setBattery(Battery new_battery){
+    public void setBattery(Battery newBattery){
 
-        battery = new_battery;
+        battery = newBattery;
     }
 
-    public void setEnergy_consumption(int energy_consumption) {
+    public void setEnergyConsumption(int energyConsumption) {
 
-        this.energy_consumption = energy_consumption;
+        this.energyConsumption = energyConsumption;
     }
 
     @Override
@@ -86,9 +86,9 @@ public class Vehicle {
         return "Vehicle{" +
                 "manufacturer='" + manufacturer + '\'' +
                 ", model='" + model + '\'' +
-                ", production_year=" + production_year +
-                ", energy_consumption=" + energy_consumption +
-                ", fast_charging=" + fast_charging +
+                ", productionYear=" + productionYear +
+                ", energyConsumption=" + energyConsumption +
+                ", fastCharging=" + fastCharging +
                 ", motor=" + motor +
                 ", battery=" + battery +
                 '}';
@@ -99,9 +99,9 @@ public class Vehicle {
         if (this == o) return true;
         if (!(o instanceof Vehicle)) return false;
         Vehicle vehicle = (Vehicle) o;
-        return production_year == vehicle.production_year &&
-                energy_consumption == vehicle.energy_consumption &&
-                fast_charging == vehicle.fast_charging &&
+        return productionYear == vehicle.productionYear &&
+                energyConsumption == vehicle.energyConsumption &&
+                fastCharging == vehicle.fastCharging &&
                 Objects.equals(manufacturer, vehicle.manufacturer) &&
                 Objects.equals(model, vehicle.model) &&
                 Objects.equals(motor, vehicle.motor) &&
@@ -111,6 +111,6 @@ public class Vehicle {
     @Override
     public int hashCode() {
 
-        return Objects.hash(manufacturer, model, production_year, energy_consumption, fast_charging);
+        return Objects.hash(manufacturer, model, productionYear, energyConsumption, fastCharging);
     }
 }

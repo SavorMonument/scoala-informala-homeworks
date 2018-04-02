@@ -8,7 +8,7 @@ public class GreenBonus {
     private static ArrayList<Invoice> invoices = new ArrayList<Invoice>();
 
 
-    public static boolean enoughBudget(){
+    public static boolean hasEnoughBudget(){
 
         return  (currentbudget > 10000);
     }

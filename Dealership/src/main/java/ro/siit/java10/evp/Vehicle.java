@@ -2,60 +2,57 @@ package ro.siit.java10.evp;
 
 import java.util.Objects;
 
-public class Vehicle {
+public class Vehicle implements Cloneable{
 
-    private String manufacturer;
-    private String model;
-    private int production_year;
-    private int energy_consumption;
-    private boolean fast_charging;
-    private Motor motor;
-    private Battery battery;
+    private String model = "No Model";
+    private int productionYear;
+    private int energyConsumption_KWperKm;
+    private int RangePerCharge_Km;
+    private boolean fastCharging = false;
+    private Motor motor = new Motor();
+    private Battery battery = new Battery();
 
-    public Vehicle(String manufacturer, String model, int production_year,boolean fast_charging, int energy_consumption, Motor motor, Battery battery) {
+    public Vehicle() {
+    }
 
-        this.manufacturer = manufacturer;
+    public Vehicle(String model) {
+
         this.model = model;
-        this.production_year = production_year;
-        this.energy_consumption = energy_consumption;
-        this.fast_charging = fast_charging;
-        this.motor = motor;
-        this.battery = battery;
     }
 
-    public Vehicle(String manufacturer, String model, int production_year) {
+    @Override
+    protected Vehicle clone(){
 
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.production_year = production_year;
+        Vehicle vehicleClone = new Vehicle();
 
-        energy_consumption = 0;
-        motor = new Motor();
-        battery = new Battery();
+        vehicleClone.setModel(model);
+        vehicleClone.setProductionYear(productionYear);
+        vehicleClone.setFastCharging(fastCharging);
+        vehicleClone.setMotor(motor.clone());
+        vehicleClone.setBattery(battery.clone());
+
+        return (vehicleClone);
+
     }
 
-    public boolean has_fast_charging() {
-        return fast_charging;
-    }
-
-    public void setFast_charging(boolean fast_charging) {
-        this.fast_charging = fast_charging;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
+    public boolean hasFastCharging() {
+        return fastCharging;
     }
 
     public String getModel() {
         return model;
     }
 
-    public int getProduction_year() {
-        return production_year;
+    public int getProductionYear() {
+        return productionYear;
     }
 
-    public int getEnergy_consumption() {
-        return energy_consumption;
+    public int getEnergyConsumption_KWperKm() {
+        return energyConsumption_KWperKm;
+    }
+
+    public int getRangePerCharge_Km() {
+        return RangePerCharge_Km;
     }
 
     public Motor getMotor() {
@@ -66,43 +63,75 @@ public class Vehicle {
         return battery;
     }
 
-    public void setMotor(Motor new_motor){
-
-        motor = new_motor;
+    public void setFastCharging(boolean fastCharging) {
+        this.fastCharging = fastCharging;
     }
 
-    public void setBattery(Battery new_battery){
-
-        battery = new_battery;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public void setEnergy_consumption(int energy_consumption) {
+    public void setEnergyConsumption_KWperKm(int energyConsumption_KWperKm) {
 
-        this.energy_consumption = energy_consumption;
+        if (energyConsumption_KWperKm < 0)
+            throw new IllegalArgumentException("Can't have negative energy consumption");
+
+        this.energyConsumption_KWperKm = energyConsumption_KWperKm;
+
+        calculateRangePerCharge();
+    }
+
+    public void setProductionYear(int productionYear) {
+
+        if (productionYear < 0)
+            throw new IllegalArgumentException("Can't have a negative year");
+
+        this.productionYear = productionYear;
+    }
+
+    public void setMotor(Motor newMotor){
+
+        if (null == newMotor)
+            throw new IllegalArgumentException("Invalid motor");
+
+        motor = newMotor;
+    }
+
+    public void setBattery(Battery newBattery){
+
+        if (null == newBattery)
+            throw new IllegalArgumentException("Invalid battery");
+
+        battery = newBattery;
+
+        calculateRangePerCharge();
+    }
+
+    private void calculateRangePerCharge(){
+
+        if ((battery.getCapacity_KWh() > 0) && (energyConsumption_KWperKm > 0))
+            RangePerCharge_Km = battery.getCapacity_KWh() / energyConsumption_KWperKm;
     }
 
     @Override
     public String toString() {
-        return "Vehicle{" +
-                "manufacturer='" + manufacturer + '\'' +
-                ", model='" + model + '\'' +
-                ", production_year=" + production_year +
-                ", energy_consumption=" + energy_consumption +
-                ", fast_charging=" + fast_charging +
-                ", motor=" + motor +
-                ", battery=" + battery +
-                '}';
+        return  "model: " + model +
+                ", productionYear: " + productionYear +
+                ", energyConsumption_KW/Km: " + energyConsumption_KWperKm +
+                " fastCharging: " + fastCharging +
+                ", motor: " + motor +
+                ", battery: " + battery;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Vehicle)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return production_year == vehicle.production_year &&
-                energy_consumption == vehicle.energy_consumption &&
-                fast_charging == vehicle.fast_charging &&
-                Objects.equals(manufacturer, vehicle.manufacturer) &&
+        return  productionYear == vehicle.productionYear &&
+                energyConsumption_KWperKm == vehicle.energyConsumption_KWperKm &&
+                RangePerCharge_Km == vehicle.RangePerCharge_Km &&
+                fastCharging == vehicle.fastCharging &&
                 Objects.equals(model, vehicle.model) &&
                 Objects.equals(motor, vehicle.motor) &&
                 Objects.equals(battery, vehicle.battery);
@@ -111,6 +140,6 @@ public class Vehicle {
     @Override
     public int hashCode() {
 
-        return Objects.hash(manufacturer, model, production_year, energy_consumption, fast_charging);
+        return Objects.hash(model, productionYear, energyConsumption_KWperKm, RangePerCharge_Km, fastCharging, motor, battery);
     }
 }

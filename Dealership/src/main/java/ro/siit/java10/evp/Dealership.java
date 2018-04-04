@@ -112,7 +112,7 @@ public class Dealership {
         invoices.add(toAdd);
     }
 
-    public Dealership nameAndLocClone(){
+    public Dealership nameLocClone(){
 
         return new Dealership(this.getName(), this.getLocation());
     }

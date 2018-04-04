@@ -13,11 +13,11 @@ public class DealershipsCentral{
     public void addDealership(Dealership newDealership){
 
         if (null == newDealership)
-            throw new IllegalArgumentException("Invalid dealership");
+            throw new IllegalArgumentException("Null pointer");
 
         for(Dealership instance : availableDealerships){
             if (instance.equals(newDealership)){
-                return;
+                throw new IllegalArgumentException("Can't have same name and location dealershis");
             }
         }
 
@@ -43,7 +43,7 @@ public class DealershipsCentral{
         List<Dealership> dealershipsNameList = new ArrayList<>();
 
         for (Dealership instance : availableDealerships){
-            dealershipsNameList.add(instance.nameAndLocClone());
+            dealershipsNameList.add(instance.nameLocClone());
         }
 
         return dealershipsNameList;
@@ -54,17 +54,10 @@ public class DealershipsCentral{
         return availableDealerships.size();
     }
 
-    /**
-     * Only the name and location of the param has to match and returns a
-     * reference to a dealership from the List in this object
-     *
-     * @param dealer
-     * @return
-     */
-    public Dealership getDealership(Dealership dealer){
+    public Dealership getDealership(Dealership dealership){
 
         for (Dealership instance : availableDealerships){
-            if (instance.equals(dealer)){
+            if (instance.equals(dealership)){
                 return instance;
             }
         }
@@ -91,10 +84,10 @@ public class DealershipsCentral{
         clients.add(toAdd);
     }
 
-    public Client getClient(String firstname, String lastName){
+    public Client getClient(String firstName, String lastName){
 
         for (Client instance : clients){
-            if (instance.getFirstName().equals(firstname))
+            if (instance.getFirstName().equals(firstName))
                 if (instance.getLastName().equals(lastName)){
                     return instance;
                 }
@@ -126,14 +119,14 @@ public class DealershipsCentral{
 
         Dealership actualDealership = getDealership(dealership);
 
-        if ((null == dealership) || (toSell == null))
+        if ((null == actualDealership) || (toSell == null))
             throw new IllegalArgumentException("No null pointer allowed");
 
-        if(dealership.getVehicleAvailability(toSell.hashCode()) > 0){
+        if(actualDealership.getVehicleAvailability(toSell.hashCode()) > 0){
             Invoice invoice = new Invoice(buyer, toSell);
 
-            dealership.decreaseStock(toSell.hashCode());
-            dealership.addInvoice(invoice);
+            actualDealership.decreaseStock(toSell.hashCode());
+            actualDealership.addInvoice(invoice);
 
             return (true);
         }

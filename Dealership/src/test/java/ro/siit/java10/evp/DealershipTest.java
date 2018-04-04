@@ -62,7 +62,7 @@ public class DealershipTest {
     }
 
     @Test
-    public void addVehicle_DuplicateID() {
+    public void addVehicle_DuplicateHash() {
 
         one_deals.addVehicle(vehicles.get(0), 0.0f);
 
@@ -70,7 +70,17 @@ public class DealershipTest {
     }
 
     @Test
-    public void removeVehicle_validVehicle() {
+    public void decreaseStock_ValidHash(){
+
+        int vehicleHash = vehicles.get(0).hashCode();
+
+        one_deals.decreaseStock(vehicleHash);
+
+        assertEquals(0, one_deals.getVehicleAvailability(vehicleHash));
+    }
+
+    @Test
+    public void removeVehicle_validHash() {
 
         int removedID = vehicles.get(0).hashCode();
         one_deals.removeVehicle(removedID);
@@ -79,7 +89,29 @@ public class DealershipTest {
     }
 
     @Test
-    public void getVehiclePrice_invalidID_ExceptionThrown() {
+    public void setStockNumber_NegativeAmount(){
+
+        int vehicleHash = vehicles.get(0).hashCode();
+
+        try {
+            one_deals.setStockNumber(vehicleHash, -1);
+        } catch (IllegalArgumentException e){ }
+
+        assert(true);
+    }
+
+    @Test
+    public void setStockNumber_Valid(){
+
+        int vehicleHash = vehicles.get(0).hashCode();
+
+        one_deals.setStockNumber(vehicleHash, 2);
+
+        assertEquals(2, one_deals.getVehicleAvailability(vehicleHash));
+    }
+
+    @Test
+    public void getVehiclePrice_invalidHash_ExceptionThrown() {
 
         try {
             one_deals.getVehiclePrice(1);
@@ -91,7 +123,7 @@ public class DealershipTest {
     }
 
     @Test
-    public void getVehiclePrice_validID() {
+    public void getVehiclePrice_validHash() {
 
         Vehicle testVehicle = new Vehicle("z");
         int testPrice = 1298;
@@ -102,13 +134,13 @@ public class DealershipTest {
     }
 
     @Test
-    public void getVehicleAvailability_validID() {
+    public void getVehicleAvailability_validHash() {
 
         assertEquals(1, one_deals.getVehicleAvailability(vehicles.get(0).hashCode()));
     }
 
     @Test
-    public void getVehicleAvailability_invalidID(){
+    public void getVehicleAvailability_invalidHash(){
 
         assertEquals(0, one_deals.getVehicleAvailability(1));
     }

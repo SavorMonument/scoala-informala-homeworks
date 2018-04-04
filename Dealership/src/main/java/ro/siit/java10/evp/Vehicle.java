@@ -28,8 +28,10 @@ public class Vehicle implements Cloneable{
         vehicleClone.setModel(model);
         vehicleClone.setProductionYear(productionYear);
         vehicleClone.setFastCharging(fastCharging);
+        vehicleClone.setEnergyConsumption_KWperKm(energyConsumption_KWperKm);
         vehicleClone.setMotor(motor.clone());
         vehicleClone.setBattery(battery.clone());
+        vehicleClone.calculateRangePerCharge();
 
         return (vehicleClone);
 

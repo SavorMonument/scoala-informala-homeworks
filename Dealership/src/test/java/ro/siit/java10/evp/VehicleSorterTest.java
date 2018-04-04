@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleListTest {
+public class VehicleSorterTest {
 
     List<Stock> stocks;
     VehicleSorter vehicleSorter;
@@ -28,6 +28,23 @@ public class VehicleListTest {
 
         stocks = null;
         vehicleSorter = null;
+    }
+
+    @Test
+    public void getAllVehicleList(){
+
+        ArrayList<Vehicle> result;
+        ArrayList<Vehicle> expected = new ArrayList<>();
+
+        stocks.get(0).decreaseAmount();
+
+        for(Stock instance : stocks){
+            expected.add(instance.getVehicle());
+        }
+
+        result = (ArrayList<Vehicle>) vehicleSorter.getAllVehicleList();
+
+        assert (expected.equals(result));
     }
 
     @Test
@@ -89,5 +106,25 @@ public class VehicleListTest {
         result = (ArrayList<Vehicle>) vehicleSorter.getSortedHorsepowerList();
 
         assert(expected.equals(result));
+    }
+
+    @Test
+    public void getSortedRangePerCharge(){
+
+        ArrayList<Vehicle> expected = new ArrayList<>();
+        ArrayList<Vehicle> result;
+
+        stocks.get(0).getVehicle().setEnergyConsumption_KWperKm(20);
+        stocks.get(0).getVehicle().setBattery(new Battery("", "", 100));
+        stocks.get(1).getVehicle().setEnergyConsumption_KWperKm(20);
+        stocks.get(1).getVehicle().setBattery(new Battery("", "", 300));
+        stocks.get(2).getVehicle().setEnergyConsumption_KWperKm(20);
+        stocks.get(2).getVehicle().setBattery(new Battery("", "", 200));
+        expected.add(stocks.get(0).getVehicle());
+        expected.add(stocks.get(2).getVehicle());
+        expected.add(stocks.get(1).getVehicle());
+        result = (ArrayList<Vehicle>) vehicleSorter.getSortedRangePerChargeList();
+
+        assert (expected.equals(result));
     }
 }

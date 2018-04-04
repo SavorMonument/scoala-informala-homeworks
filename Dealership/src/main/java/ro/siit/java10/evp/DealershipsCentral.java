@@ -10,7 +10,7 @@ public class DealershipsCentral{
     public DealershipsCentral() {
     }
 
-    public void addDealeship(Dealership newDealership){
+    public void addDealership(Dealership newDealership){
 
         if (null == newDealership)
             throw new IllegalArgumentException("Invalid dealership");

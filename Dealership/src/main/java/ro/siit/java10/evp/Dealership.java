@@ -28,7 +28,7 @@ public class Dealership {
         for (Stock instance : stock){
             if (instance.getVehicle().equals(vehicle) && (instance.getPrice() == price)){
 
-                instance.setAmount(instance.getAmount());
+                instance.setAmount(instance.getAmount() + 1);
                 return;
             }
         }

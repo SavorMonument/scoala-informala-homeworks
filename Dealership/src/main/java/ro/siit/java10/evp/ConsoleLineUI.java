@@ -14,9 +14,55 @@ public class ConsoleLineUI {
         moderator
     }
 
+    public void addDemoVehicles(){
+        Dealership newD = new Dealership("BMW", "Sea side");
+        Vehicle myVehicle1 = new Vehicle();
+        Vehicle myVehicle2 = new Vehicle();
+        Vehicle myVehicle4 = new Vehicle();
+
+        myVehicle1.setModel("3 series");
+        myVehicle1.setProductionYear(1999);
+        myVehicle1.setFastCharging(true);
+        myVehicle1.setEnergyConsumption_KWperKm(120);
+        myVehicle1.setMotor(new Motor("Reanault", "14-xp", 200));
+        myVehicle1.setBattery(new Battery("Tesla", "56.fd1", 4500));
+
+        myVehicle2.setModel("1 series");
+        myVehicle2.setProductionYear(2011);
+        myVehicle2.setFastCharging(false);
+        myVehicle2.setEnergyConsumption_KWperKm(430);
+
+        myVehicle4.setModel("7 series");
+        myVehicle4.setProductionYear(2018);
+        myVehicle4.setFastCharging(true);
+        myVehicle4.setEnergyConsumption_KWperKm(430);
+
+        newD.addVehicle(myVehicle1, 1500);
+        newD.addVehicle(myVehicle2, 15000);
+        newD.addVehicle(myVehicle4, 100);
+
+        dealershipsCentral.addDealership(newD);
+
+        Dealership newD1 = new Dealership("Sap", "Ocean side");
+        Vehicle myVehicle3 = new Vehicle();
+
+        myVehicle3.setModel("13 series");
+        myVehicle3.setProductionYear(1239);
+        myVehicle3.setFastCharging(true);
+        myVehicle3.setEnergyConsumption_KWperKm(120);
+        myVehicle3.setMotor(new Motor("Reanault", "14-xp", 200));
+        myVehicle3.setBattery(new Battery("Tesla", "56.fd1", 4500));
+
+
+        newD1.addVehicle(myVehicle1, 15100);
+
+        dealershipsCentral.addDealership(newD1);
+    }
+
     public void Do(){
 
         //if (state == State.moderator)
+        //modMainScreen();
         ClientMainScreen();
     }
 
@@ -25,7 +71,7 @@ public class ConsoleLineUI {
         int currentOption;
         boolean isdone = false;
 
-        printMainModeratorScreen();
+        printMainModScreen();
 
         currentOption = consIO.readCondInt(0, 5);
 
@@ -132,16 +178,24 @@ public class ConsoleLineUI {
                 printMoreInfo(stockVehicles, dealership);
                 break;
             case (1):
-                consIO.printNumberedList(dealership.getVehicleSorter().getFastChargingList());
+                ArrayList<Vehicle> fastChargingVehicles = (ArrayList<Vehicle>) (dealership.getVehicleSorter().getFastChargingList());
+                consIO.printNumberedList(fastChargingVehicles);
+                printMoreInfo(fastChargingVehicles, dealership);
                 break;
             case (2):
-                consIO.printNumberedList(dealership.getVehicleSorter().getSortedHorsepowerList());
+                ArrayList<Vehicle> horsepowerSortedVehicles = (ArrayList<Vehicle>) dealership.getVehicleSorter().getSortedHorsepowerList();
+                consIO.printNumberedList(horsepowerSortedVehicles);
+                printMoreInfo(horsepowerSortedVehicles, dealership);
                 break;
             case (3):
-                consIO.printNumberedList(dealership.getVehicleSorter().getSortedPriceList());
+                ArrayList<Vehicle> priceSortedVehicles = (ArrayList<Vehicle>) dealership.getVehicleSorter().getSortedPriceList();
+                consIO.printNumberedList(priceSortedVehicles);
+                printMoreInfo(priceSortedVehicles, dealership);
                 break;
             case (4):
-                consIO.printNumberedList(dealership.getVehicleSorter().getSortedRangePerChargeList());
+                ArrayList<Vehicle> rangeSortedVehicles = (ArrayList<Vehicle>) dealership.getVehicleSorter().getSortedRangePerChargeList();
+                consIO.printNumberedList(rangeSortedVehicles);
+                printMoreInfo(rangeSortedVehicles, dealership);
                 break;
             case (5):
                 return  false;
@@ -149,21 +203,15 @@ public class ConsoleLineUI {
         return true;
     }
 
+    private void printMainModScreen(){
 
-    public void addDealership(Dealership deal){
-
-        dealershipsCentral.addDealeship(deal);
-    }
-
-    private void printMainModeratorScreen(){
-
-        System.out.print('\n');
-        System.out.println("0 - print compleate list of vehicles");
-        System.out.println("1 - print dealership list");
-        System.out.println("2 - select dealership");
-        System.out.println("3 - add dealership");
-        System.out.println("4 - remove dealership");
-        System.out.println("5 - back");
+        consIO.printString("\n");
+        consIO.printString("0 - print compleate list of vehicles\n");
+        consIO.printString("1 - print dealership list\n");
+        consIO.printString("2 - select dealership\n");
+        consIO.printString("3 - add dealership\n");
+        consIO.printString("4 - remove dealership\n");
+        consIO.printString("5 - back\n");
     }
 
     private void printAllDealershipsVehicleList(){
@@ -194,12 +242,12 @@ public class ConsoleLineUI {
 
         for (Dealership instance : dealershipNames){
             if (instance.equals(toAdd)){
-                System.out.println("There already is a dealership there");
+                consIO.printString("There already is a dealership there");
                 return;
             }
         }
 
-        dealershipsCentral.addDealeship(toAdd);
+        dealershipsCentral.addDealership(toAdd);
 
     }
 
@@ -231,11 +279,11 @@ public class ConsoleLineUI {
     private void printModDealershipScreen(){
 
         System.out.print('\n');
-        System.out.println("0 - print vehicle list");
-        System.out.println("1 - set vehicle stock");
-        System.out.println("2 - add new vehicle");
-        System.out.println("3 - remove vehicle");
-        System.out.println("4 - back");
+        consIO.printString("0 - print vehicle list\n");
+        consIO.printString("1 - set vehicle stock\n");
+        consIO.printString("2 - add new vehicle\n");
+        consIO.printString("3 - remove vehicle\n");
+        consIO.printString("4 - back\n");
     }
 
     private void printDealershipVehiclesWPriceStockList(Dealership dealership) {
@@ -243,9 +291,9 @@ public class ConsoleLineUI {
         ArrayList<Vehicle> vehicleList = (ArrayList<Vehicle>) dealership.getVehicleSorter().getAllVehicleList();
 
         for (Vehicle instance : vehicleList){
-            System.out.println(instance);
+            consIO.printString(instance.toString());
             System.out.print("Price: " + dealership.getVehiclePrice(instance.hashCode()) + " ");
-            System.out.println("Stock: " + dealership.getVehicleAvailability(instance.hashCode()));
+            consIO.printString("Stock: " + dealership.getVehicleAvailability(instance.hashCode()) + "\n");
         }
     }
 
@@ -295,9 +343,9 @@ public class ConsoleLineUI {
 
     private void printClientMainScreen(){
 
-        System.out.println("0 - get compleate list of vehicles in stock");
-        System.out.println("1 - select dealership");
-        System.out.println("2 - make account");
+        consIO.printString("0 - get compleate list of vehicles in stock\n");
+        consIO.printString("1 - select dealership\n");
+        consIO.printString("2 - login\n");
     }
 
     private void printAllDealershipsStockVehicleList(){
@@ -315,12 +363,12 @@ public class ConsoleLineUI {
 
     private void printClientDealershipScreen(){
 
-        System.out.println("0 - get list of vehicles in stock");
-        System.out.println("1 - get list of vehicles with fast charging");
-        System.out.println("2 - get list of vehicles sorted by Horsepower");
-        System.out.println("3 - get list of vehicles sorted by Price");
-        System.out.println("4 - get list of vehicles sorted by Range per charge");
-        System.out.println("5 - back");
+        consIO.printString("0 - get list of vehicles in stock\n");
+        consIO.printString("1 - get list of vehicles with fast charging\n");
+        consIO.printString("2 - get list of vehicles sorted by Horsepower\n");
+        consIO.printString("3 - get list of vehicles sorted by Price\n");
+        consIO.printString("4 - get list of vehicles sorted by Range per charge\n");
+        consIO.printString("5 - back\n");
     }
 
     private void printMoreInfo(ArrayList<Vehicle> vehicleList, Dealership dealership){
@@ -363,22 +411,23 @@ public class ConsoleLineUI {
 
         int option = consIO.readCondInt(0, 1);
 
-        if (option == -1) {
-            return;
-        }
-
         boolean succesfull = false;
 
         if (option == 0) {
             succesfull = dealershipsCentral.makeSell(dealership, toSell, currentClient);
-        }
-        if (option == 1){
-            if (dealershipsCentral.isGreenBonusAvailable(toSell)) {
-                consIO.printString("The vehicle is eligible for Green Bonus, 1 to continue\n");
-                if (consIO.readCondInt(1, 1) == 1) {
-                    succesfull = dealershipsCentral.makeGreenBonusSell(dealership, toSell, currentClient);
+        } else {
+            if (option == 1) {
+                if (dealershipsCentral.isGreenBonusAvailable(toSell)) {
+                    consIO.printString("The vehicle is eligible for Green Bonus, 1 to continue\n");
+                    if (consIO.readCondInt(1, 1) == 1) {
+                        succesfull = dealershipsCentral.makeGreenBonusSell(dealership, toSell, currentClient);
+                    }
                 }
-            }
+                else{
+                    consIO.printString("Green Bonus not available\n");
+                }
+            } else
+                return;
         }
 
         if (succesfull)
@@ -431,45 +480,7 @@ public class ConsoleLineUI {
 
         ConsoleLineUI user = new ConsoleLineUI();
 
-        {
-            Dealership newD = new Dealership("BMW", "Sea side");
-            Vehicle myVehicle1 = new Vehicle();
-            Vehicle myVehicle2 = new Vehicle();
-
-            myVehicle1.setModel("3 series");
-            myVehicle1.setProductionYear(1999);
-            myVehicle1.setFastCharging(true);
-            myVehicle1.setEnergyConsumption_KWperKm(120);
-            myVehicle1.setMotor(new Motor("Reanault", "14-xp", 200));
-            myVehicle1.setBattery(new Battery("Tesla", "56.fd1", 4500));
-
-            myVehicle2.setModel("1 series");
-            myVehicle2.setProductionYear(2011);
-            myVehicle2.setFastCharging(false);
-            myVehicle2.setEnergyConsumption_KWperKm(430);
-
-            newD.addVehicle(myVehicle1, 1500);
-            newD.addVehicle(myVehicle2, 15000);
-
-            user.addDealership(newD);
-        }
-
-        {
-            Dealership newD = new Dealership("Sap", "Ocean side");
-            Vehicle myVehicle1 = new Vehicle();
-
-            myVehicle1.setModel("13 series");
-            myVehicle1.setProductionYear(1239);
-            myVehicle1.setFastCharging(true);
-            myVehicle1.setEnergyConsumption_KWperKm(120);
-            myVehicle1.setMotor(new Motor("Reanault", "14-xp", 200));
-            myVehicle1.setBattery(new Battery("Tesla", "56.fd1", 4500));
-
-
-            newD.addVehicle(myVehicle1, 15100);
-
-            user.addDealership(newD);
-        }
+        user.addDemoVehicles();
 
         while(true){
             user.Do();

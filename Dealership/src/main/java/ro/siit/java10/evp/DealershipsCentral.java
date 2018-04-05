@@ -127,6 +127,7 @@ public class DealershipsCentral{
 
             actualDealership.decreaseStock(toSell.hashCode());
             actualDealership.addInvoice(invoice);
+            GreenBonus.addCompletedInvoice(invoice);
 
             return (true);
         }

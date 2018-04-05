@@ -1,11 +1,23 @@
 package ro.siit.java10.evp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleIO {
 
     private Scanner Stdin;
+
+    public enum Options{
+        YEAR,
+        E_CONSUMPTION,
+        RANGE_PER_CHARGE,
+        FAST_CHARGING,
+        MOTOR,
+        BATTERY,
+        PRICE,
+        STOCK
+    }
 
     public ConsoleIO() {
 
@@ -39,6 +51,53 @@ public class ConsoleIO {
         System.out.print(toPrintString);
     }
 
+    public void printVehicleList(Dealership deals, List<Vehicle> vehicles, Options... options){
+
+        for (Vehicle currVehicle : vehicles){
+
+            printVehicle(deals, currVehicle, options);
+        }
+    }
+
+    public void printVehicle(Dealership deals, Vehicle vehicle, Options... options){
+
+        printString("Model: " + vehicle.getModel() + "   ");
+
+        for (Options opt : options) {
+
+            switch (opt) {
+                case YEAR:
+                    printString("Production Year: " + vehicle.getProductionYear() + "   ");
+                    break;
+                case E_CONSUMPTION:
+                    printString("Energy Consumption(kw/km): " + vehicle.getEnergyConsumption_KWperKm() + "   ");
+                    break;
+                case RANGE_PER_CHARGE:
+                    printString("Range per full charge(km): " + vehicle.getRangePerCharge_Km() + "   ");
+                    break;
+                case FAST_CHARGING:
+                    if (vehicle.hasFastCharging())
+                        printString("Has fast charging   ");
+                    else
+                        printString("It does not have fast charging   ");
+                    break;
+                case MOTOR:
+                    printString("\nMotor: " + vehicle.getMotor().toString() + "   \n");
+                    break;
+                case BATTERY:
+                    printString("\nBattery: " + vehicle.getBattery().toString() + "   \n");
+                    break;
+                case PRICE:
+                    printString("\nPrice: " + deals.getVehiclePrice(vehicle.hashCode()) + "\n");
+                    break;
+                case STOCK:
+                    printString("\nAvailable: " + deals.getVehicleAvailability(vehicle.hashCode()) + "\n");
+                    break;
+            }
+        }
+        printString("\n");
+    }
+
     /**
      * Attempts to read a non empty String for console
      *
@@ -51,7 +110,7 @@ public class ConsoleIO {
         input = Stdin.nextLine();
 
         if (input.isEmpty()){
-            printString("Can't be empty, 1 to try again");
+            printString("Can't be empty, 1 to try again\n");
 
             String option = Stdin.nextLine();
             if (isInt(option)){
@@ -103,7 +162,6 @@ public class ConsoleIO {
      * Checks if string is int
      * range: -99,999,999 to 999,999,999
      *
-     * @param String
      * @return boolean
      */
     private boolean isInt(String str){

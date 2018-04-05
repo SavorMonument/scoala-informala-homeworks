@@ -64,7 +64,11 @@ public class Stock implements Cloneable{
 
     public Stock clone(){
 
-        return (new Stock(vehicle.clone(), price));
+        Stock underConstruction = new Stock(vehicle.clone(), price);
+
+        underConstruction.setAmount(amount);
+
+        return (underConstruction);
     }
 
     @Override

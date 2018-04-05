@@ -14,7 +14,7 @@ public class ConsoleLineUI {
         moderator
     }
 
-    public void addDemoVehicles(){
+    public void lazySetUp(){
         Dealership newD = new Dealership("BMW", "Sea side");
         Vehicle myVehicle1 = new Vehicle();
         Vehicle myVehicle2 = new Vehicle();
@@ -57,44 +57,53 @@ public class ConsoleLineUI {
         newD1.addVehicle(myVehicle1, 15100);
 
         dealershipsCentral.addDealership(newD1);
+
+        currentClient = new Client("Alex", "Goia");
     }
 
     public void Do(){
 
-        //if (state == State.moderator)
-        //modMainScreen();
-        ClientMainScreen();
+        if ((null != currentClient) && (currentClient.getFirstName().equals("Mod")))
+            state = State.moderator;
+        else
+            state = State.user;
+
+        switch (state){
+            case user:
+                clientMainScreen();
+                break;
+            case moderator:
+                modMainScreen();
+                break;
+        }
     }
 
     private boolean modMainScreen() {
 
         int currentOption;
-        boolean isdone = false;
 
         printMainModScreen();
 
-        currentOption = consIO.readCondInt(0, 5);
+        currentOption = consIO.readCondInt(0, 4);
 
         switch (currentOption){
             case (0):
                 printAllDealershipsVehicleList();
                 break;
             case (1):
-                printDealershipList();
-                break;
-            case (2):
                 Dealership selectedDealership = selectDealership();
                 if (null != selectedDealership)
                     while(modDealershipScreen(selectedDealership)) {}
                 break;
-            case (3):
+            case (2):
                 addDealership();
                 break;
-            case (4):
+            case (3):
                 removeDealership();
                 break;
-            default :
-                return false;
+            case (4):
+                currentClient = null;
+                break;
         }
         return (true);
     }
@@ -132,7 +141,7 @@ public class ConsoleLineUI {
         return true;
     }
 
-    private void ClientMainScreen(){
+    private void clientMainScreen(){
 
         int option;
 
@@ -162,7 +171,7 @@ public class ConsoleLineUI {
         int option;
 
         if (dealership.getVehicleSorter().getStockVehicleList().size() == 0){
-            consIO.printString("No vehicles in stock");
+            consIO.printString("No vehicles in stock\n");
             consIO.getKeyboardInput();
             return false;
         }
@@ -174,27 +183,27 @@ public class ConsoleLineUI {
         switch (option){
             case (0):
                 ArrayList<Vehicle> stockVehicles = (ArrayList<Vehicle>) dealership.getVehicleSorter().getStockVehicleList();
-                consIO.printNumberedList(stockVehicles);
+                consIO.printVehicleList(dealership, stockVehicles, ConsoleIO.Options.YEAR);
                 printMoreInfo(stockVehicles, dealership);
                 break;
             case (1):
                 ArrayList<Vehicle> fastChargingVehicles = (ArrayList<Vehicle>) (dealership.getVehicleSorter().getFastChargingList());
-                consIO.printNumberedList(fastChargingVehicles);
+                consIO.printVehicleList(dealership, fastChargingVehicles, ConsoleIO.Options.YEAR, ConsoleIO.Options.FAST_CHARGING);
                 printMoreInfo(fastChargingVehicles, dealership);
                 break;
             case (2):
                 ArrayList<Vehicle> horsepowerSortedVehicles = (ArrayList<Vehicle>) dealership.getVehicleSorter().getSortedHorsepowerList();
-                consIO.printNumberedList(horsepowerSortedVehicles);
+                consIO.printVehicleList(dealership, horsepowerSortedVehicles, ConsoleIO.Options.YEAR, ConsoleIO.Options.MOTOR);
                 printMoreInfo(horsepowerSortedVehicles, dealership);
                 break;
             case (3):
                 ArrayList<Vehicle> priceSortedVehicles = (ArrayList<Vehicle>) dealership.getVehicleSorter().getSortedPriceList();
-                consIO.printNumberedList(priceSortedVehicles);
+                consIO.printVehicleList(dealership, priceSortedVehicles, ConsoleIO.Options.YEAR, ConsoleIO.Options.PRICE);
                 printMoreInfo(priceSortedVehicles, dealership);
                 break;
             case (4):
                 ArrayList<Vehicle> rangeSortedVehicles = (ArrayList<Vehicle>) dealership.getVehicleSorter().getSortedRangePerChargeList();
-                consIO.printNumberedList(rangeSortedVehicles);
+                consIO.printVehicleList(dealership, rangeSortedVehicles, ConsoleIO.Options.YEAR, ConsoleIO.Options.RANGE_PER_CHARGE);
                 printMoreInfo(rangeSortedVehicles, dealership);
                 break;
             case (5):
@@ -206,12 +215,11 @@ public class ConsoleLineUI {
     private void printMainModScreen(){
 
         consIO.printString("\n");
-        consIO.printString("0 - print compleate list of vehicles\n");
-        consIO.printString("1 - print dealership list\n");
-        consIO.printString("2 - select dealership\n");
-        consIO.printString("3 - add dealership\n");
-        consIO.printString("4 - remove dealership\n");
-        consIO.printString("5 - back\n");
+        consIO.printString("0 - print complete list of vehicles\n");
+        consIO.printString("1 - select dealership\n");
+        consIO.printString("2 - add dealership\n");
+        consIO.printString("3 - remove dealership\n");
+        consIO.printString("4 - logout\n");
     }
 
     private void printAllDealershipsVehicleList(){
@@ -222,13 +230,9 @@ public class ConsoleLineUI {
 
             consIO.printString(instance.getName() + "\n");
 
-            consIO.printList(dealershipsCentral.getDealershipVehicleSorter(instance).getAllVehicleList());
+            consIO.printVehicleList(instance,
+                    dealershipsCentral.getDealership(instance).getVehicleSorter().getAllVehicleList());
         }
-    }
-
-    private void printDealershipList(){
-
-        consIO.printList(dealershipsCentral.getDealershipList());
     }
 
     private void addDealership(){
@@ -290,11 +294,8 @@ public class ConsoleLineUI {
 
         ArrayList<Vehicle> vehicleList = (ArrayList<Vehicle>) dealership.getVehicleSorter().getAllVehicleList();
 
-        for (Vehicle instance : vehicleList){
-            consIO.printString(instance.toString());
-            System.out.print("Price: " + dealership.getVehiclePrice(instance.hashCode()) + " ");
-            consIO.printString("Stock: " + dealership.getVehicleAvailability(instance.hashCode()) + "\n");
-        }
+        consIO.printVehicleList(dealership, vehicleList, ConsoleIO.Options.YEAR,
+                ConsoleIO.Options.PRICE, ConsoleIO.Options.STOCK);
     }
 
     private void setStock(Dealership dealership) {
@@ -343,9 +344,9 @@ public class ConsoleLineUI {
 
     private void printClientMainScreen(){
 
-        consIO.printString("0 - get compleate list of vehicles in stock\n");
-        consIO.printString("1 - select dealership\n");
-        consIO.printString("2 - login\n");
+        consIO.printString("0 - Print compleate list of vehicles in stock\n");
+        consIO.printString("1 - Select dealership\n");
+        consIO.printString("2 - Login\n");
     }
 
     private void printAllDealershipsStockVehicleList(){
@@ -356,7 +357,8 @@ public class ConsoleLineUI {
 
             consIO.printString(instance.getName() + "\n");
 
-            consIO.printList(dealershipsCentral.getDealershipVehicleSorter(instance).getStockVehicleList());
+            consIO.printVehicleList(instance,
+                    dealershipsCentral.getDealership(instance).getVehicleSorter().getStockVehicleList());
         }
 
     }
@@ -377,9 +379,10 @@ public class ConsoleLineUI {
         int option = consIO.readCondInt(0, vehicleList.size());
 
         if ((option != -1) && (option != vehicleList.size())){
-            consIO.printString(vehicleList.get(option).toString() + "\n");
-            consIO.printString("Price: " + dealership.getVehiclePrice(vehicleList.get(option).hashCode()) + "\n");
-            consIO.printString("Stock: " + dealership.getVehicleAvailability(vehicleList.get(option).hashCode()) + "\n");
+
+            consIO.printVehicle(dealership, vehicleList.get(option), ConsoleIO.Options.YEAR,
+                    ConsoleIO.Options.RANGE_PER_CHARGE, ConsoleIO.Options.FAST_CHARGING,
+                    ConsoleIO.Options.MOTOR, ConsoleIO.Options.BATTERY, ConsoleIO.Options.PRICE, ConsoleIO.Options.STOCK);
 
             if(pitchSell()){
                 makeSell(vehicleList.get(option), dealership);
@@ -431,7 +434,8 @@ public class ConsoleLineUI {
         }
 
         if (succesfull)
-            consIO.printString("Congratulations!! You can see your purchase in your account\n");
+            consIO.printString("Congratulations!! You can see your purchase in your account" +
+                    "(Not yet implemented)\n");
         else
             consIO.printString("Something went wrong, Please try again\n");
     }
@@ -480,7 +484,7 @@ public class ConsoleLineUI {
 
         ConsoleLineUI user = new ConsoleLineUI();
 
-        user.addDemoVehicles();
+        user.lazySetUp();
 
         while(true){
             user.Do();

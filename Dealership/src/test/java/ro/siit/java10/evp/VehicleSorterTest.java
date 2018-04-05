@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.swing.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +52,13 @@ public class VehicleSorterTest {
     @Test
     public void getStockVehicleList(){
 
-        ArrayList<Vehicle> result = (ArrayList<Vehicle>) vehicleSorter.getStockVehicleList();
+        ArrayList<Vehicle> result;
         ArrayList<Vehicle> expected = new ArrayList<>();
 
-        for(Stock instance : stocks){
-            expected.add(instance.getVehicle());
-        }
+        expected.add(stocks.get(0).getVehicle());
+        expected.add(stocks.get(1).getVehicle());
+        stocks.get(2).decreaseAmount();
+        result = (ArrayList<Vehicle>) vehicleSorter.getStockVehicleList();
 
         assert (expected.equals(result));
     }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ConsoleLineUI {
 
-    private DealershipsCentral dealershipsCentral = new DealershipsCentral();
+    private DealershipsCentral dCentral = new DealershipsCentral();
     private Client currentClient;
     private ConsoleIO consIO = new ConsoleIO();
     private State state = State.user;
@@ -41,7 +41,7 @@ public class ConsoleLineUI {
         newD.addVehicle(myVehicle2, 15000);
         newD.addVehicle(myVehicle4, 100);
 
-        dealershipsCentral.addDealership(newD);
+        dCentral.addDealership(newD);
 
         Dealership newD1 = new Dealership("Sap", "Ocean side");
         Vehicle myVehicle3 = new Vehicle();
@@ -56,14 +56,14 @@ public class ConsoleLineUI {
 
         newD1.addVehicle(myVehicle1, 15100);
 
-        dealershipsCentral.addDealership(newD1);
+        dCentral.addDealership(newD1);
 
         currentClient = new Client("Alex", "Goia");
     }
 
     public void Do(){
 
-        if ((null != currentClient) && (currentClient.getFirstName().equals("Mod")))
+        if ((null != currentClient) && (currentClient.getFIRST_NAME().equals("Mod")))
             state = State.moderator;
         else
             state = State.user;
@@ -160,7 +160,7 @@ public class ConsoleLineUI {
                 }
                 break;
             case (2):
-                login();
+                tryLogin();
                 break;
         }
 
@@ -224,14 +224,14 @@ public class ConsoleLineUI {
 
     private void printAllDealershipsVehicleList(){
 
-        ArrayList<Dealership> dealershipNameList = (ArrayList<Dealership>) dealershipsCentral.getDealershipList();
+        ArrayList<Dealership> dealershipNameList = (ArrayList<Dealership>) dCentral.getDealershipList();
 
         for (Dealership instance : dealershipNameList){
 
             consIO.printString(instance.getName() + "\n");
 
             consIO.printVehicleList(instance,
-                    dealershipsCentral.getDealership(instance).getVehicleSorter().getAllVehicleList());
+                    dCentral.getDealership(instance).getVehicleSorter().getAllVehicleList());
         }
     }
 
@@ -242,7 +242,7 @@ public class ConsoleLineUI {
         if (null == toAdd)
             return;
 
-        ArrayList<Dealership> dealershipNames = (ArrayList<Dealership>) dealershipsCentral.getDealershipList();
+        ArrayList<Dealership> dealershipNames = (ArrayList<Dealership>) dCentral.getDealershipList();
 
         for (Dealership instance : dealershipNames){
             if (instance.equals(toAdd)){
@@ -251,29 +251,29 @@ public class ConsoleLineUI {
             }
         }
 
-        dealershipsCentral.addDealership(toAdd);
+        dCentral.addDealership(toAdd);
 
     }
 
     private void removeDealership() {
 
-        consIO.printNumberedList(dealershipsCentral.getDealershipList());
-        int option = consIO.readCondInt(1, dealershipsCentral.getNumberOfDealerships());
+        consIO.printNumberedList(dCentral.getDealershipList());
+        int option = consIO.readCondInt(1, dCentral.getNumberOfDealerships());
 
         if (option != -1)
-            dealershipsCentral.removeDealership(dealershipsCentral.getDealershipList().get(option));
+            dCentral.removeDealership(dCentral.getDealershipList().get(option));
     }
 
     private Dealership selectDealership() {
 
         int option;
 
-        if (dealershipsCentral.getNumberOfDealerships() > 0) {
-            consIO.printNumberedList(dealershipsCentral.getDealershipList());
-            option = consIO.readCondInt(0, dealershipsCentral.getNumberOfDealerships() - 1);
+        if (dCentral.getNumberOfDealerships() > 0) {
+            consIO.printNumberedList(dCentral.getDealershipList());
+            option = consIO.readCondInt(0, dCentral.getNumberOfDealerships() - 1);
 
             if (option != -1){
-                return (dealershipsCentral.getDealership(dealershipsCentral.getDealershipList().get(option)));
+                return (dCentral.getDealership(dCentral.getDealershipList().get(option)));
             }
         }
 
@@ -351,14 +351,14 @@ public class ConsoleLineUI {
 
     private void printAllDealershipsStockVehicleList(){
 
-        ArrayList<Dealership> dealershipNameList = (ArrayList<Dealership>) dealershipsCentral.getDealershipList();
+        ArrayList<Dealership> dealershipNameList = (ArrayList<Dealership>) dCentral.getDealershipList();
 
         for (Dealership instance : dealershipNameList){
 
             consIO.printString(instance.getName() + "\n");
 
             consIO.printVehicleList(instance,
-                    dealershipsCentral.getDealership(instance).getVehicleSorter().getStockVehicleList());
+                    dCentral.getDealership(instance).getVehicleSorter().getStockVehicleList());
         }
 
     }
@@ -405,7 +405,7 @@ public class ConsoleLineUI {
     private void makeSell(Vehicle toSell, Dealership dealership){
 
         if (null == currentClient){
-            login();
+            tryLogin();
             if (null == currentClient)
                 return;
         }
@@ -414,36 +414,39 @@ public class ConsoleLineUI {
 
         int option = consIO.readCondInt(0, 1);
 
-        boolean succesfull = false;
+        if (option == -1){
+            return;
+        }
+
+        boolean successful = false;
 
         if (option == 0) {
-            succesfull = dealershipsCentral.makeSell(dealership, toSell, currentClient);
+            successful = dCentral.makeSell(dealership, toSell, currentClient);
         } else {
             if (option == 1) {
-                if (dealershipsCentral.isGreenBonusAvailable(toSell)) {
-                    consIO.printString("The vehicle is eligible for Green Bonus, 1 to continue\n");
+                if (dCentral.isGreenBonusAvailable(toSell)) {
+                    consIO.printString("The vehicle is eligible for Green Bonus, 1 to buy\n");
                     if (consIO.readCondInt(1, 1) == 1) {
-                        succesfull = dealershipsCentral.makeGreenBonusSell(dealership, toSell, currentClient);
+                        successful = dCentral.makeGreenBonusSell(dealership, toSell, currentClient);
                     }
                 }
                 else{
                     consIO.printString("Green Bonus not available\n");
                 }
-            } else
-                return;
+            }
         }
 
-        if (succesfull)
+        if (successful)
             consIO.printString("Congratulations!! You can see your purchase in your account" +
                     "(Not yet implemented)\n");
         else
             consIO.printString("Something went wrong, Please try again\n");
     }
 
-    public void login(){
+    private void tryLogin(){
 
         if(null != currentClient) {
-            consIO.printString("Already logged in as: " + currentClient.getFirstName() +
+            consIO.printString("Already logged in as: " + currentClient.getFIRST_NAME() +
                     "\n0 - logout \n1 - back\n");
 
             int option = consIO.readCondInt(0, 1);
@@ -456,7 +459,7 @@ public class ConsoleLineUI {
             }
         }
 
-        consIO.printString("0 - new account \n1 - login existing account \n2 - exit\n");
+        consIO.printString("0 - new account \n1 - tryLogin existing account \n2 - exit\n");
 
         int option = consIO.readCondInt(0, 2);
 
@@ -464,7 +467,7 @@ public class ConsoleLineUI {
             Client toAdd;
             if (null != (toAdd = consIO.readClient())){
                 currentClient = toAdd;
-                dealershipsCentral.addClient(toAdd);
+                dCentral.addClient(toAdd);
             }
         }
         if (option == 1){
@@ -473,8 +476,8 @@ public class ConsoleLineUI {
             consIO.printString("LastName: ");
             String lastName = consIO.readString();
 
-            if (null == (currentClient = dealershipsCentral.getClient(firstName, lastName))){
-                login();
+            if (null == (currentClient = dCentral.getClient(firstName, lastName))){
+                tryLogin();
             }
         }
     }
@@ -484,10 +487,15 @@ public class ConsoleLineUI {
 
         ConsoleLineUI user = new ConsoleLineUI();
 
-        user.lazySetUp();
+        //user.lazySetUp();
+
+        //user.dCentral.saveData();
+        user.dCentral.loadData();
 
         while(true){
             user.Do();
+            user.dCentral.saveData();
         }
+
     }
 }

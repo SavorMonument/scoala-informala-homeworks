@@ -272,4 +272,9 @@ public class ConsoleIO {
 
         return underConstruction;
     }
+
+    public void close(){
+
+        Stdin.close();
+    }
 }

@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class Battery implements Cloneable {
 
-    private String manufacturer;
-    private String model;
+    private String manufacturer = "No manufacturer";
+    private String model = "No model";
     private int capacity_KWh;
 
     public  Battery(){ }

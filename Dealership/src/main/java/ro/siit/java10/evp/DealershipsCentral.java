@@ -1,5 +1,6 @@
 package ro.siit.java10.evp;
 
+import java.io.File;
 import java.util.*;
 
 public class DealershipsCentral{
@@ -8,6 +9,23 @@ public class DealershipsCentral{
     private ArrayList<Client> clients = new ArrayList<>();
 
     public DealershipsCentral() {
+    }
+
+    public void saveData(){
+        CsvDealershipSerializer dataSaver = new CsvDealershipSerializer(new File("./dealerships.csv"));
+
+        dataSaver.saveDelearships(availableDealerships);
+    }
+
+    public void loadData(){
+        CsvDealershipSerializer dataLoader = new CsvDealershipSerializer(new File("./dealerships.csv"));
+
+        try {
+            availableDealerships = (ArrayList<Dealership>) dataLoader.loadDealerships();
+        } catch (Exception e){
+            System.out.println("Loading failed, the csv file has been tampered with\n");
+            //e.printStackTrace();
+        }
     }
 
     public void addDealership(Dealership newDealership){
@@ -87,8 +105,8 @@ public class DealershipsCentral{
     public Client getClient(String firstName, String lastName){
 
         for (Client instance : clients){
-            if (instance.getFirstName().equals(firstName))
-                if (instance.getLastName().equals(lastName)){
+            if (instance.getFIRST_NAME().equals(firstName))
+                if (instance.getlAST_NAME().equals(lastName)){
                     return instance;
                 }
         }

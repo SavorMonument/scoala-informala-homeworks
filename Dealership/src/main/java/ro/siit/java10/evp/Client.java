@@ -1,17 +1,15 @@
 package ro.siit.java10.evp;
 
-import java.util.ArrayList;
-
 public class Client {
 
-    private final String firstName;
-    private final String lastName;
+    private final String FIRST_NAME;
+    private final String lAST_NAME;
     private String telephone;
     private String address;
 
     public Client(String firstName, String lastName) {
-        this.lastName = lastName;
-        this.firstName = firstName;
+        this.lAST_NAME = lastName;
+        this.FIRST_NAME = firstName;
     }
 
     public void setTelephone(String telephone) {
@@ -22,12 +20,12 @@ public class Client {
         this.address = address;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getlAST_NAME() {
+        return lAST_NAME;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFIRST_NAME() {
+        return FIRST_NAME;
     }
 
     public String getTelephone() {

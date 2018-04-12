@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class Motor implements Cloneable {
 
-    private String manufacturer;
-    private String model;
+    private String manufacturer = "No manufacturer";
+    private String model = "No model";
     private int horsepower;
 
     public Motor(){ }

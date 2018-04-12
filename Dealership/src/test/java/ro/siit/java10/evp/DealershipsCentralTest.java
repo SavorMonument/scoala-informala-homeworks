@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -144,7 +143,7 @@ public class DealershipsCentralTest {
 
         Dcentral.addClient(testClient);
 
-        assertEquals(testClient, Dcentral.getClient(testClient.getFirstName(), testClient.getLastName()));
+        assertEquals(testClient, Dcentral.getClient(testClient.getFIRST_NAME(), testClient.getlAST_NAME()));
     }
 
     @Test

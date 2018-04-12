@@ -49,21 +49,21 @@ public class VehicleSorter {
 
     public List<Vehicle> getSortedPriceList() {
 
-        List<Stock> stocksCopy = new ArrayList<>();
         List<Vehicle> sortedPriceList = new ArrayList<>();
+        List<Stock> stockCopy = new ArrayList<>();
 
         for (Stock instance : stocks) {
-            stocksCopy.add(instance.clone());
+            stockCopy.add(instance.clone());
         }
 
-        stocksCopy.sort(new Comparator<Stock>() {
+        quickSort(stockCopy, 0, stockCopy.size() - 1, new Comparator<Stock>() {
             @Override
             public int compare(Stock o1, Stock o2) {
                 return (int) (o1.getPrice() - o2.getPrice());
             }
         });
 
-        for (Stock instance : stocksCopy) {
+        for (Stock instance : stockCopy){
             sortedPriceList.add(instance.getVehicle());
         }
 
@@ -72,13 +72,9 @@ public class VehicleSorter {
 
     public List<Vehicle> getSortedHorsepowerList() {
 
-        List<Vehicle> sortedHorsepowerList = new ArrayList<>();
+        List<Vehicle> sortedHorsepowerList = getStockVehicleList();
 
-        for (Stock instance : stocks) {
-            sortedHorsepowerList.add(instance.getVehicle().clone());
-        }
-
-        sortedHorsepowerList.sort(new Comparator<Vehicle>() {
+         quickSort(sortedHorsepowerList, 0, sortedHorsepowerList.size() - 1, new Comparator<Vehicle>() {
             @Override
             public int compare(Vehicle o1, Vehicle o2) {
                 return o1.getMotor().getHorsepower() - o2.getMotor().getHorsepower();
@@ -90,19 +86,54 @@ public class VehicleSorter {
 
     public List<Vehicle> getSortedRangePerChargeList(){
 
-        List<Vehicle> sortedRangePerChargeList = new ArrayList<>();
+        List<Vehicle> sortedRangePerChargeArray = getStockVehicleList();
 
-        for (Stock instance : stocks) {
-            sortedRangePerChargeList.add(instance.getVehicle().clone());
-        }
-
-        sortedRangePerChargeList.sort(new Comparator<Vehicle>() {
+        quickSort(sortedRangePerChargeArray, 0, sortedRangePerChargeArray.size() - 1, new Comparator<Vehicle>() {
             @Override
             public int compare(Vehicle o1, Vehicle o2) {
                 return o1.getRangePerCharge_Km() - o2.getRangePerCharge_Km();
             }
         });
 
-        return sortedRangePerChargeList;
+        return sortedRangePerChargeArray;
     }
+
+
+
+    private void quickSort(List list, int left, int right, Comparator comp){
+
+        if (left < right){
+
+            int pivot = getPivot(list, left, right, comp);
+
+            quickSort(list, left, pivot - 1, comp);
+            quickSort(list, pivot + 1, right, comp);
+        }
+    }
+
+    private int getPivot(List list, int left, int right, Comparator comp){
+
+        Object pivot = list.get(right);
+
+        int i = left - 1;
+
+        for(int j = left; j < right; j++){
+
+            if (comp.compare(list.get(j), pivot) < 0){
+                i++;
+                swap(list, i, j);
+            }
+        }
+
+        swap(list, i + 1, right);
+        return i + 1;
+    }
+
+    private void swap(List list, int i, int j){
+
+        Object temp = list.get(i);
+        list.set(i, list.get(j));
+        list.set(j, temp);
+    }
+
 }

@@ -12,24 +12,26 @@ public class DealershipsCentral{
     }
 
     public void saveData(){
-        DealershipSerializer dealerSaver = new CsvDealershipSerializer(new File("./dealerships.csv"));
-        CsvClientSerializer clientSaver = new CsvClientSerializer(new File("./clients.csv"));
+        DealershipSerializer dealerSaver = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
+        ClientSerializer clientSaver = new ObjectClientSerializer(new File("./ProgramData/Binary_Clients.dat"));
 
         dealerSaver.saveDelearships(availableDealerships);
         clientSaver.saveClients(clients);
     }
 
     public void loadData(){
-        CsvDealershipSerializer dealerLoader = new CsvDealershipSerializer(new File("./dealerships.csv"));
-        CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./clients.csv"));
+        CsvDealershipSerializer dealerLoader = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
+        CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./ProgramData/clients.csv"));
 
-        try {
-            availableDealerships = (ArrayList<Dealership>) dealerLoader.loadDealerships();
-            clients = (ArrayList<Client>) clientLoader.loadClients();
-        } catch (Exception e){
-            System.out.println("Something went wrong in the data loading\n");
-            //e.printStackTrace();
+        availableDealerships = (ArrayList<Dealership>) dealerLoader.loadDealerships();
+        clients = (ArrayList<Client>) clientLoader.loadClients();
+
+        //If it can't load for some reason wait for it to print the exception before continuing
+        try{
+            Thread.sleep(1000);
+        } catch (InterruptedException e){
         }
+
     }
 
     public void addDealership(Dealership newDealership){

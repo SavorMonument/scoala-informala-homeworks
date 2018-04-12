@@ -1,6 +1,9 @@
 package ro.siit.java10.evp;
 
-public class Client {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Client implements Serializable {
 
     private final String FIRST_NAME;
     private final String lAST_NAME;
@@ -34,5 +37,20 @@ public class Client {
 
     public String getAddress() {
         return address;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(FIRST_NAME, client.FIRST_NAME) &&
+                Objects.equals(lAST_NAME, client.lAST_NAME);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(FIRST_NAME, lAST_NAME);
     }
 }

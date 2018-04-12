@@ -82,7 +82,7 @@ public class ConsoleLineUI {
 
         int currentOption;
 
-        printMainModScreen();
+        printModMainScreen();
 
         currentOption = consIO.readCondInt(0, 4);
 
@@ -212,7 +212,7 @@ public class ConsoleLineUI {
         return true;
     }
 
-    private void printMainModScreen(){
+    private void printModMainScreen(){
 
         consIO.printString("\n");
         consIO.printString("0 - print complete list of vehicles\n");
@@ -346,7 +346,7 @@ public class ConsoleLineUI {
 
         consIO.printString("0 - Print compleate list of vehicles in stock\n");
         consIO.printString("1 - Select dealership\n");
-        consIO.printString("2 - Login\n");
+        consIO.printString("2 - MyAccount\n");
     }
 
     private void printAllDealershipsStockVehicleList(){
@@ -446,7 +446,7 @@ public class ConsoleLineUI {
     private void tryLogin(){
 
         if(null != currentClient) {
-            consIO.printString("Already logged in as: " + currentClient.getFIRST_NAME() +
+            consIO.printString("logged in as: " + currentClient.getFIRST_NAME() +
                     "\n0 - logout \n1 - back\n");
 
             int option = consIO.readCondInt(0, 1);
@@ -459,7 +459,7 @@ public class ConsoleLineUI {
             }
         }
 
-        consIO.printString("0 - new account \n1 - tryLogin existing account \n2 - exit\n");
+        consIO.printString("0 - new account \n1 - login existing account \n2 - back\n");
 
         int option = consIO.readCondInt(0, 2);
 
@@ -477,6 +477,7 @@ public class ConsoleLineUI {
             String lastName = consIO.readString();
 
             if (null == (currentClient = dCentral.getClient(firstName, lastName))){
+                consIO.printString("No account by that name\n");
                 tryLogin();
             }
         }

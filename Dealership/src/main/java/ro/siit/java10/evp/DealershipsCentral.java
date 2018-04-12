@@ -12,18 +12,22 @@ public class DealershipsCentral{
     }
 
     public void saveData(){
-        CsvDealershipSerializer dataSaver = new CsvDealershipSerializer(new File("./dealerships.csv"));
+        DealershipSerializer dealerSaver = new CsvDealershipSerializer(new File("./dealerships.csv"));
+        CsvClientSerializer clientSaver = new CsvClientSerializer(new File("./clients.csv"));
 
-        dataSaver.saveDelearships(availableDealerships);
+        dealerSaver.saveDelearships(availableDealerships);
+        clientSaver.saveClients(clients);
     }
 
     public void loadData(){
-        CsvDealershipSerializer dataLoader = new CsvDealershipSerializer(new File("./dealerships.csv"));
+        CsvDealershipSerializer dealerLoader = new CsvDealershipSerializer(new File("./dealerships.csv"));
+        CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./clients.csv"));
 
         try {
-            availableDealerships = (ArrayList<Dealership>) dataLoader.loadDealerships();
+            availableDealerships = (ArrayList<Dealership>) dealerLoader.loadDealerships();
+            clients = (ArrayList<Client>) clientLoader.loadClients();
         } catch (Exception e){
-            System.out.println("Loading failed, the csv file has been tampered with\n");
+            System.out.println("Something went wrong in the data loading\n");
             //e.printStackTrace();
         }
     }

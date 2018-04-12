@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface DealershipSerializer {
 
-    public void saveDelearships(List<Dealership> deals) throws Exception;
-    public List<Dealership> loadDealerships() throws Exception;
+    public void saveDelearships(List<Dealership> deals);
+    public List<Dealership> loadDealerships();
 
     class DealershipData implements Serializable {
         public String name;

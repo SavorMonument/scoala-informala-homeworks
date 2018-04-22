@@ -1,7 +1,6 @@
 package ro.siit.java10.evp;
 
 import java.io.*;
-import java.nio.Buffer;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class CsvClientSerializer implements ClientSerializer {
 
     private void saveClient(BufferedWriter writer, Client client) throws IOException {
 
-        writer.write(MessageFormat.format(CSV_Client_PATTERN, client.getFIRST_NAME(), client.getlAST_NAME(),
+        writer.write(MessageFormat.format(CSV_Client_PATTERN, client.getFirstName(), client.getLastName(),
                 client.getTelephone(), client.getAddress()));
     }
 

@@ -20,8 +20,8 @@ public interface DealershipSerializer {
 
     class VehicleData implements Serializable{
 
-        public String model = "No Model";
-        public boolean fastCharging = false;
+        public String model;
+        public boolean fastCharging;
         public int productionYear;
         public int energyConsumption_KWperKm;
         public MotorData motor;
@@ -34,7 +34,7 @@ public interface DealershipSerializer {
 
             model = vehicle.getModel();
             productionYear = vehicle.getProductionYear();
-            energyConsumption_KWperKm = vehicle.getEnergyConsumption_KWperKm();
+            energyConsumption_KWperKm = vehicle.getEnergyConsumptionKWperKm();
             fastCharging = vehicle.hasFastCharging();
             motor = new MotorData(vehicle.getMotor());
             battery = new BatteryData(vehicle.getBattery());
@@ -65,7 +65,7 @@ public interface DealershipSerializer {
             public BatteryData(Battery battery) {
                 this.manufacturer = battery.getManufacturer();
                 this.model = battery.getModel();
-                this.capacity = battery.getCapacity_KWh();
+                this.capacity = battery.getCapacityKWh();
             }
 
         }

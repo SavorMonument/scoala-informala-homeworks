@@ -12,24 +12,26 @@ public class DealershipsCentral{
     }
 
     public void saveData(){
-        DealershipSerializer dealerSaver = new CsvDealershipSerializer(new File("./dealerships.csv"));
-        CsvClientSerializer clientSaver = new CsvClientSerializer(new File("./clients.csv"));
+        DealershipSerializer dealerSaver = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
+        ClientSerializer clientSaver = new ObjectClientSerializer(new File("./ProgramData/Binary_Clients.dat"));
 
         dealerSaver.saveDelearships(availableDealerships);
         clientSaver.saveClients(clients);
     }
 
     public void loadData(){
-        CsvDealershipSerializer dealerLoader = new CsvDealershipSerializer(new File("./dealerships.csv"));
-        CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./clients.csv"));
+        CsvDealershipSerializer dealerLoader = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
+        CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./ProgramData/clients.csv"));
 
-        try {
-            availableDealerships = (ArrayList<Dealership>) dealerLoader.loadDealerships();
-            clients = (ArrayList<Client>) clientLoader.loadClients();
-        } catch (Exception e){
-            System.out.println("Something went wrong in the data loading\n");
-            //e.printStackTrace();
+        availableDealerships = (ArrayList<Dealership>) dealerLoader.loadDealerships();
+        clients = (ArrayList<Client>) clientLoader.loadClients();
+
+        //If it can't load for some reason wait for it to print the exception before continuing
+        try{
+            Thread.sleep(1000);
+        } catch (InterruptedException e){
         }
+
     }
 
     public void addDealership(Dealership newDealership){
@@ -86,7 +88,10 @@ public class DealershipsCentral{
         return null;
     }
 
-    public VehicleSorter getDealershipVehicleSorter(Dealership dealership){
+    public VehicleSorter retrieveDealershipVehicleSorter(Dealership dealership){
+
+        if (null == dealership)
+            throw new IllegalArgumentException("Can't have null dealership");
 
         for (Dealership instance : availableDealerships){
 
@@ -95,7 +100,7 @@ public class DealershipsCentral{
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Could not find a dealership by that name");
     }
 
     public void addClient(Client toAdd) {
@@ -109,8 +114,8 @@ public class DealershipsCentral{
     public Client getClient(String firstName, String lastName){
 
         for (Client instance : clients){
-            if (instance.getFIRST_NAME().equals(firstName))
-                if (instance.getlAST_NAME().equals(lastName)){
+            if (instance.getFirstName().equals(firstName))
+                if (instance.getLastName().equals(lastName)){
                     return instance;
                 }
         }
@@ -118,7 +123,7 @@ public class DealershipsCentral{
         return null;
     }
 
-    public Boolean isGreenBonusAvailable(Vehicle vehicle){
+    public boolean isGreenBonusAvailable(Vehicle vehicle){
 
         if (vehicle.getProductionYear() == Calendar.getInstance().get(Calendar.YEAR)){
             if (GreenBonus.hasEnoughBudget()){
@@ -128,7 +133,7 @@ public class DealershipsCentral{
         return false;
     }
 
-    public Boolean makeGreenBonusSell(Dealership dealership, Vehicle toSell, Client buyer){
+    public boolean makeGreenBonusSell(Dealership dealership, Vehicle toSell, Client buyer){
 
         if (isGreenBonusAvailable(toSell)){
             return (makeSell(dealership, toSell, buyer));
@@ -137,7 +142,7 @@ public class DealershipsCentral{
         return false;
     }
 
-    public Boolean makeSell(Dealership dealership, Vehicle toSell, Client buyer){
+    public boolean makeSell(Dealership dealership, Vehicle toSell, Client buyer){
 
         Dealership actualDealership = getDealership(dealership);
 

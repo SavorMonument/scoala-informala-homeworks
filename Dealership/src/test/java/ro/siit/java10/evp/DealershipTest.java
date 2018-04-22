@@ -37,28 +37,16 @@ public class DealershipTest {
         vehicles = null;
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void addVehicle_priceBelowZero_ExceptionThrown() {
 
-        try {
-            one_deals.addVehicle(vehicles.get(0), -1);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-
-        assertTrue(true);
+        one_deals.addVehicle(vehicles.get(0), -1);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void addVehicle_nullVehicle_ExceptionThrown() {
 
-        try {
-            one_deals.addVehicle(null, 0);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-
-        assertTrue(true);
+        one_deals.addVehicle(null, 0);
     }
 
     @Test
@@ -88,16 +76,12 @@ public class DealershipTest {
         assertEquals(0, one_deals.getVehicleAvailability(removedID));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void setStockNumber_NegativeAmount(){
 
         int vehicleHash = vehicles.get(0).hashCode();
 
-        try {
-            one_deals.setStockNumber(vehicleHash, -1);
-        } catch (IllegalArgumentException e){ }
-
-        assert(true);
+        one_deals.setStockNumber(vehicleHash, -1);
     }
 
     @Test
@@ -110,16 +94,10 @@ public class DealershipTest {
         assertEquals(2, one_deals.getVehicleAvailability(vehicleHash));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void getVehiclePrice_invalidHash_ExceptionThrown() {
 
-        try {
-            one_deals.getVehiclePrice(1);
-        } catch (InvalidParameterException e) {
-            return;
-        }
-
-        assertTrue(true);
+        one_deals.getVehiclePrice(1);
     }
 
     @Test

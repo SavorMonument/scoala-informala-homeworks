@@ -6,26 +6,16 @@ import static org.junit.Assert.*;
 
 public class StockTest {
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void constructor_nullVehicle_exception(){
 
-        try {
-            new Stock(null, 0.0f);
-        } catch (IllegalArgumentException e){
-        }
-
-        assertTrue(true);
+        new Stock(null, 0.0f);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void constructor_negativePrice_exception(){
 
-        try {
-            new Stock(new Vehicle("sad"), -1.0f);
-        } catch (IllegalArgumentException e){
-        }
-
-        assertTrue(true);
+        new Stock(new Vehicle("sad"), -1.0f);
     }
 
     @Test
@@ -38,18 +28,12 @@ public class StockTest {
         assertEquals(0, testStock.getAmount());
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void decreaseAmount_decreaseBelowZero_exception(){
 
         Stock testStock = new Stock(new Vehicle("Bad"), 1.0f);
 
         testStock.decreaseAmount();
-
-        try{
-            testStock.decreaseAmount();
-        } catch (IllegalStateException e){
-        }
-
-        assertTrue(true);
+        testStock.decreaseAmount();
     }
 }

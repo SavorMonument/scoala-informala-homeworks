@@ -20,13 +20,13 @@ public class Stock implements Cloneable{
         return vehicle;
     }
 
-    private void setVehicle(Vehicle toSet){
+    private void setVehicle(Vehicle vehicle){
 
-        if (toSet == null){
+        if (vehicle == null){
             throw new IllegalArgumentException("Not a valid vehicle");
         }
 
-        this.vehicle = toSet.clone();
+        this.vehicle = vehicle.clone();
     }
 
     public void setPrice(float price){
@@ -56,7 +56,7 @@ public class Stock implements Cloneable{
 
     public void decreaseAmount(){
 
-        if (amount < 0)
+        if (amount <= 0)
             throw new IllegalStateException("Can't have a negative number of vehicles");
 
         amount--;

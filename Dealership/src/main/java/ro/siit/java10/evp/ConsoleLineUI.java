@@ -23,19 +23,19 @@ public class ConsoleLineUI {
         myVehicle1.setModel("3 series");
         myVehicle1.setProductionYear(1999);
         myVehicle1.setFastCharging(true);
-        myVehicle1.setEnergyConsumption_KWperKm(120);
+        myVehicle1.setEnergyConsumptionKWperKm(120);
         myVehicle1.setMotor(new Motor("Reanault", "14-xp", 200));
         myVehicle1.setBattery(new Battery("Tesla", "56.fd1", 4500));
 
         myVehicle2.setModel("1 series");
         myVehicle2.setProductionYear(2011);
         myVehicle2.setFastCharging(false);
-        myVehicle2.setEnergyConsumption_KWperKm(430);
+        myVehicle2.setEnergyConsumptionKWperKm(430);
 
         myVehicle4.setModel("7 series");
         myVehicle4.setProductionYear(2018);
         myVehicle4.setFastCharging(true);
-        myVehicle4.setEnergyConsumption_KWperKm(430);
+        myVehicle4.setEnergyConsumptionKWperKm(430);
 
         newD.addVehicle(myVehicle1, 1500);
         newD.addVehicle(myVehicle2, 15000);
@@ -49,7 +49,7 @@ public class ConsoleLineUI {
         myVehicle3.setModel("13 series");
         myVehicle3.setProductionYear(1239);
         myVehicle3.setFastCharging(true);
-        myVehicle3.setEnergyConsumption_KWperKm(120);
+        myVehicle3.setEnergyConsumptionKWperKm(120);
         myVehicle3.setMotor(new Motor("Reanault", "14-xp", 200));
         myVehicle3.setBattery(new Battery("Tesla", "56.fd1", 4500));
 
@@ -63,7 +63,7 @@ public class ConsoleLineUI {
 
     public void Do(){
 
-        if ((null != currentClient) && (currentClient.getFIRST_NAME().equals("Mod")))
+        if ((null != currentClient) && (currentClient.getFirstName().equals("Mod")))
             state = State.moderator;
         else
             state = State.user;
@@ -82,7 +82,7 @@ public class ConsoleLineUI {
 
         int currentOption;
 
-        printMainModScreen();
+        printModMainScreen();
 
         currentOption = consIO.readCondInt(0, 4);
 
@@ -212,7 +212,7 @@ public class ConsoleLineUI {
         return true;
     }
 
-    private void printMainModScreen(){
+    private void printModMainScreen(){
 
         consIO.printString("\n");
         consIO.printString("0 - print complete list of vehicles\n");
@@ -346,7 +346,7 @@ public class ConsoleLineUI {
 
         consIO.printString("0 - Print compleate list of vehicles in stock\n");
         consIO.printString("1 - Select dealership\n");
-        consIO.printString("2 - Login\n");
+        consIO.printString("2 - MyAccount\n");
     }
 
     private void printAllDealershipsStockVehicleList(){
@@ -446,7 +446,7 @@ public class ConsoleLineUI {
     private void tryLogin(){
 
         if(null != currentClient) {
-            consIO.printString("Already logged in as: " + currentClient.getFIRST_NAME() +
+            consIO.printString("logged in as: " + currentClient.getFirstName() +
                     "\n0 - logout \n1 - back\n");
 
             int option = consIO.readCondInt(0, 1);
@@ -459,7 +459,7 @@ public class ConsoleLineUI {
             }
         }
 
-        consIO.printString("0 - new account \n1 - tryLogin existing account \n2 - exit\n");
+        consIO.printString("0 - new account \n1 - login existing account \n2 - back\n");
 
         int option = consIO.readCondInt(0, 2);
 
@@ -477,6 +477,7 @@ public class ConsoleLineUI {
             String lastName = consIO.readString();
 
             if (null == (currentClient = dCentral.getClient(firstName, lastName))){
+                consIO.printString("No account by that name\n");
                 tryLogin();
             }
         }

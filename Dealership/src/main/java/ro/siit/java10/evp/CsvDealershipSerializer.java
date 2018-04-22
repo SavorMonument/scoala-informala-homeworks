@@ -100,7 +100,7 @@ public class CsvDealershipSerializer implements DealershipSerializer {
 
             vehicle.setFastCharging(Boolean.parseBoolean(tokens[1]));
             vehicle.setProductionYear(Integer.parseInt(tokens[2]));
-            vehicle.setEnergyConsumption_KWperKm(Integer.parseInt(tokens[3]));
+            vehicle.setEnergyConsumptionKWperKm(Integer.parseInt(tokens[3]));
 
             vehicle.setMotor(readMotor(reader));
             vehicle.setBattery(readBattery(reader));

@@ -1,6 +1,5 @@
 package ro.siit.java10.evp;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -70,7 +69,7 @@ public class ConsoleIO {
                     printString("Production Year: " + vehicle.getProductionYear() + "   ");
                     break;
                 case E_CONSUMPTION:
-                    printString("Energy Consumption(kw/km): " + vehicle.getEnergyConsumption_KWperKm() + "   ");
+                    printString("Energy Consumption(kw/km): " + vehicle.getEnergyConsumptionKWperKm() + "   ");
                     break;
                 case RANGE_PER_CHARGE:
                     printString("Range per full charge(km): " + vehicle.getRangePerCharge_Km() + "   ");
@@ -231,7 +230,7 @@ public class ConsoleIO {
         System.out.print("Vehicle energy consumption KW/Km: ");
         if (-1 == (intInput = readCondInt(1, 1000)))
             return null;
-        inConstruction.setEnergyConsumption_KWperKm(intInput);
+        inConstruction.setEnergyConsumptionKWperKm(intInput);
 
         System.out.print("Vehicle has fast charging(1 or 0): ");
         if (-1 == (intInput = readCondInt(0, 1)))

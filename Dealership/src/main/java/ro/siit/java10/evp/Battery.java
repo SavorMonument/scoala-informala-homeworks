@@ -7,7 +7,7 @@ public class Battery implements Cloneable {
 
     private String manufacturer = "No manufacturer";
     private String model = "No model";
-    private int capacity_KWh;
+    private int capacityKWh;
 
     public  Battery(){ }
 
@@ -16,15 +16,15 @@ public class Battery implements Cloneable {
         this.manufacturer = manufacturer;
         this.model = model;
 
-        setCapacity_KWh(capacity);
+        setCapacityKWh(capacity);
     }
 
-    private void setCapacity_KWh(int capacity_KWh) {
+    private void setCapacityKWh(int capacityKWh) {
 
-        if (capacity_KWh < 0)
-            throw new InvalidParameterException("Can't have negative capacity_KWh");
+        if (capacityKWh < 0)
+            throw new InvalidParameterException("Can't have negative capacityKWh");
 
-        this.capacity_KWh = capacity_KWh;
+        this.capacityKWh = capacityKWh;
     }
 
     public String getManufacturer() {
@@ -35,21 +35,21 @@ public class Battery implements Cloneable {
         return model;
     }
 
-    public int getCapacity_KWh() {
-        return capacity_KWh;
+    public int getCapacityKWh() {
+        return capacityKWh;
     }
 
     @Override
     public Battery clone(){
 
-        return new Battery(manufacturer, model, capacity_KWh);
+        return new Battery(manufacturer, model, capacityKWh);
     }
 
     @Override
     public String toString() {
         return  "manufacturer: " + manufacturer +
                 ", model: " + model +
-                ", capacity(KWh): " + capacity_KWh;
+                ", capacity(KWh): " + capacityKWh;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Battery implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Battery battery = (Battery) o;
-        return capacity_KWh == battery.capacity_KWh &&
+        return capacityKWh == battery.capacityKWh &&
                 Objects.equals(manufacturer, battery.manufacturer) &&
                 Objects.equals(model, battery.model);
     }
@@ -65,6 +65,6 @@ public class Battery implements Cloneable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(manufacturer, model, capacity_KWh);
+        return Objects.hash(manufacturer, model, capacityKWh);
     }
 }

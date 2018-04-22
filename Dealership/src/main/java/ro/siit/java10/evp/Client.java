@@ -1,15 +1,18 @@
 package ro.siit.java10.evp;
 
-public class Client {
+import java.io.Serializable;
+import java.util.Objects;
 
-    private final String FIRST_NAME;
-    private final String lAST_NAME;
+public class Client implements Serializable {
+
+    private final String firstName;
+    private final String lastName;
     private String telephone;
     private String address;
 
     public Client(String firstName, String lastName) {
-        this.lAST_NAME = lastName;
-        this.FIRST_NAME = firstName;
+        this.lastName = lastName;
+        this.firstName = firstName;
     }
 
     public void setTelephone(String telephone) {
@@ -20,12 +23,12 @@ public class Client {
         this.address = address;
     }
 
-    public String getlAST_NAME() {
-        return lAST_NAME;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getFIRST_NAME() {
-        return FIRST_NAME;
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getTelephone() {
@@ -34,5 +37,20 @@ public class Client {
 
     public String getAddress() {
         return address;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(firstName, client.firstName) &&
+                Objects.equals(lastName, client.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(firstName, lastName);
     }
 }

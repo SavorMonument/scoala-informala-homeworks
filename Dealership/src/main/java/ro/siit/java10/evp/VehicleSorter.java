@@ -98,9 +98,7 @@ public class VehicleSorter {
         return sortedRangePerChargeArray;
     }
 
-
-
-    private void quickSort(List list, int left, int right, Comparator comp){
+    private <T> void quickSort(List<T> list, int left, int right, Comparator<T> comp){
 
         if (left < right){
 
@@ -111,9 +109,9 @@ public class VehicleSorter {
         }
     }
 
-    private int getPivot(List list, int left, int right, Comparator comp){
+    private <T> int getPivot(List<T> list, int left, int right, Comparator<T> comp){
 
-        Object pivot = list.get(right);
+        T pivot = list.get(right);
 
         int i = left - 1;
 
@@ -129,9 +127,9 @@ public class VehicleSorter {
         return i + 1;
     }
 
-    private void swap(List list, int i, int j){
+    private <T> void swap(List<T> list, int i, int j){
 
-        Object temp = list.get(i);
+        T temp = list.get(i);
         list.set(i, list.get(j));
         list.set(j, temp);
     }

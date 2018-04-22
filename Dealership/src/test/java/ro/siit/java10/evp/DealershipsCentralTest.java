@@ -10,13 +10,13 @@ import static org.junit.Assert.*;
 
 public class DealershipsCentralTest {
 
-    DealershipsCentral Dcentral;
+    DealershipsCentral dCentral;
     ArrayList<Dealership> testDealerships = new ArrayList<>();
 
     @Before
     public void setUp(){
 
-        Dcentral = new DealershipsCentral();
+        dCentral = new DealershipsCentral();
 
         testDealerships.add(new Dealership("Dealerpass", "Second street"));
         testDealerships.add(new Dealership("SapDeals", "Mars street"));
@@ -26,40 +26,32 @@ public class DealershipsCentralTest {
     @After
     public void tearDown(){
 
-        Dcentral = null;
+        dCentral = null;
         testDealerships = null;
     }
 
     @Test
     public void addDealership(){
 
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
-        assert (Dcentral.getDealershipList().get(0).equals(testDealerships.get(0)));
+        assert (dCentral.getDealershipList().get(0).equals(testDealerships.get(0)));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void addDealership_NullPointer(){
 
         Dealership testDealer = null;
 
-        try {
-            Dcentral.addDealership(testDealer);
-        } catch (IllegalArgumentException e){}
-
-        assert (true);
+        dCentral.addDealership(testDealer);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void addDealership_SameNameLoc(){
 
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
-        try {
-            Dcentral.addDealership(testDealerships.get(0));
-        } catch (IllegalArgumentException e){}
-
-        assert (true);
+        dCentral.addDealership(testDealerships.get(0));
     }
 
     @Test
@@ -67,12 +59,12 @@ public class DealershipsCentralTest {
 
         ArrayList<Dealership> expected = new ArrayList<>();
 
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
         expected.add(testDealerships.get(0));
-        Dcentral.addDealership(testDealerships.get(1));
+        dCentral.addDealership(testDealerships.get(1));
         expected.add(testDealerships.get(1));
 
-        assertEquals(expected, Dcentral.getDealershipList());
+        assertEquals(expected, dCentral.getDealershipList());
     }
 
     @Test
@@ -80,7 +72,7 @@ public class DealershipsCentralTest {
 
         ArrayList<Dealership> expected = new ArrayList<>();
 
-        assertEquals(expected, Dcentral.getDealershipList());
+        assertEquals(expected, dCentral.getDealershipList());
     }
 
     @Test
@@ -88,25 +80,25 @@ public class DealershipsCentralTest {
 
         ArrayList<Dealership> expected = new ArrayList<>();
 
-        Dcentral.addDealership(testDealerships.get(0));
-        Dcentral.removeDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
+        dCentral.removeDealership(testDealerships.get(0));
 
-        assertEquals(expected, Dcentral.getDealershipList());
+        assertEquals(expected, dCentral.getDealershipList());
     }
 
     @Test
     public void getNumberOfDealerships_NoDealerships(){
 
-        assertEquals(0, Dcentral.getNumberOfDealerships());
+        assertEquals(0, dCentral.getNumberOfDealerships());
     }
 
     @Test
     public void getNumberOfDealerships(){
 
-        Dcentral.addDealership(testDealerships.get(0));
-        Dcentral.addDealership(testDealerships.get(1));
+        dCentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(1));
 
-        assertEquals(2, Dcentral.getNumberOfDealerships());
+        assertEquals(2, dCentral.getNumberOfDealerships());
     }
 
     @Test
@@ -116,8 +108,8 @@ public class DealershipsCentralTest {
         Dealership result;
 
         testDealerships.get(0).addVehicle(testVehicle, 100);
-        Dcentral.addDealership(testDealerships.get(0));
-        result = Dcentral.getDealership(testDealerships.get(0).nameLocClone());
+        dCentral.addDealership(testDealerships.get(0));
+        result = dCentral.getDealership(testDealerships.get(0).nameLocClone());
 
         assertEquals(1, result.getVehicleAvailability(testVehicle.hashCode()));
     }
@@ -125,15 +117,15 @@ public class DealershipsCentralTest {
     @Test
     public void getDealership_InvalidDealership(){
 
-        assertEquals(null, Dcentral.getDealership(testDealerships.get(0)));
+        assertEquals(null, dCentral.getDealership(testDealerships.get(0)));
     }
 
     @Test
     public void getDealetrshipVehicleSorter(){
 
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
-        assert( null != Dcentral.getDealershipVehicleSorter(testDealerships.get(0).nameLocClone()));
+        assert( null != dCentral.retrieveDealershipVehicleSorter(testDealerships.get(0).nameLocClone()));
     }
 
     @Test
@@ -141,25 +133,21 @@ public class DealershipsCentralTest {
 
         Client testClient = new Client("Jess", "Screw");
 
-        Dcentral.addClient(testClient);
+        dCentral.addClient(testClient);
 
-        assertEquals(testClient, Dcentral.getClient(testClient.getFIRST_NAME(), testClient.getlAST_NAME()));
+        assertEquals(testClient, dCentral.getClient(testClient.getFirstName(), testClient.getLastName()));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void addClient_Null(){
 
-        try{
-            Dcentral.addClient(null);
-        } catch (IllegalArgumentException e){ }
-
-        assert(true);
+        dCentral.addClient(null);
     }
 
     @Test
     public void getClient_Invalid(){
 
-        assertEquals(null, Dcentral.getClient("", ""));
+        assertEquals(null, dCentral.getClient("", ""));
     }
 
     @Test
@@ -168,7 +156,7 @@ public class DealershipsCentralTest {
         Vehicle testVehicle = new Vehicle();
         testVehicle.setProductionYear(2018);
 
-        assertEquals(true, Dcentral.isGreenBonusAvailable(testVehicle));
+        assertEquals(true, dCentral.isGreenBonusAvailable(testVehicle));
     }
 
     @Test
@@ -177,7 +165,7 @@ public class DealershipsCentralTest {
         Vehicle testVehicle = new Vehicle();
         testVehicle.setProductionYear(2012);
 
-        assertEquals(false, Dcentral.isGreenBonusAvailable(testVehicle));
+        assertEquals(false, dCentral.isGreenBonusAvailable(testVehicle));
     }
 
     @Test
@@ -187,27 +175,24 @@ public class DealershipsCentralTest {
         Vehicle testVehicle = new Vehicle("Sap");
 
         testDealerships.get(0).addVehicle(testVehicle, 1.0f);
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
         assertEquals(true,
-                Dcentral.makeSell(testDealerships.get(0), testVehicle, testClient));
+                dCentral.makeSell(testDealerships.get(0), testVehicle, testClient));
 
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void makeSell_NullDealership(){
 
         Client testClient = new Client("Jess", "Screw");
         Vehicle testVehicle = new Vehicle("Sap");
 
         testDealerships.get(0).addVehicle(testVehicle, 1.0f);
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
-        try {
-            Dcentral.makeSell(null, testVehicle, testClient);
-        } catch (IllegalArgumentException e){ }
 
-        assert (true);
+        dCentral.makeSell(null, testVehicle, testClient);
     }
 
     @Test
@@ -216,10 +201,10 @@ public class DealershipsCentralTest {
         Client testClient = new Client("Jess", "Screw");
         Vehicle testVehicle = new Vehicle("Sap");
 
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
         assertEquals(false,
-                Dcentral.makeSell(testDealerships.get(0), testVehicle, testClient));
+                dCentral.makeSell(testDealerships.get(0), testVehicle, testClient));
 
     }
 
@@ -231,10 +216,10 @@ public class DealershipsCentralTest {
         testVehicle.setProductionYear(2018);
 
         testDealerships.get(0).addVehicle(testVehicle, 1.0f);
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
         assertEquals(true,
-                Dcentral.makeGreenBonusSell(testDealerships.get(0), testVehicle, testClient));
+                dCentral.makeGreenBonusSell(testDealerships.get(0), testVehicle, testClient));
 
     }
 
@@ -246,10 +231,10 @@ public class DealershipsCentralTest {
         testVehicle.setProductionYear(2015);
 
         testDealerships.get(0).addVehicle(testVehicle, 1.0f);
-        Dcentral.addDealership(testDealerships.get(0));
+        dCentral.addDealership(testDealerships.get(0));
 
         assertEquals(false,
-                Dcentral.makeGreenBonusSell(testDealerships.get(0), testVehicle, testClient));
+                dCentral.makeGreenBonusSell(testDealerships.get(0), testVehicle, testClient));
 
     }
 }

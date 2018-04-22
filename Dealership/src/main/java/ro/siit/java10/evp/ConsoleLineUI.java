@@ -1,6 +1,7 @@
 package ro.siit.java10.evp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ConsoleLineUI {
 
@@ -224,14 +225,14 @@ public class ConsoleLineUI {
 
     private void printAllDealershipsVehicleList(){
 
-        ArrayList<Dealership> dealershipNameList = (ArrayList<Dealership>) dCentral.getDealershipList();
+        List<Dealership> dealershipNameList = dCentral.getDealershipList();
 
         for (Dealership instance : dealershipNameList){
 
             consIO.printString(instance.getName() + "\n");
 
             consIO.printVehicleList(instance,
-                    dCentral.getDealership(instance).getVehicleSorter().getAllVehicleList());
+                    instance.getVehicleSorter().getAllVehicleList());
         }
     }
 
@@ -242,17 +243,16 @@ public class ConsoleLineUI {
         if (null == toAdd)
             return;
 
-        ArrayList<Dealership> dealershipNames = (ArrayList<Dealership>) dCentral.getDealershipList();
+        List<Dealership> dealershipNames = dCentral.getDealershipList();
 
         for (Dealership instance : dealershipNames){
-            if (instance.equals(toAdd)){
+            if (toAdd.equals(instance)){
                 consIO.printString("There already is a dealership there");
                 return;
             }
         }
 
         dCentral.addDealership(toAdd);
-
     }
 
     private void removeDealership() {
@@ -273,7 +273,7 @@ public class ConsoleLineUI {
             option = consIO.readCondInt(0, dCentral.getNumberOfDealerships() - 1);
 
             if (option != -1){
-                return (dCentral.getDealership(dCentral.getDealershipList().get(option)));
+                return (dCentral.getDealershipList().get(option));
             }
         }
 
@@ -351,14 +351,14 @@ public class ConsoleLineUI {
 
     private void printAllDealershipsStockVehicleList(){
 
-        ArrayList<Dealership> dealershipNameList = (ArrayList<Dealership>) dCentral.getDealershipList();
+        List<Dealership> dealershipNameList = dCentral.getDealershipList();
 
         for (Dealership instance : dealershipNameList){
 
             consIO.printString(instance.getName() + "\n");
 
             consIO.printVehicleList(instance,
-                    dCentral.getDealership(instance).getVehicleSorter().getStockVehicleList());
+                    instance.getVehicleSorter().getStockVehicleList());
         }
 
     }

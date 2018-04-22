@@ -48,59 +48,25 @@ public class DealershipsCentral{
         availableDealerships.add(newDealership);
     }
 
-    public void removeDealership(Dealership toRemove){
+    public void removeDealership(Dealership Dealership){
 
         for (int i = 0; i < availableDealerships.size(); i++){
 
-            if (availableDealerships.get(i).equals(toRemove)) {
+            if (availableDealerships.get(i).equals(Dealership)) {
                 availableDealerships.remove(i);
                 break;
             }
         }
     }
 
-    /**
-     * @return  Dealerships list with only the names and locations
-     */
     public List<Dealership> getDealershipList(){
 
-        List<Dealership> dealershipsNameList = new ArrayList<>();
-
-        for (Dealership instance : availableDealerships){
-            dealershipsNameList.add(instance.nameLocClone());
-        }
-
-        return dealershipsNameList;
+        return availableDealerships;
     }
 
     public int getNumberOfDealerships(){
 
         return availableDealerships.size();
-    }
-
-    public Dealership getDealership(Dealership dealership){
-
-        for (Dealership instance : availableDealerships){
-            if (instance.equals(dealership)){
-                return instance;
-            }
-        }
-        return null;
-    }
-
-    public VehicleSorter retrieveDealershipVehicleSorter(Dealership dealership){
-
-        if (null == dealership)
-            throw new IllegalArgumentException("Can't have null dealership");
-
-        for (Dealership instance : availableDealerships){
-
-            if (instance.equals(dealership)){
-                return instance.getVehicleSorter();
-            }
-        }
-
-        throw new IllegalArgumentException("Could not find a dealership by that name");
     }
 
     public void addClient(Client toAdd) {
@@ -144,16 +110,14 @@ public class DealershipsCentral{
 
     public boolean makeSell(Dealership dealership, Vehicle toSell, Client buyer){
 
-        Dealership actualDealership = getDealership(dealership);
-
-        if ((null == actualDealership) || (toSell == null))
+        if ((null == dealership) || (toSell == null))
             throw new IllegalArgumentException("No null pointer allowed");
 
-        if(actualDealership.getVehicleAvailability(toSell.hashCode()) > 0){
+        if(dealership.getVehicleAvailability(toSell.hashCode()) > 0){
             Invoice invoice = new Invoice(buyer, toSell);
 
-            actualDealership.decreaseStock(toSell.hashCode());
-            actualDealership.addInvoice(invoice);
+            dealership.decreaseStock(toSell.hashCode());
+            dealership.addInvoice(invoice);
             GreenBonus.addCompletedInvoice(invoice);
 
             return (true);
@@ -161,6 +125,5 @@ public class DealershipsCentral{
 
         return (false);
     }
-
 
 }

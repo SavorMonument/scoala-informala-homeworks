@@ -58,12 +58,12 @@ public class Dealership {
         }
     }
 
-    public void setStockNumber(int hash, int stockAmmount){
+    public void setStockNumber(int hash, int stockAmount){
 
         for (Stock instance : stock){
             if (instance.getVehicle().hashCode() == hash){
 
-                instance.setAmount(stockAmmount);
+                instance.setAmount(stockAmount);
                 return;
             }
         }
@@ -110,11 +110,6 @@ public class Dealership {
             throw new IllegalArgumentException("No null invoices");
 
         invoices.add(toAdd);
-    }
-
-    public Dealership nameLocClone(){
-
-        return new Dealership(this.getName(), this.getLocation());
     }
 
     @Override

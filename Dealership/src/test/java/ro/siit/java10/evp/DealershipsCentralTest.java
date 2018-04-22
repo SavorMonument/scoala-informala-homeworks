@@ -102,33 +102,6 @@ public class DealershipsCentralTest {
     }
 
     @Test
-    public void getDealership(){
-
-        Vehicle testVehicle = new Vehicle("Sap");
-        Dealership result;
-
-        testDealerships.get(0).addVehicle(testVehicle, 100);
-        dCentral.addDealership(testDealerships.get(0));
-        result = dCentral.getDealership(testDealerships.get(0).nameLocClone());
-
-        assertEquals(1, result.getVehicleAvailability(testVehicle.hashCode()));
-    }
-
-    @Test
-    public void getDealership_InvalidDealership(){
-
-        assertEquals(null, dCentral.getDealership(testDealerships.get(0)));
-    }
-
-    @Test
-    public void getDealetrshipVehicleSorter(){
-
-        dCentral.addDealership(testDealerships.get(0));
-
-        assert( null != dCentral.retrieveDealershipVehicleSorter(testDealerships.get(0).nameLocClone()));
-    }
-
-    @Test
     public void addClientAndGetClient(){
 
         Client testClient = new Client("Jess", "Screw");

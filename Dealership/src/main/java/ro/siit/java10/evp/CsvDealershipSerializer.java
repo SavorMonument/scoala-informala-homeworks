@@ -13,7 +13,6 @@ public class CsvDealershipSerializer implements DealershipSerializer {
 
     File IOFile;
 
-
     public CsvDealershipSerializer(File IOFile) {
         this.IOFile = IOFile;
     }

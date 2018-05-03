@@ -1,6 +1,5 @@
 package ro.siit.java10.evp;
 
-import com.sun.javafx.fxml.builder.JavaFXFontBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

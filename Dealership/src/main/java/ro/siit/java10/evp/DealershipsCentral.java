@@ -92,9 +92,8 @@ public class DealershipsCentral{
     public boolean isGreenBonusAvailable(Vehicle vehicle){
 
         if (vehicle.getProductionYear() == Calendar.getInstance().get(Calendar.YEAR)){
-            if (GreenBonus.hasEnoughBudget()){
-                return true;
-            }
+            
+            return GreenBonus.hasEnoughBudget();
         }
         return false;
     }
@@ -111,11 +110,12 @@ public class DealershipsCentral{
     public boolean makeSell(Dealership dealership, Vehicle toSell, Client buyer){
 
         if ((null == dealership) || (toSell == null))
-            throw new IllegalArgumentException("No null pointer allowed");
+            throw new IllegalArgumentException("Null pointer not allowed");
 
         if(dealership.getVehicleAvailability(toSell.hashCode()) > 0){
             Invoice invoice = new Invoice(buyer, toSell);
 
+            GreenBonus.subtractMoneyFromBudget();
             dealership.decreaseStock(toSell.hashCode());
             dealership.addInvoice(invoice);
             GreenBonus.addCompletedInvoice(invoice);

@@ -23,12 +23,6 @@ public class ConsoleIO {
         Stdin = new Scanner(System.in);
     }
 
-    public Client makeAccount(){
-        //Writer
-
-        return null;
-    }
-
     public void printList(List toPrintList){
 
         for (int i = 0; i < toPrintList.size(); i++){

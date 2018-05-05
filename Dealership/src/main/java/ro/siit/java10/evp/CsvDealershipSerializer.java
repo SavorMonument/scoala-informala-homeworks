@@ -94,17 +94,19 @@ public class CsvDealershipSerializer implements DealershipSerializer {
         while (!line.equals("}")){
             String[] tokens = line.split(",");
 
-            Vehicle vehicle = new Vehicle(tokens[0]);
+            Vehicle.VehicleBuilder vehicleB = new Vehicle.VehicleBuilder();
 
-            vehicle.setFastCharging(Boolean.parseBoolean(tokens[1]));
-            vehicle.setProductionYear(Integer.parseInt(tokens[2]));
-            vehicle.setEnergyConsumptionKWperKm(Integer.parseInt(tokens[3]));
+            vehicleB.model(tokens[0])
+                    .fastCharging(Boolean.parseBoolean(tokens[1]))
+                    .productionYear(Integer.parseInt(tokens[2]))
+                    .energyConsumptionKWperKm(Integer.parseInt(tokens[3]))
+                    .motor(readMotor(reader))
+                    .battery(readBattery(reader));
 
-            vehicle.setMotor(readMotor(reader));
-            vehicle.setBattery(readBattery(reader));
+            VehicleData vehicleD = new VehicleData(vehicleB.build(), Float.parseFloat(tokens[4]),
+                    Integer.parseInt(tokens[5]));
 
-            deal.addVehicle(vehicle, Float.parseFloat(tokens[4]));
-            deal.setStockNumber(vehicle.hashCode(), Integer.parseInt(tokens[5]));
+            deal.addVehicle(vehicleD);
 
             line = reader.readLine();
         }

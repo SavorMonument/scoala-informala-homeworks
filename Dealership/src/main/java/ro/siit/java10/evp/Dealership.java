@@ -23,17 +23,23 @@ public class Dealership {
         return location;
     }
 
-    public void addVehicle(Vehicle vehicle, float price){
+    public void addVehicle(VehicleData vehicleD){
+        assert (null != vehicleD);
+
+        Vehicle vehicle = vehicleD.getVehicle();
 
         for (Stock instance : stock){
-            if (instance.getVehicle().equals(vehicle) && (instance.getPrice() == price)){
+            if (instance.getVehicle().equals(vehicle) && (instance.getPrice() == vehicleD.price)){
 
-                instance.setAmount(instance.getAmount() + 1);
+                instance.setAmount(instance.getAmount() + vehicleD.stock);
                 return;
             }
         }
 
-        stock.add(new Stock(vehicle, price));
+        Stock moreStock = new Stock(vehicle, vehicleD.price);
+        moreStock.setAmount(vehicleD.stock);
+
+        stock.add(moreStock);
     }
 
     public void decreaseStock(int hash){

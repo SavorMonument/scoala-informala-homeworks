@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import ro.siit.java10.evp.VehicleSorter.FilterOptions;
 import ro.siit.java10.evp.VehicleSorter.SortingOptions;
+import ro.siit.java10.evp.Vehicle.VehicleBuilder;
 import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
@@ -20,9 +21,9 @@ public class VehicleSorterTest {
 
         vehicleDs = new ArrayList<>();
 
-        vehicleDs.add(new VehicleData(new Vehicle("Zoro"), 15.0f, 1));
-        vehicleDs.add(new VehicleData(new Vehicle("Vara"), 16.0f, 1));
-        vehicleDs.add(new VehicleData(new Vehicle("Miri"), 13.0f, 1));
+        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Zoro").build(), 15.0f, 1));
+        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Vara").build(), 16.0f, 1));
+        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Miri").build(), 13.0f, 1));
 
         vehicleSorter = new VehicleSorter(vehicleDs);
     }
@@ -91,7 +92,7 @@ public class VehicleSorterTest {
 
         List<VehicleData> result;
         List<VehicleData> expected = new ArrayList<>(vehicleDs);
-        vehicleDs.add(new VehicleData(new Vehicle("Sairi"), 13.0f, 0));
+        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Sairi").build(), 13.0f, 0));
 
         result = vehicleSorter.getVehicleList(SortingOptions.NORMAL, FilterOptions.STOCK);
 

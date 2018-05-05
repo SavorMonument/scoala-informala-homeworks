@@ -209,38 +209,38 @@ public class ConsoleIO {
         return (new Dealership(name, location));
     }
 
-    public Vehicle readVehicle(){
-
-        String strInput;
-        int intInput;
-
-        Vehicle inConstruction = new Vehicle();
-
-        System.out.print("Vehicle name: ");
-        if (null == (strInput = readString()))
-            return null;
-        inConstruction.setModel(strInput);
-
-        System.out.print("Vehicle production year: ");
-        if (-1 == (intInput = readCondInt(1900, 2018)))
-            return null;
-        inConstruction.setProductionYear(intInput);
-
-        System.out.print("Vehicle energy consumption KW/Km: ");
-        if (-1 == (intInput = readCondInt(1, 1000)))
-            return null;
-        inConstruction.setEnergyConsumptionKWperKm(intInput);
-
-        System.out.print("Vehicle has fast charging(1 or 0): ");
-        if (-1 == (intInput = readCondInt(0, 1)))
-            return null;
-        if (intInput == 1){
-            inConstruction.setFastCharging(true);
-        } else
-            inConstruction.setFastCharging(false);
-
-        return inConstruction;
-    }
+//    public Vehicle readVehicle(){
+//
+//        String strInput;
+//        int intInput;
+//
+//        Vehicle inConstruction = new Vehicle();
+//
+//        System.out.print("Vehicle name: ");
+//        if (null == (strInput = readString()))
+//            return null;
+//        inConstruction.setModel(strInput);
+//
+//        System.out.print("Vehicle production year: ");
+//        if (-1 == (intInput = readCondInt(1900, 2018)))
+//            return null;
+//        inConstruction.setProductionYear(intInput);
+//
+//        System.out.print("Vehicle energy consumption KW/Km: ");
+//        if (-1 == (intInput = readCondInt(1, 1000)))
+//            return null;
+//        inConstruction.setEnergyConsumptionKWperKm(intInput);
+//
+//        System.out.print("Vehicle has fast charging(1 or 0): ");
+//        if (-1 == (intInput = readCondInt(0, 1)))
+//            return null;
+//        if (intInput == 1){
+//            inConstruction.setFastCharging(true);
+//        } else
+//            inConstruction.setFastCharging(false);
+//
+//        return inConstruction;
+//    }
 
     public Client readClient(){
 

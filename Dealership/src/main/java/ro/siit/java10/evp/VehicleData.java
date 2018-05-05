@@ -30,6 +30,20 @@ public class VehicleData {
         this.stock = stock;
     }
 
+    public Vehicle getVehicle(){
+
+        Vehicle.VehicleBuilder vb = new Vehicle.VehicleBuilder();
+
+        vb.model(model)
+            .productionYear(productionYear)
+            .energyConsumptionKWperKm(energyConsumptionKWperKm)
+            .fastCharging(false)
+            .motor(motor)
+            .battery(battery);
+
+        return vb.build();
+    }
+
     public enum Options{
         YEAR,
         E_CONSUMPTION,

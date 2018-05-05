@@ -2,7 +2,7 @@ package ro.siit.java10.evp.Console.Menues;
 
 import ro.siit.java10.evp.Console.ConsoleIO.Options;
 import ro.siit.java10.evp.Dealership;
-import ro.siit.java10.evp.Dealership.VehicleData;
+import ro.siit.java10.evp.VehicleData;
 
 public class IndividualVehicleMenu extends Menu {
 

@@ -65,7 +65,7 @@ public abstract class Menu {
 
             consIO.printString(instance.getName() + "\n");
 
-            consIO.printVehicleList(instance.getVehicleSorter().getAllVehicleList());
+            consIO.printVehicleList(instance.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL));
         }
     }
     protected void printAllDealershipsStockVehicleList(){
@@ -76,7 +76,8 @@ public abstract class Menu {
 
             consIO.printString(instance.getName() + "\n");
 
-            consIO.printVehicleList(instance.getVehicleSorter().getStockVehicleList());
+            consIO.printVehicleList(instance.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL,
+                    VehicleSorter.FilterOptions.STOCK));
         }
 
     }

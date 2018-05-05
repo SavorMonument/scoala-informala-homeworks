@@ -3,7 +3,7 @@ package ro.siit.java10.evp.Console;
 import ro.siit.java10.evp.Client;
 import ro.siit.java10.evp.Dealership;
 import ro.siit.java10.evp.Vehicle;
-import ro.siit.java10.evp.Dealership.VehicleData;
+import ro.siit.java10.evp.VehicleData;
 
 import java.util.List;
 import java.util.Scanner;

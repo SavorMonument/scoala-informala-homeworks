@@ -1,8 +1,6 @@
 package ro.siit.java10.evp.Console;
 
-import ro.siit.java10.evp.Console.ConsoleIO;
-import ro.siit.java10.evp.Dealership;
-import ro.siit.java10.evp.Vehicle;
+import ro.siit.java10.evp.VehicleData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +46,14 @@ public class Selector {
         return strList;
     }
 
-    public static List<String> vehicleDataListToStringList(List<Dealership.VehicleData> list,
-                                                           Dealership.Options... options){
+    public static List<String> vehicleDataListToStringList(List<VehicleData> list,
+                                                           VehicleData.Options... options){
 
         List<String> strList = new ArrayList<>();
 
-        for (Dealership.VehicleData instance: list){
+        for (VehicleData instance: list){
 
-            strList.add(instance.toString(options));
+            strList.add(instance.stringRepresentation(options));
         }
 
         return strList;

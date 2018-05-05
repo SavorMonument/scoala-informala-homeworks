@@ -5,8 +5,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import ro.siit.java10.evp.Dealership.VehicleData;
-
 public class CsvDealershipSerializer implements DealershipSerializer {
 
     private static final String CSV_VEHICLE_PATTERN = "{0},{1},{2,number,0},{3,number,0},{4,number,0},{5,number,0}\n";
@@ -36,7 +34,7 @@ public class CsvDealershipSerializer implements DealershipSerializer {
         saveDealershipData(new DealershipData(deal), writer);
 
         writer.write("{\n");
-        List<VehicleData> dealershipVehicles = deal.getVehicleSorter().getAllVehicleList();
+        List<VehicleData> dealershipVehicles = deal.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL);
         for (VehicleData instance : dealershipVehicles) {
             saveVehicleData(instance, writer);
         }

@@ -7,7 +7,6 @@ public class Vehicle implements Cloneable{
     private String model = "No Model";
     private int productionYear;
     private int energyConsumptionKWperKm;
-    private int RangePerCharge_Km;
     private boolean fastCharging = false;
     private Motor motor = new Motor();
     private Battery battery = new Battery();
@@ -31,7 +30,6 @@ public class Vehicle implements Cloneable{
         vehicleClone.setEnergyConsumptionKWperKm(energyConsumptionKWperKm);
         vehicleClone.setMotor(new Motor(motor));
         vehicleClone.setBattery(new Battery(battery));
-        vehicleClone.calculateRangePerCharge();
 
         return (vehicleClone);
 
@@ -51,10 +49,6 @@ public class Vehicle implements Cloneable{
 
     public int getEnergyConsumptionKWperKm() {
         return energyConsumptionKWperKm;
-    }
-
-    public int getRangePerCharge_Km() {
-        return RangePerCharge_Km;
     }
 
     public Motor getMotor() {
@@ -79,8 +73,6 @@ public class Vehicle implements Cloneable{
             throw new IllegalArgumentException("Can't have negative energy consumption");
 
         this.energyConsumptionKWperKm = energyConsumptionKWperKm;
-
-        calculateRangePerCharge();
     }
 
     public void setProductionYear(int productionYear) {
@@ -105,14 +97,14 @@ public class Vehicle implements Cloneable{
             throw new IllegalArgumentException("Invalid battery");
 
         battery = newBattery;
-
-        calculateRangePerCharge();
     }
 
-    private void calculateRangePerCharge(){
+    public int getRangePerChargeInKm(){
 
         if ((battery.getCapacityKWh() > 0) && (energyConsumptionKWperKm > 0))
-            RangePerCharge_Km = battery.getCapacityKWh() / energyConsumptionKWperKm;
+            return battery.getCapacityKWh() / energyConsumptionKWperKm;
+
+        return 0;
     }
 
     @Override
@@ -132,7 +124,6 @@ public class Vehicle implements Cloneable{
         Vehicle vehicle = (Vehicle) o;
         return  productionYear == vehicle.productionYear &&
                 energyConsumptionKWperKm == vehicle.energyConsumptionKWperKm &&
-                RangePerCharge_Km == vehicle.RangePerCharge_Km &&
                 fastCharging == vehicle.fastCharging &&
                 Objects.equals(model, vehicle.model) &&
                 Objects.equals(motor, vehicle.motor) &&
@@ -142,6 +133,7 @@ public class Vehicle implements Cloneable{
     @Override
     public int hashCode() {
 
-        return Objects.hash(model, productionYear, energyConsumptionKWperKm, RangePerCharge_Km, fastCharging, motor, battery);
+        return Objects.hash(model, productionYear, energyConsumptionKWperKm,
+                fastCharging, motor, battery);
     }
 }

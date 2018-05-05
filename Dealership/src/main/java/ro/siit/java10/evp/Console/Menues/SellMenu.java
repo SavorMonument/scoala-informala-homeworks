@@ -2,7 +2,7 @@ package ro.siit.java10.evp.Console.Menues;
 
 import ro.siit.java10.evp.Console.Selector;
 import ro.siit.java10.evp.Dealership;
-import ro.siit.java10.evp.Dealership.VehicleData;
+import ro.siit.java10.evp.VehicleData;
 
 import java.util.ArrayList;
 import java.util.List;

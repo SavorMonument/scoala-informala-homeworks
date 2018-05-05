@@ -2,6 +2,7 @@ package ro.siit.java10.evp.Console.Menues;
 
 import ro.siit.java10.evp.Console.Selector;
 import ro.siit.java10.evp.Dealership;
+import ro.siit.java10.evp.VehicleSorter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class PerDealershipClientMenu extends Menu{
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
 
-        if (this.deals.getVehicleSorter().getStockVehicleList().size() == 0){
+        if (this.deals.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL).size() == 0){
 
             consIO.printString("No vehicles in stock\n");
             consIO.getKeyboardInput();

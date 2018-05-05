@@ -60,7 +60,7 @@ public class PerDealershipModMenu extends Menu {
 
     private void printVehiclesPriceStockList(Dealership dealership) {
 
-        List<Dealership.VehicleData> vehicleList = dealership.getVehicleSorter().getAllVehicleList();
+        List<VehicleData> vehicleList = dealership.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL);
 
         consIO.printVehicleList(vehicleList, Options.YEAR, Options.PRICE, Options.STOCK);
     }

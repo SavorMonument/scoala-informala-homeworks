@@ -1,9 +1,11 @@
 package ro.siit.java10.evp.Console.Menues;
 
-import ro.siit.java10.evp.Dealership.Options;
 import ro.siit.java10.evp.Console.Selector;
 import ro.siit.java10.evp.Dealership;
-import ro.siit.java10.evp.Dealership.VehicleData;
+import ro.siit.java10.evp.VehicleData;
+import ro.siit.java10.evp.VehicleSorter;
+import ro.siit.java10.evp.VehicleSorter.SortingOptions;
+import ro.siit.java10.evp.VehicleSorter.FilterOptions;
 
 import java.util.List;
 
@@ -84,9 +86,11 @@ public abstract class PickVehicleMenu extends Menu {
         @Override
         public MenuTypes resolveMenuAndGetNextType() {
 
-            List<VehicleData> vehicleList = deals.getVehicleSorter().getStockVehicleList();
+            VehicleSorter vs = deals.getVehicleSorter();
+            List<VehicleData> vehicleList = vs.getVehicleList(SortingOptions.NORMAL, FilterOptions.STOCK);
+
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
-                    Options.YEAR);
+                    VehicleData.Options.YEAR);
 
             return resolveOption(vehicleList, vehicleStr);
         }
@@ -95,15 +99,19 @@ public abstract class PickVehicleMenu extends Menu {
     public static class PickVehicleFastChargingList extends PickVehicleMenu {
 
         public PickVehicleFastChargingList(Dealership deals, MenuTypes callingMenu) {
+
             super(deals, callingMenu);
         }
 
         @Override
         public MenuTypes resolveMenuAndGetNextType() {
 
-            List<VehicleData> vehicleList = deals.getVehicleSorter().getFastChargingList();
+            VehicleSorter vs = deals.getVehicleSorter();
+            List<VehicleData> vehicleList = vs.getVehicleList(SortingOptions.NORMAL, FilterOptions.FAST_CHARGING,
+                    FilterOptions.STOCK);
+
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
-                    Options.YEAR, Options.FAST_CHARGING);
+                    VehicleData.Options.YEAR, VehicleData.Options.FAST_CHARGING);
 
             return resolveOption(vehicleList, vehicleStr);
         }
@@ -112,15 +120,18 @@ public abstract class PickVehicleMenu extends Menu {
     public static class PickVehicleHorsepowerList extends PickVehicleMenu {
 
         public PickVehicleHorsepowerList(Dealership deals, MenuTypes callingMenu) {
+
             super(deals, callingMenu);
         }
 
         @Override
         public MenuTypes resolveMenuAndGetNextType() {
 
-            List<Dealership.VehicleData> vehicleList = deals.getVehicleSorter().getSortedHorsepowerList();
+            VehicleSorter vs = deals.getVehicleSorter();
+            List<VehicleData> vehicleList = vs.getVehicleList(SortingOptions.HORSEPOWER, FilterOptions.STOCK);
+
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
-                    Options.YEAR, Options.MOTOR);
+                    VehicleData.Options.YEAR, VehicleData.Options.MOTOR);
 
             return resolveOption(vehicleList, vehicleStr);
         }
@@ -135,9 +146,11 @@ public abstract class PickVehicleMenu extends Menu {
         @Override
         public MenuTypes resolveMenuAndGetNextType() {
 
-            List<Dealership.VehicleData> vehicleList = deals.getVehicleSorter().getSortedPriceList();
+            VehicleSorter vs = deals.getVehicleSorter();
+            List<VehicleData> vehicleList = vs.getVehicleList(SortingOptions.PRICE, FilterOptions.STOCK);
+
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
-                    Options.YEAR, Options.PRICE);
+                    VehicleData.Options.YEAR, VehicleData.Options.PRICE);
 
             return resolveOption(vehicleList, vehicleStr);
         }
@@ -152,9 +165,11 @@ public abstract class PickVehicleMenu extends Menu {
         @Override
         public MenuTypes resolveMenuAndGetNextType() {
 
-            List<Dealership.VehicleData> vehicleList = deals.getVehicleSorter().getSortedRangePerChargeList();
+            VehicleSorter vs = deals.getVehicleSorter();
+            List<VehicleData> vehicleList = vs.getVehicleList(SortingOptions.RANGE, FilterOptions.STOCK);
+
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
-                    Options.YEAR, Options.RANGE_PER_CHARGE);
+                    VehicleData.Options.YEAR, VehicleData.Options.RANGE_PER_CHARGE);
 
             return resolveOption(vehicleList, vehicleStr);
         }

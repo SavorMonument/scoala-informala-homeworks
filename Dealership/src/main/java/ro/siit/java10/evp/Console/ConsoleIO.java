@@ -1,4 +1,9 @@
-package ro.siit.java10.evp;
+package ro.siit.java10.evp.Console;
+
+import ro.siit.java10.evp.Client;
+import ro.siit.java10.evp.Dealership;
+import ro.siit.java10.evp.Vehicle;
+import ro.siit.java10.evp.Dealership.VehicleData;
 
 import java.util.List;
 import java.util.Scanner;
@@ -44,47 +49,47 @@ public class ConsoleIO {
         System.out.print(toPrintString);
     }
 
-    public void printVehicleList(Dealership deals, List<Vehicle> vehicles, Options... options){
+    public void printVehicleList(List<VehicleData> vehicleDatas, Options... options){
 
-        for (Vehicle currVehicle : vehicles){
+        for (VehicleData currVehicle : vehicleDatas){
 
-            printVehicle(deals, currVehicle, options);
+            printVehicle(currVehicle, options);
         }
     }
 
-    public void printVehicle(Dealership deals, Vehicle vehicle, Options... options){
+    public void printVehicle(VehicleData vehicleDat, Options... options){
 
-        printString("Model: " + vehicle.getModel() + "   ");
+        printString("Model: " + vehicleDat.model + "   ");
 
         for (Options opt : options) {
 
             switch (opt) {
                 case YEAR:
-                    printString("Production Year: " + vehicle.getProductionYear() + "   ");
+                    printString("Production Year: " + vehicleDat.productionYear + "   ");
                     break;
                 case E_CONSUMPTION:
-                    printString("Energy Consumption(kw/km): " + vehicle.getEnergyConsumptionKWperKm() + "   ");
+                    printString("Energy Consumption(kw/km): " + vehicleDat.energyConsumptionKWperKm + "   ");
                     break;
                 case RANGE_PER_CHARGE:
-                    printString("Range per full charge(km): " + vehicle.getRangePerCharge_Km() + "   ");
+                    printString("Range per full charge(km): " + vehicleDat.rangePerCharge_Km + "   ");
                     break;
                 case FAST_CHARGING:
-                    if (vehicle.hasFastCharging())
+                    if (vehicleDat.fastCharging)
                         printString("Has fast charging   ");
                     else
                         printString("It does not have fast charging   ");
                     break;
                 case MOTOR:
-                    printString("\nMotor: " + vehicle.getMotor().toString() + "   \n");
+                    printString("\nMotor: " + vehicleDat.motor.toString() + "   \n");
                     break;
                 case BATTERY:
-                    printString("\nBattery: " + vehicle.getBattery().toString() + "   \n");
+                    printString("\nBattery: " + vehicleDat.battery.toString() + "   \n");
                     break;
                 case PRICE:
-                    printString("\nPrice: " + deals.getVehiclePrice(vehicle.hashCode()) + "\n");
+                    printString("\nPrice: " + vehicleDat.price + "\n");
                     break;
                 case STOCK:
-                    printString("\nAvailable: " + deals.getVehicleAvailability(vehicle.hashCode()) + "\n");
+                    printString("\nAvailable: " + vehicleDat.stock + "\n");
                     break;
             }
         }
@@ -270,4 +275,5 @@ public class ConsoleIO {
 
         Stdin.close();
     }
+
 }

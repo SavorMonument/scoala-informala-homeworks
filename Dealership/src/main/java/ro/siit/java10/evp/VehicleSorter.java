@@ -1,101 +1,82 @@
 package ro.siit.java10.evp;
 
 import java.util.*;
+import ro.siit.java10.evp.Dealership.VehicleData;
 
 public class VehicleSorter {
 
-    private List<Stock> stocks;
+    private List<VehicleData> vehicleDataList;
 
-    public VehicleSorter(List<Stock> stock) {
+    public VehicleSorter(List<VehicleData> vehicleDataList) {
 
-        this.stocks = stock;
+        this.vehicleDataList = vehicleDataList;
     }
 
-    public  List<Vehicle> getAllVehicleList(){
+    public  List<VehicleData> getAllVehicleList(){
 
-        List<Vehicle> allVehicles = new ArrayList<>();
-
-        for(Stock instance : stocks){
-                allVehicles.add(instance.getVehicle().clone());
-        }
-
-        return allVehicles;
+        return vehicleDataList;
     }
 
-    public  List<Vehicle> getStockVehicleList(){
+    public List<VehicleData> getStockVehicleList(){
 
-        List<Vehicle> stockVehicles = new ArrayList<>();
+        List<VehicleData> stockVehicles = new ArrayList<>();
 
-        for(Stock instance : stocks){
-            if (instance.getAmount() > 0)
-                stockVehicles.add(instance.getVehicle().clone());
+        for(VehicleData instance : vehicleDataList){
+            if (instance.stock > 0)
+                stockVehicles.add(instance);
         }
 
         return stockVehicles;
     }
 
-    public List<Vehicle> getFastChargingList() {
+    public List<VehicleData> getFastChargingList() {
 
-        List<Vehicle> fastChargingList = new ArrayList<Vehicle>();
+        List<VehicleData> fastChargingList = new ArrayList<>();
 
-        for (Stock  instance : stocks){
-            if (instance.getVehicle().hasFastCharging()){
-                fastChargingList.add(instance.getVehicle().clone());
+        for (VehicleData  instance : vehicleDataList){
+            if (instance.fastCharging){
+                fastChargingList.add(instance);
             }
         }
 
         return  (fastChargingList);
     }
 
-    public List<Vehicle> getSortedPriceList() {
+    public List<VehicleData> getSortedPriceList() {
 
-        List<Vehicle> sortedPriceList = new ArrayList<>();
-        List<Stock> stockCopy = new ArrayList<>();
-
-        for (Stock instance : stocks) {
-            stockCopy.add(instance.clone());
-        }
-
-        quickSort(stockCopy, 0, stockCopy.size() - 1, new Comparator<Stock>() {
+        quickSort(vehicleDataList, 0, vehicleDataList.size() - 1, new Comparator<VehicleData>() {
             @Override
-            public int compare(Stock o1, Stock o2) {
-                return (int) (o1.getPrice() - o2.getPrice());
+            public int compare(VehicleData o1, VehicleData o2) {
+
+                return (int) (o1.price - o2.price);
             }
         });
 
-        for (Stock instance : stockCopy){
-            sortedPriceList.add(instance.getVehicle());
-        }
-
-        return sortedPriceList;
+        return vehicleDataList;
     }
 
-    public List<Vehicle> getSortedHorsepowerList() {
+    public List<VehicleData> getSortedHorsepowerList() {
 
-        List<Vehicle> sortedHorsepowerList = getStockVehicleList();
-
-         quickSort(sortedHorsepowerList, 0, sortedHorsepowerList.size() - 1, new Comparator<Vehicle>() {
+         quickSort(vehicleDataList, 0, vehicleDataList.size() - 1, new Comparator<VehicleData>() {
             @Override
-            public int compare(Vehicle o1, Vehicle o2) {
-                return o1.getMotor().getHorsepower() - o2.getMotor().getHorsepower();
+            public int compare(VehicleData o1, VehicleData o2) {
+                return o1.motor.getHorsepower() - o2.motor.getHorsepower();
             }
         });
 
-        return sortedHorsepowerList;
+        return vehicleDataList;
     }
 
-    public List<Vehicle> getSortedRangePerChargeList(){
+    public List<VehicleData> getSortedRangePerChargeList(){
 
-        List<Vehicle> sortedRangePerChargeArray = getStockVehicleList();
-
-        quickSort(sortedRangePerChargeArray, 0, sortedRangePerChargeArray.size() - 1, new Comparator<Vehicle>() {
+        quickSort(vehicleDataList, 0, vehicleDataList.size() - 1, new Comparator<VehicleData>() {
             @Override
-            public int compare(Vehicle o1, Vehicle o2) {
-                return o1.getRangePerCharge_Km() - o2.getRangePerCharge_Km();
+            public int compare(VehicleData o1, VehicleData o2) {
+                return o1.rangePerCharge_Km - o2.rangePerCharge_Km;
             }
         });
 
-        return sortedRangePerChargeArray;
+        return vehicleDataList;
     }
 
     private <T> void quickSort(List<T> list, int left, int right, Comparator<T> comp){

@@ -5,6 +5,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import ro.siit.java10.evp.Dealership.VehicleData;
+
 public class CsvDealershipSerializer implements DealershipSerializer {
 
     private static final String CSV_VEHICLE_PATTERN = "{0},{1},{2,number,0},{3,number,0},{4,number,0},{5,number,0}\n";
@@ -34,10 +36,9 @@ public class CsvDealershipSerializer implements DealershipSerializer {
         saveDealershipData(new DealershipData(deal), writer);
 
         writer.write("{\n");
-        ArrayList<Vehicle> dealershipVehicles = (ArrayList<Vehicle>) deal.getVehicleSorter().getAllVehicleList();
-        for (Vehicle instance : dealershipVehicles) {
-            saveVehicleData(new VehicleData(instance, deal.getVehiclePrice(instance.hashCode()),
-                    deal.getVehicleAvailability(instance.hashCode())), writer);
+        List<VehicleData> dealershipVehicles = deal.getVehicleSorter().getAllVehicleList();
+        for (VehicleData instance : dealershipVehicles) {
+            saveVehicleData(instance, writer);
         }
         writer.write("}\n");
 
@@ -48,17 +49,17 @@ public class CsvDealershipSerializer implements DealershipSerializer {
         fwriter.write(data.name + "," + data.location + "\n");
     }
 
-    private void saveVehicleData(VehicleData vehicleData, Writer writer) throws IOException {
+    private void saveVehicleData(VehicleData vehicleD, Writer writer) throws IOException {
 
-        writer.write(MessageFormat.format(CSV_VEHICLE_PATTERN, vehicleData.model, vehicleData.fastCharging,
-                vehicleData.productionYear, vehicleData.energyConsumption_KWperKm,
-                vehicleData.price, vehicleData.stockAmount));
+        writer.write(MessageFormat.format(CSV_VEHICLE_PATTERN, vehicleD.model, vehicleD.fastCharging,
+                vehicleD.productionYear, vehicleD.energyConsumptionKWperKm,
+                vehicleD.price, vehicleD.stock));
 
-        writer.write(MessageFormat.format(CSV_MOTOR_PATTERN, vehicleData.motor.manufacturer,
-                vehicleData.motor.model, vehicleData.motor.horsepower));
+        writer.write(MessageFormat.format(CSV_MOTOR_PATTERN, vehicleD.motor.getManufacturer(),
+                vehicleD.motor.getModel(), vehicleD.motor.getHorsepower()));
 
-        writer.write( MessageFormat.format(CSV_BATTERY_PATTERN, vehicleData.battery.manufacturer,
-                vehicleData.battery.model, vehicleData.battery.capacity));
+        writer.write( MessageFormat.format(CSV_BATTERY_PATTERN, vehicleD.battery.getManufacturer(),
+                vehicleD.battery.getModel(), vehicleD.battery.getCapacityKWh()));
     }
 
     @Override

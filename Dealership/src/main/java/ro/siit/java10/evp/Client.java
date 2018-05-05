@@ -7,6 +7,7 @@ public class Client implements Serializable {
 
     private final String firstName;
     private final String lastName;
+    private float credit = 1000000.0f;
     private String telephone;
     private String address;
 
@@ -37,6 +38,18 @@ public class Client implements Serializable {
 
     public String getAddress() {
         return address;
+    }
+
+    public float getCredit() {
+        return credit;
+    }
+
+    public void addCredit(float credit) {
+        this.credit += credit;
+    }
+
+    public void substractCredit(float credit) {
+        this.credit -= credit;
     }
 
     @Override

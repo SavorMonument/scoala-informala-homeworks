@@ -3,7 +3,7 @@ package ro.siit.java10.evp;
 import java.security.InvalidParameterException;
 import java.util.Objects;
 
-public class Motor implements Cloneable {
+public class Motor {
 
     private String manufacturer = "No manufacturer";
     private String model = "No model";
@@ -17,6 +17,13 @@ public class Motor implements Cloneable {
         this.model = model;
 
         setHorsepower(horsepower);
+    }
+
+    public Motor(Motor motor){
+
+        this.manufacturer = motor.manufacturer;
+        this.model = motor.model;
+        this.horsepower = motor.horsepower;
     }
 
     private void setHorsepower(int horsepower) {
@@ -37,12 +44,6 @@ public class Motor implements Cloneable {
 
     public String getModel() {
         return model;
-    }
-
-    @Override
-    public Motor clone(){
-
-        return new Motor(manufacturer, model, horsepower);
     }
 
     @Override

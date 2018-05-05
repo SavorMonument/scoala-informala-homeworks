@@ -18,7 +18,7 @@ public interface DealershipSerializer {
         }
     }
 
-    class VehicleData implements Serializable{
+    class VehicleDataSer implements Serializable{
 
         public String model;
         public boolean fastCharging;
@@ -30,7 +30,7 @@ public interface DealershipSerializer {
         public float price;
         public int stockAmount;
 
-        public VehicleData(Vehicle vehicle, float price, int stockAmount){
+        public VehicleDataSer(Vehicle vehicle, float price, int stockAmount){
 
             model = vehicle.getModel();
             productionYear = vehicle.getProductionYear();

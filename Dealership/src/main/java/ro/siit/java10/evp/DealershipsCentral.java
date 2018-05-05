@@ -89,41 +89,4 @@ public class DealershipsCentral{
         return null;
     }
 
-    public boolean isGreenBonusAvailable(Vehicle vehicle){
-
-        if (vehicle.getProductionYear() == Calendar.getInstance().get(Calendar.YEAR)){
-            
-            return GreenBonus.hasEnoughBudget();
-        }
-        return false;
-    }
-
-    public boolean makeGreenBonusSell(Dealership dealership, Vehicle toSell, Client buyer){
-
-        if (isGreenBonusAvailable(toSell)){
-            return (makeSell(dealership, toSell, buyer));
-        }
-
-        return false;
-    }
-
-    public boolean makeSell(Dealership dealership, Vehicle toSell, Client buyer){
-
-        if ((null == dealership) || (toSell == null))
-            throw new IllegalArgumentException("Null pointer not allowed");
-
-        if(dealership.getVehicleAvailability(toSell.hashCode()) > 0){
-            Invoice invoice = new Invoice(buyer, toSell);
-
-            GreenBonus.subtractMoneyFromBudget();
-            dealership.decreaseStock(toSell.hashCode());
-            dealership.addInvoice(invoice);
-            GreenBonus.addCompletedInvoice(invoice);
-
-            return (true);
-        }
-
-        return (false);
-    }
-
 }

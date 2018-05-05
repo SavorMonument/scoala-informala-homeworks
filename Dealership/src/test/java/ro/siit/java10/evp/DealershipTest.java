@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -54,7 +53,7 @@ public class DealershipTest {
 
         one_deals.addVehicle(vehicles.get(0), 0.0f);
 
-        assertEquals(2, one_deals.getVehicleAvailability(vehicles.get(0).hashCode()));
+        assertEquals(2, one_deals.getVehicleStockNumber(vehicles.get(0).hashCode()));
     }
 
     @Test
@@ -64,7 +63,7 @@ public class DealershipTest {
 
         one_deals.decreaseStock(vehicleHash);
 
-        assertEquals(0, one_deals.getVehicleAvailability(vehicleHash));
+        assertEquals(0, one_deals.getVehicleStockNumber(vehicleHash));
     }
 
     @Test
@@ -73,7 +72,7 @@ public class DealershipTest {
         int removedID = vehicles.get(0).hashCode();
         one_deals.removeVehicle(removedID);
 
-        assertEquals(0, one_deals.getVehicleAvailability(removedID));
+        assertEquals(0, one_deals.getVehicleStockNumber(removedID));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -91,7 +90,7 @@ public class DealershipTest {
 
         one_deals.setStockNumber(vehicleHash, 2);
 
-        assertEquals(2, one_deals.getVehicleAvailability(vehicleHash));
+        assertEquals(2, one_deals.getVehicleStockNumber(vehicleHash));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -114,13 +113,13 @@ public class DealershipTest {
     @Test
     public void getVehicleAvailability_validHash() {
 
-        assertEquals(1, one_deals.getVehicleAvailability(vehicles.get(0).hashCode()));
+        assertEquals(1, one_deals.getVehicleStockNumber(vehicles.get(0).hashCode()));
     }
 
     @Test
     public void getVehicleAvailability_invalidHash(){
 
-        assertEquals(0, one_deals.getVehicleAvailability(1));
+        assertEquals(0, one_deals.getVehicleStockNumber(1));
     }
 
     @Test

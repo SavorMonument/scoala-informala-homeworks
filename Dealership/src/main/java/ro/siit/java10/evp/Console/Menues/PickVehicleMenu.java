@@ -68,7 +68,7 @@ public abstract class PickVehicleMenu extends Menu {
             return callingMenu;
 
 
-        MenuTypes.INDIVIDUAL_VEHICLE.setMenu(new IndividualVehicleMenu(
+        MenuTypes.INDIVIDUAL_VEHICLE.setMenu(new PerVehicleMenu(
                     MenuTypes.PICK_VEHICLE, deals, vehicleList.get(option)));
 
         return MenuTypes.INDIVIDUAL_VEHICLE;

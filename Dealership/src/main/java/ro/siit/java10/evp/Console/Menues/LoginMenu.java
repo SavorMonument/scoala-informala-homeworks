@@ -13,6 +13,7 @@ public class LoginMenu extends Menu {
     private MenuTypes callingMenu;
 
     public LoginMenu(MenuTypes callingMenu) {
+
         this.callingMenu = callingMenu;
     }
 

@@ -2,6 +2,8 @@ package ro.siit.java10.evp.Console.Menues;
 
 import ro.siit.java10.evp.Console.Selector;
 import ro.siit.java10.evp.Dealership;
+import ro.siit.java10.evp.VehicleData;
+import ro.siit.java10.evp.VehicleSorter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,5 +47,21 @@ public class MainModMenu extends Menu {
         Selector selector = new Selector(consIO, selections);
 
         return selector.printListAndGetOption();
+    }
+
+    private void printAllDealershipsVehicleList(){
+
+        List<Dealership> dealershipNameList = dCentral.getDealershipList();
+
+        for (Dealership instance : dealershipNameList){
+
+            consIO.printString(instance.getName() + "\n");
+
+            List<VehicleData> vehicleList = instance.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL);
+
+            for(VehicleData vd: vehicleList){
+                consIO.printString(vd.stringRepresentation() + "\n");
+            }
+        }
     }
 }

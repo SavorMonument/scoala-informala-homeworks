@@ -25,9 +25,10 @@ public class SellMenu extends Menu {
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
 
-        if (!isLoggedIn())
-            //return new ;
-            ;
+        if (!isLoggedIn()) {
+            MenuTypes.LOGIN.setMenu(new LoginMenu(THIS_MENU_TYPE));
+            return MenuTypes.LOGIN;
+        }
 
         int option = doSelection();
 

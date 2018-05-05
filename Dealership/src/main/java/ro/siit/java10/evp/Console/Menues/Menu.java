@@ -57,45 +57,13 @@ public abstract class Menu {
         return ((null != consIO) || (null != dCentral));
     }
 
-    protected void printAllDealershipsVehicleList(){
-
-        List<Dealership> dealershipNameList = dCentral.getDealershipList();
-
-        for (Dealership instance : dealershipNameList){
-
-            consIO.printString(instance.getName() + "\n");
-
-            List<VehicleData> vehicleList = instance.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL);
-
-            for(VehicleData vd: vehicleList){
-                consIO.printString(vd.stringRepresentation());
-            }
-        }
-    }
-    protected void printAllDealershipsStockVehicleList(){
-
-        List<Dealership> dealershipNameList = dCentral.getDealershipList();
-
-        for (Dealership instance : dealershipNameList){
-
-            consIO.printString(instance.getName() + "\n");
-
-            List<VehicleData> vehicleList = instance.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL,
-                    VehicleSorter.FilterOptions.STOCK);
-
-            for(VehicleData vd: vehicleList){
-                consIO.printString(vd.stringRepresentation());
-            }
-        }
-
-    }
     protected boolean isLoggedIn() {
 
         return (null != currentClient);
     }
     protected boolean isModLogged(){
 
-        if (null == currentClient)
+        if (!isLoggedIn())
             return false;
 
         return currentClient.getFirstName().equals("Mod");

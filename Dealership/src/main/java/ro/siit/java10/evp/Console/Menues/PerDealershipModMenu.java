@@ -1,7 +1,7 @@
 package ro.siit.java10.evp.Console.Menues;
 
 import ro.siit.java10.evp.*;
-import ro.siit.java10.evp.Console.ConsoleIO.Options;
+import ro.siit.java10.evp.VehicleData.Options;
 
 import java.util.List;
 
@@ -62,6 +62,8 @@ public class PerDealershipModMenu extends Menu {
 
         List<VehicleData> vehicleList = dealership.getVehicleSorter().getVehicleList(VehicleSorter.SortingOptions.NORMAL);
 
-        consIO.printVehicleList(vehicleList, Options.YEAR, Options.PRICE, Options.STOCK);
+        for(VehicleData vd: vehicleList){
+            consIO.printString(vd.stringRepresentation(Options.YEAR, Options.PRICE, Options.STOCK));
+        }
     }
 }

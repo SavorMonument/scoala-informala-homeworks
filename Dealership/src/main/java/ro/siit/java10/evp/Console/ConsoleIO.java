@@ -12,17 +12,6 @@ public class ConsoleIO {
 
     private Scanner Stdin;
 
-    public enum Options{
-        YEAR,
-        E_CONSUMPTION,
-        RANGE_PER_CHARGE,
-        FAST_CHARGING,
-        MOTOR,
-        BATTERY,
-        PRICE,
-        STOCK
-    }
-
     public ConsoleIO() {
 
         Stdin = new Scanner(System.in);
@@ -47,53 +36,6 @@ public class ConsoleIO {
     public void printString(String toPrintString){
 
         System.out.print(toPrintString);
-    }
-
-    public void printVehicleList(List<VehicleData> vehicleDatas, Options... options){
-
-        for (VehicleData currVehicle : vehicleDatas){
-
-            printVehicle(currVehicle, options);
-        }
-    }
-
-    public void printVehicle(VehicleData vehicleDat, Options... options){
-
-        printString("Model: " + vehicleDat.model + "   ");
-
-        for (Options opt : options) {
-
-            switch (opt) {
-                case YEAR:
-                    printString("Production Year: " + vehicleDat.productionYear + "   ");
-                    break;
-                case E_CONSUMPTION:
-                    printString("Energy Consumption(kw/km): " + vehicleDat.energyConsumptionKWperKm + "   ");
-                    break;
-                case RANGE_PER_CHARGE:
-                    printString("Range per full charge(km): " + vehicleDat.rangePerCharge_Km + "   ");
-                    break;
-                case FAST_CHARGING:
-                    if (vehicleDat.fastCharging)
-                        printString("Has fast charging   ");
-                    else
-                        printString("It does not have fast charging   ");
-                    break;
-                case MOTOR:
-                    printString("\nMotor: " + vehicleDat.motor.toString() + "   \n");
-                    break;
-                case BATTERY:
-                    printString("\nBattery: " + vehicleDat.battery.toString() + "   \n");
-                    break;
-                case PRICE:
-                    printString("\nPrice: " + vehicleDat.price + "\n");
-                    break;
-                case STOCK:
-                    printString("\nAvailable: " + vehicleDat.stock + "\n");
-                    break;
-            }
-        }
-        printString("\n");
     }
 
     /**

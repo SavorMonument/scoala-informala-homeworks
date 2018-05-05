@@ -13,17 +13,17 @@ import static junit.framework.TestCase.assertEquals;
 
 public class VehicleSorterTest {
 
-    List<VehicleData> vehicleDs;
-    VehicleSorter vehicleSorter;
+    private List<VehicleData> vehicleDs;
+    private VehicleSorter vehicleSorter;
 
     @Before
     public void setUp(){
 
         vehicleDs = new ArrayList<>();
 
-        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Zoro").build(), 15.0f, 1));
-        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Vara").build(), 16.0f, 1));
-        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Miri").build(), 13.0f, 1));
+        vehicleDs.add(buildGenericVehicleData().model("Zoro").price(15.0f).stock(1));
+        vehicleDs.add(buildGenericVehicleData().model("Vara").price(16.0f).stock(1));
+        vehicleDs.add(buildGenericVehicleData().model("Miri").price(13.0f).stock(1));
 
         vehicleSorter = new VehicleSorter(vehicleDs);
     }
@@ -32,6 +32,12 @@ public class VehicleSorterTest {
     public void tearDown(){
 
         vehicleSorter = null;
+    }
+
+    private VehicleData buildGenericVehicleData(){
+
+        return new VehicleData().model("Generic").productionYear(1999).energyConsumptionKWperKm(20)
+                .motor(new Motor()).battery(new Battery()).stock(1);
     }
 
     @Test
@@ -84,7 +90,15 @@ public class VehicleSorterTest {
     @Test
     public void rangeSort(){
 
-        assert (false);
+        List<VehicleData> result;
+        List<VehicleData> expected = new ArrayList<>();
+
+        expected.add(vehicleDs.get(0).rangePerCharge_Km(10));
+        expected.add(vehicleDs.get(2).rangePerCharge_Km(20));
+        expected.add(vehicleDs.get(1).rangePerCharge_Km(30));
+        result = vehicleSorter.getVehicleList(SortingOptions.RANGE);
+
+        assertEquals(expected, result);
     }
 
     @Test
@@ -104,7 +118,7 @@ public class VehicleSorterTest {
 
         List<VehicleData> result;
         List<VehicleData> expected = new ArrayList<>();
-        vehicleDs.get(1).fastCharging = true;
+        vehicleDs.get(1).fastCharging(true);
         expected.add(vehicleDs.get(1));
 
         result = vehicleSorter.getVehicleList(SortingOptions.NORMAL, FilterOptions.FAST_CHARGING);

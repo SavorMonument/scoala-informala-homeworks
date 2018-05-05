@@ -1,6 +1,6 @@
 package ro.siit.java10.evp.Console.Menues;
 
-import ro.siit.java10.evp.Console.ConsoleIO.Options;
+import ro.siit.java10.evp.VehicleData.Options;
 import ro.siit.java10.evp.Dealership;
 import ro.siit.java10.evp.VehicleData;
 
@@ -20,8 +20,8 @@ public class IndividualVehicleMenu extends Menu {
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
 
-        consIO.printVehicle(vehicleD, Options.YEAR, Options.RANGE_PER_CHARGE,
-                Options.FAST_CHARGING, Options.MOTOR, Options.BATTERY, Options.PRICE, Options.STOCK);
+        consIO.printString(vehicleD.stringRepresentation(Options.YEAR, Options.RANGE_PER_CHARGE,
+                Options.FAST_CHARGING, Options.MOTOR, Options.BATTERY, Options.PRICE, Options.STOCK));
 
         consIO.printString("\n 1 - Buy \n 0 - Back\n");
         int option = consIO.readCondInt(0, 1);

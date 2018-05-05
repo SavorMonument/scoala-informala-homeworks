@@ -1,37 +1,40 @@
 package ro.siit.java10.evp;
 
+import ro.siit.java10.evp.Serialization.*;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.util.*;
 
 public class DealershipsCentral{
 
-    private ArrayList<Dealership> availableDealerships = new ArrayList<>();
-    private ArrayList<Client> clients = new ArrayList<>();
+    private List<Dealership> availableDealerships = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
 
     public DealershipsCentral() {
     }
 
     public void saveData(){
-        DealershipSerializer dealerSaver = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
+        DealershipSaver dealerSaver = new CsvDealershipSaver(new File("./ProgramData/dealerships.csv"));
         ClientSerializer clientSaver = new ObjectClientSerializer(new File("./ProgramData/Binary_Clients.dat"));
 
-        dealerSaver.saveDelearships(availableDealerships);
+        dealerSaver.saveDealerships(availableDealerships);
         clientSaver.saveClients(clients);
     }
 
     public void loadData(){
-        CsvDealershipSerializer dealerLoader = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
-        CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./ProgramData/clients.csv"));
 
-        availableDealerships = (ArrayList<Dealership>) dealerLoader.loadDealerships();
-        clients = (ArrayList<Client>) clientLoader.loadClients();
+        try {
 
-        //If it can't load for some reason wait for it to print the exception before continuing
-        try{
-            Thread.sleep(1000);
-        } catch (InterruptedException e){
+            CsvDealershipLoader dealerLoader = new CsvDealershipLoader(new File("./ProgramData/dealerships.csv"));
+            CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./ProgramData/clients.csv"));
+
+            availableDealerships = dealerLoader.loadDealerships();
+            clients = clientLoader.loadClients();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     public void addDealership(Dealership newDealership){

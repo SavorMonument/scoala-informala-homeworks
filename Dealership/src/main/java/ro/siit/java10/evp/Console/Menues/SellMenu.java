@@ -68,9 +68,9 @@ public class SellMenu extends Menu {
     private boolean tryGreenBonusSell() {
         assert (null != currentClient);
 
-        if (deals.isGreenBonusAvailable(vehicleD.ID)){
+        if (deals.isGreenBonusAvailable(vehicleD.HASH)){
 
-            return deals.makeGreenBonusSell(vehicleD.ID, currentClient);
+            return deals.makeGreenBonusSell(vehicleD.HASH, currentClient);
 
         } else{
             consIO.printString("No GreenBonus for you");
@@ -82,7 +82,7 @@ public class SellMenu extends Menu {
     private boolean tryNormalSell() {
         assert (null != currentClient);
 
-        return deals.makeSell(vehicleD.ID, currentClient);
+        return deals.makeSell(vehicleD.HASH, currentClient);
     }
 
 }

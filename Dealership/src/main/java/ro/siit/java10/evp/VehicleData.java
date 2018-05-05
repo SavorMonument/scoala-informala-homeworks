@@ -2,7 +2,7 @@ package ro.siit.java10.evp;
 
 public class VehicleData {
 
-    public int ID;
+    public int HASH;
     public String model;
     public int productionYear;
     public int energyConsumptionKWperKm;
@@ -14,9 +14,12 @@ public class VehicleData {
     public float price;
     public int stock;
 
+    public VehicleData() {
+    }
+
     public VehicleData(Vehicle vehicle, float price, int stock){
 
-        ID = vehicle.hashCode();
+        HASH = vehicle.hashCode();
         model = vehicle.getModel();
         productionYear = vehicle.getProductionYear();
         energyConsumptionKWperKm = vehicle.getEnergyConsumptionKWperKm();
@@ -30,7 +33,7 @@ public class VehicleData {
         this.stock = stock;
     }
 
-    public Vehicle getVehicle(){
+    public Vehicle buildVehicle(){
 
         Vehicle.VehicleBuilder vb = new Vehicle.VehicleBuilder();
 
@@ -95,5 +98,55 @@ public class VehicleData {
         }
 
         return representation.toString();
+    }
+
+    public VehicleData model(String model){
+        this.model = model;
+        return this;
+    }
+
+    public VehicleData price(float price){
+        this.price = price;
+        return this;
+    }
+
+    public VehicleData stock(int stock){
+        this.stock = stock;
+        return this;
+    }
+
+    public VehicleData productionYear(int productionYear){
+
+        this.productionYear = productionYear;
+        return this;
+    }
+
+    public VehicleData energyConsumptionKWperKm(int energyConsumptionKWperKm){
+
+        this.energyConsumptionKWperKm = energyConsumptionKWperKm;
+        return this;
+    }
+
+    public VehicleData fastCharging(boolean fastCharging){
+        this.fastCharging = fastCharging;
+        return this;
+    }
+
+    public VehicleData rangePerCharge_Km(int rangePerCharge_Km){
+
+        this.rangePerCharge_Km = rangePerCharge_Km;
+        return this;
+    }
+
+    public VehicleData motor(Motor motor){
+
+        this.motor = motor;
+        return this;
+    }
+
+    public VehicleData battery(Battery battery){
+
+        this.battery = battery;
+        return this;
     }
 }

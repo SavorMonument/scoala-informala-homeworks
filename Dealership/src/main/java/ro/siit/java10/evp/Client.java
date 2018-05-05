@@ -44,11 +44,15 @@ public class Client implements Serializable {
         return credit;
     }
 
-    public void addCredit(float credit) {
-        this.credit += credit;
+    public void setCredit(float credit) {
+        assert (credit >= 0);
+
+        this.credit = credit;
     }
 
-    public void substractCredit(float credit) {
+    public void subtractCredit(float credit) {
+
+
         this.credit -= credit;
     }
 

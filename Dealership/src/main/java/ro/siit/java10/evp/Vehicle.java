@@ -68,22 +68,13 @@ public class Vehicle implements Cloneable{
         return 0;
     }
 
-    @Override
-    public String toString() {
-        return  "model: " + model +
-                ", productionYear: " + productionYear +
-                ", energyConsumption_KW/Km: " + energyConsumptionKWperKm +
-                " fastCharging: " + fastCharging +
-                ", motor: " + motor +
-                ", battery: " + battery;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return  productionYear == vehicle.productionYear &&
+        return productionYear == vehicle.productionYear &&
                 energyConsumptionKWperKm == vehicle.energyConsumptionKWperKm &&
                 fastCharging == vehicle.fastCharging &&
                 Objects.equals(model, vehicle.model) &&
@@ -149,6 +140,7 @@ public class Vehicle implements Cloneable{
         }
 
         public Vehicle build(){
+
             return new Vehicle(this);
         }
     }

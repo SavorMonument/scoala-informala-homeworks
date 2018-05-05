@@ -16,41 +16,55 @@ public class Dealership {
     }
 
     public String getName() {
+
         return name;
     }
 
     public String getLocation() {
+
         return location;
     }
+
+
 
     public void addVehicle(VehicleData vehicleD){
         assert (null != vehicleD);
 
-        Vehicle vehicle = vehicleD.getVehicle();
+        if (!isValidVehicleData(vehicleD))
+            throw new IllegalArgumentException("Invalid vehicle" + vehicleD.stringRepresentation());
 
-        for (Stock instance : stock){
-            if (instance.getVehicle().equals(vehicle) && (instance.getPrice() == vehicleD.price)){
+        Vehicle vehicle = vehicleD.buildVehicle();
 
-                instance.setAmount(instance.getAmount() + vehicleD.stock);
-                return;
+        int pos;
+        if ((pos = getStockPosition(vehicle)) >= 0){
+
+            if (stock.get(pos).getPrice() == vehicleD.price){
+                stock.get(pos).addAmount(vehicleD.stock);
             }
+        } else {
+
+            Stock nextStock = new Stock(vehicle, vehicleD.price);
+            nextStock.setAmount(vehicleD.stock);
+            stock.add(nextStock);
         }
-
-        Stock moreStock = new Stock(vehicle, vehicleD.price);
-        moreStock.setAmount(vehicleD.stock);
-
-        stock.add(moreStock);
     }
 
-    public void decreaseStock(int hash){
+    private boolean isValidVehicleData(VehicleData vehicleD){
 
-        for (Stock instance : stock){
-            if (instance.getVehicle().hashCode() == hash){
+        return (vehicleD.price >= 0) && (vehicleD.stock >= 0)
+                && (null != vehicleD.motor) && (null != vehicleD.battery)
+                && (vehicleD.productionYear > 0);
+    }
 
-                instance.decreaseAmount();
-                return;
-            }
+    private int getStockPosition(Vehicle vehicle){
+
+        for (int i = 0; i < stock.size(); i++) {
+
+            if (stock.get(i).getVehicle().equals(vehicle))
+                return i;
         }
+
+        return -1;
     }
 
     public void removeVehicle(int hash){
@@ -62,29 +76,6 @@ public class Dealership {
                 return;
             }
         }
-    }
-
-    public void setStockNumber(int hash, int stockAmount){
-
-        for (Stock instance : stock){
-            if (instance.getVehicle().hashCode() == hash){
-
-                instance.setAmount(stockAmount);
-                return;
-            }
-        }
-    }
-
-    public float getVehiclePrice(int hash){
-
-        for (Stock instance : stock) {
-
-            if (instance.getVehicle().hashCode() == hash){
-                return instance.getPrice();
-            }
-        }
-
-        throw new InvalidParameterException("no vehicle with this ID");
     }
 
     public int getVehicleStockNumber(int hash){
@@ -103,31 +94,34 @@ public class Dealership {
         List<VehicleData> vehicleDataList = new ArrayList<>();
 
         for (Stock instance : stock){
-            vehicleDataList.add(new VehicleData(instance.getVehicle(), instance.getPrice(),
-                    instance.getAmount()));
+            vehicleDataList.add(new VehicleData(
+                    instance.getVehicle(), instance.getPrice(), instance.getAmount()));
         }
 
 
         return (new VehicleSorter(vehicleDataList));
     }
 
-    public void addInvoice(Invoice toAdd){
+    public List<Invoice> getInvoiceList(Client client){
 
-        if (toAdd == null)
-            throw new IllegalArgumentException("No null invoices");
+        List<Invoice> clientInvoices = new ArrayList<>();
 
-        invoices.add(toAdd);
+        for(Invoice inv: invoices){
+
+            if (inv.getClient().equals(client))
+                clientInvoices.add(inv);
+        }
+
+        return clientInvoices;
     }
+
+
 
     public boolean isGreenBonusAvailable(int hash){
 
-        if (getVehicleStockNumber(hash) > 0) {
+        if (getVehicle(hash).getProductionYear() == Calendar.getInstance().get(Calendar.YEAR))
+            return GreenBonus.hasEnoughBudget();
 
-            if (getVehicle(hash).getProductionYear() == Calendar.getInstance().get(Calendar.YEAR)) {
-
-                return GreenBonus.hasEnoughBudget();
-            }
-        }
         return false;
     }
 
@@ -145,15 +139,9 @@ public class Dealership {
         if (buyer.getCredit() < getVehiclePrice(hash))
             return false;
 
-        Vehicle vehicle;
+        Vehicle vehicle = getVehicle(hash);
 
-        try {
-            vehicle = getVehicle(hash);
-        } catch (IllegalArgumentException e){
-            return false;
-        }
-
-        buyer.substractCredit(getVehiclePrice(hash));
+        buyer.subtractCredit(getVehiclePrice(hash));
         Invoice invoice = new Invoice(buyer, vehicle);
         addInvoice(invoice);
         decreaseStock(hash);
@@ -162,6 +150,37 @@ public class Dealership {
 
         return (true);
 
+    }
+
+    private void addInvoice(Invoice toAdd){
+
+        if (toAdd == null)
+            throw new IllegalArgumentException("No null invoices");
+
+        invoices.add(toAdd);
+    }
+
+    private float getVehiclePrice(int hash){
+
+        for (Stock instance : stock) {
+
+            if (instance.getVehicle().hashCode() == hash){
+                return instance.getPrice();
+            }
+        }
+
+        throw new InvalidParameterException("no vehicle with this HASH");
+    }
+
+    private void decreaseStock(int hash){
+
+        for (Stock instance : stock){
+            if (instance.getVehicle().hashCode() == hash){
+
+                instance.decreaseAmount();
+                return;
+            }
+        }
     }
 
     private Vehicle getVehicle(int hash){

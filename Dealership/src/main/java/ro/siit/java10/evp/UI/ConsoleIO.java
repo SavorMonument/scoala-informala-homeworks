@@ -20,6 +20,7 @@ public class ConsoleIO {
 
     public void getKeyboardInput(){
 
+        printString("Enter to continue\n");
         readString();
     }
 

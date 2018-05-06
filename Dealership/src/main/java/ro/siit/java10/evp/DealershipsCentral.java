@@ -2,7 +2,6 @@ package ro.siit.java10.evp;
 
 import ro.siit.java10.evp.Serialization.*;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.util.*;
 
@@ -84,8 +83,8 @@ public class DealershipsCentral{
     public Client getClient(String firstName, String lastName){
 
         for (Client instance : clients){
-            if (instance.getFirstName().equals(firstName))
-                if (instance.getLastName().equals(lastName)){
+            if (instance.getFirstName().compareToIgnoreCase(firstName) == 0)
+                if (instance.getLastName().compareToIgnoreCase(lastName) == 0){
                     return instance;
                 }
         }

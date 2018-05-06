@@ -40,12 +40,12 @@ public class ConsoleLineUI {
 
     public static void main(String[] args){
 
-        ConsoleLineUI user = new ConsoleLineUI();
+        ConsoleLineUI cLineUI = new ConsoleLineUI();
 
-        user.dCentral.loadData();
+        cLineUI.dCentral.loadData();
 
         while(true){
-            user.Do();
+            cLineUI.Do();
         }
     }
 

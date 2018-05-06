@@ -70,7 +70,7 @@ public class SellMenu extends Menu {
             return deals.makeGreenBonusSell(vehicleD.HASH, currentClient);
 
         } else{
-            consIO.printString("No GreenBonus for you");
+            consIO.printString("No GreenBonus for you  ");
         }
 
         return false;

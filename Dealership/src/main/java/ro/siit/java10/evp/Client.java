@@ -57,13 +57,19 @@ public class Client implements Serializable {
     }
 
     @Override
+    public String toString() {
+
+        return String.format("Client\nFirstName: %s\nLastName: %s", firstName, lastName);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
 
-        return Objects.equals(firstName, client.firstName) &&
-                Objects.equals(lastName, client.lastName);
+        return (firstName.compareToIgnoreCase(client.firstName) == 0) &&
+                (lastName.compareToIgnoreCase(client.lastName) == 0);
     }
 
     @Override

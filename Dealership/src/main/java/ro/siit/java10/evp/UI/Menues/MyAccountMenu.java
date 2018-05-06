@@ -1,5 +1,7 @@
 package ro.siit.java10.evp.UI.Menues;
 
+import ro.siit.java10.evp.Dealership;
+import ro.siit.java10.evp.Invoice;
 import ro.siit.java10.evp.UI.Selector;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class MyAccountMenu extends Menu {
     private MenuTypes callingMenu;
 
     public MyAccountMenu(MenuTypes callingMenu) {
+
         this.callingMenu = callingMenu;
     }
 
@@ -30,10 +33,13 @@ public class MyAccountMenu extends Menu {
 
         switch (option){
             case (0):
-                consIO.printString("Not here yet\n");
+                printPurchaseHistoryAcrossAllDealerships();
+                consIO.getKeyboardInput();
                 return THIS_MENU_TYPE;
             case (1):
-                consIO.printString("Not here yet\n");
+                consIO.printString(String.format("Balance: %.1f USD\n",
+                        currentClient.getCredit()));
+                consIO.getKeyboardInput();
                 return THIS_MENU_TYPE;
             case (2):
                 consIO.printString("Not here yet\n");
@@ -60,6 +66,30 @@ public class MyAccountMenu extends Menu {
         Selector selector = new Selector(consIO, selections);
 
         return selector.printListAndGetOption();
+    }
+
+    private void printPurchaseHistoryAcrossAllDealerships(){
+
+        List<Dealership> dealerships = dCentral.getDealershipList();
+
+        for (int i = 0; i < dealerships.size(); i++) {
+
+            printPurchaseHistoryPerOneDealership(dealerships.get(i));
+        }
+    }
+
+    private void printPurchaseHistoryPerOneDealership(Dealership deals){
+
+        List<Invoice> invoices = deals.getInvoiceList(currentClient);
+
+        if (invoices.size() > 0){
+
+            consIO.printString(deals.toString() + "\n");
+            for (Invoice inv: invoices){
+
+                consIO.printString(inv.toString() + "\n");
+            }
+        }
     }
 
 }

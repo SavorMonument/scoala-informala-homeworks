@@ -79,7 +79,7 @@ public class Dealership {
         stock.remove(getVehicleLocationInStock(hash));
     }
 
-    public int getVehicleStockNumber(int hash){
+    public int getAmountOfVehiclesInStock(int hash){
 
         int pos;
 
@@ -142,8 +142,9 @@ public class Dealership {
 
     public boolean makeGreenBonusSell(int hash, Client buyer){
 
-        if (isGreenBonusAvailable(hash))
+        if (isGreenBonusAvailable(hash)) {
             return (makeSell(hash, buyer));
+        }
 
         return false;
     }
@@ -154,12 +155,12 @@ public class Dealership {
         if (buyer.getCredit() < getVehiclePrice(hash))
             return false;
 
-        Vehicle vehicle = getVehicle(hash);
+        Stock vehicleStock = stock.get(getVehicleLocationInStock(hash));
 
         buyer.subtractCredit(getVehiclePrice(hash));
-        Invoice invoice = new Invoice(buyer, vehicle);
+        Invoice invoice = new Invoice(buyer, vehicleStock.getVehicle(), vehicleStock.getPrice());
         addInvoice(invoice);
-        decreaseStock(hash);
+        vehicleStock.decreaseAmount();
         GreenBonus.subtractMoneyFromBudget();
         GreenBonus.addCompletedInvoice(invoice);
 
@@ -185,17 +186,6 @@ public class Dealership {
         }
 
         throw new InvalidParameterException("no vehicle with this HASH");
-    }
-
-    private void decreaseStock(int hash){
-
-        for (Stock instance : stock){
-            if (instance.getVehicle().hashCode() == hash){
-
-                instance.decreaseAmount();
-                return;
-            }
-        }
     }
 
     private Vehicle getVehicle(int hash){

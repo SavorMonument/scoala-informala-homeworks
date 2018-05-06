@@ -1,8 +1,10 @@
 package ro.siit.java10.evp.Console.Menues;
 
 import ro.siit.java10.evp.*;
+import ro.siit.java10.evp.Console.Selector;
 import ro.siit.java10.evp.VehicleData.Options;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PerDealershipModMenu extends Menu {
@@ -21,8 +23,7 @@ public class PerDealershipModMenu extends Menu {
 
         int option;
 
-        printScreen();
-        option = consIO.readCondInt(0, 4);
+        option = doSelection();
 
         switch (option) {
             case (0): {
@@ -34,7 +35,7 @@ public class PerDealershipModMenu extends Menu {
             }
             break;
             case (2): {
-                //addVehicle(selectedDealership);
+                addVehicle();
                 break;
             }
             case (3): {
@@ -48,14 +49,18 @@ public class PerDealershipModMenu extends Menu {
         return MenuTypes.PER_DEALERSHIP_MOD;
     }
 
-    private void printScreen(){
+    private int doSelection(){
 
-        consIO.printString("\n");
-        consIO.printString("0 - print vehicle list\n");
-        consIO.printString("1 - set vehicle stock\n");
-        consIO.printString("2 - add new vehicle\n");
-        consIO.printString("3 - remove vehicle\n");
-        consIO.printString("4 - back\n");
+        List<String> selections = new ArrayList<>();
+        selections.add("Print vehicle list");
+        selections.add("Set vehicle stock");
+        selections.add("Add new vehicle");
+        selections.add("Remove vehicle");
+        selections.add("Back");
+
+        Selector selector = new Selector(consIO, selections);
+
+        return selector.printListAndGetOption();
     }
 
     private void printVehiclesPriceStockList(Dealership dealership) {
@@ -66,4 +71,48 @@ public class PerDealershipModMenu extends Menu {
             consIO.printString(vd.stringRepresentation(Options.YEAR, Options.PRICE, Options.STOCK));
         }
     }
+
+    private void addVehicle(){
+
+        VehicleData vehicleD;
+
+        if (null != (vehicleD = readVehicle())){
+            deals.addVehicle(vehicleD);
+        }
+
+    }
+
+    private VehicleData readVehicle(){
+
+    String strInput;
+    int intInput;
+
+    VehicleData vehicleD = new VehicleData();
+
+    System.out.print("Vehicle name: ");
+    if (null == (strInput = consIO.readString()))
+        return null;
+    vehicleD.model(strInput);
+
+    System.out.print("Vehicle production year: ");
+    if (-1 == (intInput = consIO.readCondInt(1900, 2018)))
+        return null;
+    vehicleD.productionYear(intInput);
+
+    System.out.print("Vehicle energy consumption KW/Km: ");
+    if (-1 == (intInput = consIO.readCondInt(1, 1000)))
+        return null;
+    vehicleD.energyConsumptionKWperKm(intInput);
+
+    System.out.print("Vehicle has fast charging(1 or 0): ");
+    if (-1 == (intInput = consIO.readCondInt(0, 1)))
+        return null;
+    if (intInput == 1){
+        vehicleD.fastCharging(true);
+    } else
+        vehicleD.fastCharging(false);
+
+    return vehicleD;
+}
+
 }

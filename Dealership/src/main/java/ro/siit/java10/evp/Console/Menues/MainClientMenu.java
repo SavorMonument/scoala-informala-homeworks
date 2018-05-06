@@ -15,10 +15,6 @@ public class MainClientMenu extends Menu {
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
 
-        if (isModLogged()){
-            return MenuTypes.MAIN_MOD;
-        }
-
         int option;
 
         option = doSelection();
@@ -50,7 +46,7 @@ public class MainClientMenu extends Menu {
         return selector.printListAndGetOption();
     }
 
-    protected void printAllDealershipsStockVehicleList(){
+    private void printAllDealershipsStockVehicleList(){
 
         List<Dealership> dealershipList = dCentral.getDealershipList();
 

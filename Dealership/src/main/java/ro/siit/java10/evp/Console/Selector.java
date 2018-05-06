@@ -7,8 +7,7 @@ import java.util.List;
 
 
 /**
- * Takes a string list
- * Outputs a numbered list and takes a selection using consIO
+ * Takes a list of strings outputs it numbered one per line and takes a selection using ConsoleIO
  */
 public class Selector {
 

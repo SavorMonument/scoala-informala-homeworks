@@ -23,26 +23,29 @@ public class LoginMenu extends Menu {
 
         int option = doSelection();
 
-        if (option == -1){
-            return THIS_MENU_TYPE;
-        }
-
-        if (option == 0){
-
-            Client client;
-            if (null != (client = consIO.readClient())){
-                currentClient = client;
-                dCentral.addClient(client);
-            }
-        }
-        if (option == 1){
-            if (!tryLoggingExistingAccount()) {
-                consIO.printString("No account by that name\n\n");
+        switch (option){
+            case (-1):
                 return THIS_MENU_TYPE;
-            }
+            case (0):
+                Client client;
+                if (null != (client = tryReadingClient())){
+                    currentClient = client;
+                    dCentral.addClient(client);
+                } else
+                    return THIS_MENU_TYPE;
+                break;
+            case (1):
+                if (!tryLoggingExistingAccount()) {
+                    consIO.printString("No account by that name\n\n");
+                    return THIS_MENU_TYPE;
+                }
+                break;
         }
 
-        return callingMenu;
+        if (isModLogged())
+            return MenuTypes.MAIN_MOD;
+        else
+            return callingMenu;
     }
 
     private int doSelection(){
@@ -64,10 +67,36 @@ public class LoginMenu extends Menu {
         consIO.printString("LastName: ");
         String lastName = consIO.readString();
 
-        if (null != (currentClient = dCentral.getClient(firstName, lastName))) {
-            return true;
-        }
-
-        return false;
+        return (null != (currentClient = dCentral.getClient(firstName, lastName)));
     }
+
+    private Client tryReadingClient(){
+
+        String input;
+        String firstName;
+        String lastName;
+
+        consIO.printString("First Name: ");
+        if (null == (firstName = consIO.readString()))
+            return null;
+
+        consIO.printString("Last Name: ");
+        if (null == (lastName = consIO.readString()))
+            return null;
+
+        Client underConstruction = new Client(firstName, lastName);
+
+        consIO.printString("Phone number: ");
+        if (null == (input = consIO.readString()))
+            return null;
+        underConstruction.setTelephone(input);
+
+        consIO.printString("Address: ");
+        if (null == (input = consIO.readString()))
+            return null;
+        underConstruction.setAddress(input);
+
+        return underConstruction;
+    }
+
 }

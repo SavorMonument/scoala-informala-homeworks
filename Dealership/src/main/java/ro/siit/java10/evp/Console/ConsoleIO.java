@@ -52,16 +52,26 @@ public class ConsoleIO {
         if (input.isEmpty()){
             printString("Can't be empty, 1 to try again\n");
 
-            String option = Stdin.nextLine();
-            if (isInt(option)){
-                if (Integer.parseInt(option) == 1){
-                    return readString();
-                }
-            }
-            return null;
+            if (tryAgain())
+                return readString();
+            else
+                return null;
         }
 
         return input;
+    }
+
+    private boolean tryAgain(){
+
+        String option = Stdin.nextLine();
+
+        try{
+            if(Integer.parseInt(option) == 1)
+                return true;
+
+        } catch (NumberFormatException e){ }
+
+        return false;
     }
 
     public void getKeyboardInput(){
@@ -149,68 +159,6 @@ public class ConsoleIO {
             return null;
 
         return (new Dealership(name, location));
-    }
-
-//    public Vehicle readVehicle(){
-//
-//        String strInput;
-//        int intInput;
-//
-//        Vehicle inConstruction = new Vehicle();
-//
-//        System.out.print("Vehicle name: ");
-//        if (null == (strInput = readString()))
-//            return null;
-//        inConstruction.setModel(strInput);
-//
-//        System.out.print("Vehicle production year: ");
-//        if (-1 == (intInput = readCondInt(1900, 2018)))
-//            return null;
-//        inConstruction.setProductionYear(intInput);
-//
-//        System.out.print("Vehicle energy consumption KW/Km: ");
-//        if (-1 == (intInput = readCondInt(1, 1000)))
-//            return null;
-//        inConstruction.setEnergyConsumptionKWperKm(intInput);
-//
-//        System.out.print("Vehicle has fast charging(1 or 0): ");
-//        if (-1 == (intInput = readCondInt(0, 1)))
-//            return null;
-//        if (intInput == 1){
-//            inConstruction.setFastCharging(true);
-//        } else
-//            inConstruction.setFastCharging(false);
-//
-//        return inConstruction;
-//    }
-
-    public Client readClient(){
-
-        String input;
-        String firstname;
-        String lastName;
-
-        printString("First Name: ");
-        if (null == (firstname = readString()))
-            return null;
-
-        printString("Last Name: ");
-        if (null == (lastName = readString()))
-            return null;
-
-        Client underConstruction = new Client(firstname, lastName);
-
-        printString("Phone number: ");
-        if (null == (input = readString()))
-            return null;
-        underConstruction.setTelephone(input);
-
-        printString("Address: ");
-        if (null == (input = readString()))
-            return null;
-        underConstruction.setAddress(input);
-
-        return underConstruction;
     }
 
     public void close(){

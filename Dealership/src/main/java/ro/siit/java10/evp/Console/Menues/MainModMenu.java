@@ -29,7 +29,7 @@ public class MainModMenu extends Menu {
             case (3):
                 //return MenuTypes.REMOVE_DEALERSHIP;
             case (4):
-                //return MenuTypes.LOGIN;
+                return MenuTypes.MY_ACCOUNT;
         }
 
         return MenuTypes.MAIN_MOD;

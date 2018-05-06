@@ -1,15 +1,15 @@
-package ro.siit.java10.evp.Console.Menues;
+package ro.siit.java10.evp.UI.Menues;
 
-import ro.siit.java10.evp.Console.Selector;
+import ro.siit.java10.evp.UI.Selector;
 import ro.siit.java10.evp.Dealership;
 import ro.siit.java10.evp.VehicleSorter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerDealershipClientMenu extends Menu{
+public class PerDealershipClientMenu extends PerDealershipMenuFactory {
 
-    private static final MenuTypes THIS_MENU_TYPE = MenuTypes.PER_DEALERSHIP_CLIENT;
+    private static final MenuTypes THIS_MENU_TYPE = MenuTypes.PER_DEALERSHIP;
 
     private Dealership deals;
     private MenuTypes callingMenu;

@@ -15,6 +15,7 @@ public class DealershipsCentral{
     }
 
     public void saveData(){
+
         DealershipSaver dealerSaver = new CsvDealershipSaver(new File("./ProgramData/dealerships.csv"));
         ClientSerializer clientSaver = new ObjectClientSerializer(new File("./ProgramData/Binary_Clients.dat"));
 

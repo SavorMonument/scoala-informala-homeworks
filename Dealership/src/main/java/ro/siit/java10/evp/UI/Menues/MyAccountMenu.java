@@ -1,6 +1,6 @@
-package ro.siit.java10.evp.Console.Menues;
+package ro.siit.java10.evp.UI.Menues;
 
-import ro.siit.java10.evp.Console.Selector;
+import ro.siit.java10.evp.UI.Selector;
 
 import java.util.ArrayList;
 import java.util.List;

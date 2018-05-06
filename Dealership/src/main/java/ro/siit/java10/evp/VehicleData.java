@@ -83,16 +83,16 @@ public class VehicleData {
                         representation.append("It does not have fast charging   ");
                     break;
                 case MOTOR:
-                    representation.append(String.format("\nMotor: %s\n", motor.toString()));
+                    representation.append(String.format("\n\nMotor: %s\n", motor.toString()));
                     break;
                 case BATTERY:
-                    representation.append(String.format("\nBattery: %s\n", battery.toString()));
+                    representation.append(String.format("Battery: %s\n", battery.toString()));
                     break;
                 case PRICE:
                     representation.append(String.format("\nPrice: %s\n", price));
                     break;
                 case STOCK:
-                    representation.append(String.format("\nAvailable: %s\n", stock));
+                    representation.append(String.format("Available: %s\n", stock));
                     break;
             }
         }

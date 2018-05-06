@@ -1,4 +1,4 @@
-package ro.siit.java10.evp.Console;
+package ro.siit.java10.evp.UI;
 
 import ro.siit.java10.evp.VehicleData;
 
@@ -30,7 +30,10 @@ public class Selector {
 
         int option = consIO.readCondInt(0, list.size() - 1);
 
-        return option;
+        if (option == -1)
+            return printListAndGetOption();
+        else
+            return option;
     }
 
     public static <T> List<String> listToStringList(List<T> list){

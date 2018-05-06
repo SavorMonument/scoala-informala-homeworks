@@ -1,6 +1,6 @@
-package ro.siit.java10.evp.Console.Menues;
+package ro.siit.java10.evp.UI.Menues;
 
-import ro.siit.java10.evp.Console.Selector;
+import ro.siit.java10.evp.UI.Selector;
 import ro.siit.java10.evp.VehicleData.Options;
 import ro.siit.java10.evp.Dealership;
 import ro.siit.java10.evp.VehicleData;
@@ -8,13 +8,13 @@ import ro.siit.java10.evp.VehicleData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerVehicleMenu extends Menu {
+public class PerVehicleClientMenu extends PerVehicleMenuFactory {
 
     private MenuTypes callingMenu;
     private Dealership deals;
     private VehicleData vehicleD;
 
-    public PerVehicleMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
+    public PerVehicleClientMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
 
         this.deals = deals;
         this.vehicleD = vehicleD;
@@ -29,14 +29,15 @@ public class PerVehicleMenu extends Menu {
 
         int option = doSelection();
 
-        if (option == 0){
-            MenuTypes.SELL.setMenu(new SellMenu(MenuTypes.INDIVIDUAL_VEHICLE, deals, vehicleD));
-            return MenuTypes.SELL;
-        } else
-            if (option == 1)
+        switch (option){
+            case (0):
+                MenuTypes.SELL.setMenu(new SellMenu(callingMenu, deals, vehicleD));
+                return MenuTypes.SELL;
+            case (1):
                 return callingMenu;
+        }
 
-        return MenuTypes.INDIVIDUAL_VEHICLE;
+        return MenuTypes.PER_VEHICLE;
     }
 
     private int doSelection(){

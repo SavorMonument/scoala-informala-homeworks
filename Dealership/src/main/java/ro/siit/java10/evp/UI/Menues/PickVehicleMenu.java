@@ -1,6 +1,6 @@
-package ro.siit.java10.evp.Console.Menues;
+package ro.siit.java10.evp.UI.Menues;
 
-import ro.siit.java10.evp.Console.Selector;
+import ro.siit.java10.evp.UI.Selector;
 import ro.siit.java10.evp.Dealership;
 import ro.siit.java10.evp.VehicleData;
 import ro.siit.java10.evp.VehicleSorter;
@@ -15,6 +15,13 @@ public abstract class PickVehicleMenu extends Menu {
     private MenuTypes callingMenu;
 
     public enum VehicleListType{
+
+        ALL{
+            @Override
+            public PickVehicleMenu getMenuInstance(Dealership deals, MenuTypes callingMenu) {
+                return new PickVehicleAllList(deals, callingMenu);
+            }
+        },
         STOCK{
             @Override
             public PickVehicleMenu getMenuInstance(Dealership deals, MenuTypes callingMenu) {
@@ -54,26 +61,48 @@ public abstract class PickVehicleMenu extends Menu {
         this.callingMenu = callingMenu;
     }
 
-    protected MenuTypes resolveOption(List<VehicleData> vehicleList, List<String> strRepresList){
+    protected MenuTypes makePick(List<VehicleData> vehicleList, List<String> vehicleStrRepres){
 
-        strRepresList.add("back");
-        Selector selector = new Selector(consIO, strRepresList);
+        if (vehicleList.size() == 0){
+            consIO.printString("No vehicles by that description\n\n");
+            return callingMenu;
+        }
 
-        int option = selector.printListAndGetOption();
-
-        if (option == -1)
-            return MenuTypes.PICK_VEHICLE;
-
+        int option = doSelection(vehicleStrRepres);
         if (option == vehicleList.size())
             return callingMenu;
 
+        MenuTypes.PER_VEHICLE.setMenu(PerVehicleMenuFactory.getVehicleMenu(callingMenu, deals,
+                vehicleList.get(option)));
+        return MenuTypes.PER_VEHICLE;
+    }
 
-        MenuTypes.INDIVIDUAL_VEHICLE.setMenu(new PerVehicleMenu(
-                    MenuTypes.PICK_VEHICLE, deals, vehicleList.get(option)));
+    private int doSelection(List<String> vehicleStrRepres){
 
-        return MenuTypes.INDIVIDUAL_VEHICLE;
+        vehicleStrRepres.add("Back");
+        Selector selector = new Selector(consIO, vehicleStrRepres);
 
+        return selector.printListAndGetOption();
+    }
 
+    public static class PickVehicleAllList extends PickVehicleMenu {
+
+        public PickVehicleAllList(Dealership deals, MenuTypes callingMenu) {
+
+            super(deals, callingMenu);
+        }
+
+        @Override
+        public MenuTypes resolveMenuAndGetNextType() {
+
+            VehicleSorter vs = deals.getVehicleSorter();
+            List<VehicleData> vehicleList = vs.getVehicleList(SortingOptions.NORMAL);
+
+            List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
+                    VehicleData.Options.YEAR);
+
+            return makePick(vehicleList, vehicleStr);
+        }
     }
 
     public static class PickVehicleStockList extends PickVehicleMenu {
@@ -92,7 +121,7 @@ public abstract class PickVehicleMenu extends Menu {
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
                     VehicleData.Options.YEAR);
 
-            return resolveOption(vehicleList, vehicleStr);
+            return makePick(vehicleList, vehicleStr);
         }
     }
 
@@ -113,7 +142,7 @@ public abstract class PickVehicleMenu extends Menu {
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
                     VehicleData.Options.YEAR, VehicleData.Options.FAST_CHARGING);
 
-            return resolveOption(vehicleList, vehicleStr);
+            return makePick(vehicleList, vehicleStr);
         }
     }
 
@@ -133,7 +162,7 @@ public abstract class PickVehicleMenu extends Menu {
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
                     VehicleData.Options.YEAR, VehicleData.Options.MOTOR);
 
-            return resolveOption(vehicleList, vehicleStr);
+            return makePick(vehicleList, vehicleStr);
         }
     }
 
@@ -152,7 +181,7 @@ public abstract class PickVehicleMenu extends Menu {
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
                     VehicleData.Options.YEAR, VehicleData.Options.PRICE);
 
-            return resolveOption(vehicleList, vehicleStr);
+            return makePick(vehicleList, vehicleStr);
         }
     }
 
@@ -171,7 +200,7 @@ public abstract class PickVehicleMenu extends Menu {
             List<String> vehicleStr = Selector.vehicleDataListToStringList(vehicleList,
                     VehicleData.Options.YEAR, VehicleData.Options.RANGE_PER_CHARGE);
 
-            return resolveOption(vehicleList, vehicleStr);
+            return makePick(vehicleList, vehicleStr);
         }
     }
 }

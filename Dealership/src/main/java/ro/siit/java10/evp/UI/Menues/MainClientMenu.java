@@ -1,6 +1,6 @@
-package ro.siit.java10.evp.Console.Menues;
+package ro.siit.java10.evp.UI.Menues;
 
-import ro.siit.java10.evp.Console.Selector;
+import ro.siit.java10.evp.UI.Selector;
 import ro.siit.java10.evp.*;
 import ro.siit.java10.evp.VehicleSorter.FilterOptions;
 import ro.siit.java10.evp.VehicleSorter.SortingOptions;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MainClientMenu extends Menu {
 
-    private static final MenuTypes THIS_MENU_TYPE = MenuTypes.MAIN_CLIENT;
+    private static final MenuTypes THIS_MENU_TYPE = MenuTypes.MAIN_MENU;
 
     @Override
     public MenuTypes resolveMenuAndGetNextType() {

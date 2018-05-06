@@ -31,7 +31,7 @@ public class Dealership {
         assert (null != vehicleD);
 
         if (!isValidVehicleData(vehicleD))
-            throw new IllegalArgumentException("Invalid vehicle" + vehicleD.stringRepresentation());
+            throw new IllegalArgumentException("Invalid vehicle: " + vehicleD.stringRepresentation());
 
         Vehicle vehicle = vehicleD.buildVehicle();
 
@@ -67,26 +67,41 @@ public class Dealership {
         return -1;
     }
 
+    public void setVehicleStock(int hash, int amount){
+
+        int pos = getVehicleLocationInStock(hash);
+
+        stock.get(pos).setAmount(amount);
+    }
+
     public void removeVehicle(int hash){
 
-        for(int i = 0; i < stock.size(); i++){
-
-            if (stock.get(i).getVehicle().hashCode() == hash){
-                stock.remove(i);
-                return;
-            }
-        }
+        stock.remove(getVehicleLocationInStock(hash));
     }
 
     public int getVehicleStockNumber(int hash){
 
-        for (Stock instance : stock){
+        int pos;
 
-            if (instance.getVehicle().hashCode() == hash)
-                return instance.getAmount();
+        try{
+            pos = getVehicleLocationInStock(hash);
+        }catch (IllegalArgumentException e){
+            return 0;
         }
 
-        return 0;
+        return stock.get(pos).getAmount();
+    }
+
+    private int getVehicleLocationInStock(int hash){
+
+        for(int i = 0; i < stock.size(); i++){
+
+            if (stock.get(i).getVehicle().hashCode() == hash){
+                return i;
+            }
+        }
+
+        throw new IllegalArgumentException("No vehicle at that hash");
     }
 
     public VehicleSorter getVehicleSorter(){

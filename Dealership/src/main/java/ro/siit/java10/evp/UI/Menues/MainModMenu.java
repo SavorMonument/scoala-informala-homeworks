@@ -1,6 +1,6 @@
-package ro.siit.java10.evp.Console.Menues;
+package ro.siit.java10.evp.UI.Menues;
 
-import ro.siit.java10.evp.Console.Selector;
+import ro.siit.java10.evp.UI.Selector;
 import ro.siit.java10.evp.Dealership;
 import ro.siit.java10.evp.VehicleData;
 import ro.siit.java10.evp.VehicleSorter;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainModMenu extends Menu {
+
+    private static final MenuTypes THIS_MENU_TYPE = MenuTypes.MAIN_MENU;
 
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
@@ -22,17 +24,19 @@ public class MainModMenu extends Menu {
                 printAllDealershipsVehicleList();
                 break;
             case (1):
-                MenuTypes.PICK_DEALERSHIP.setMenu(new PickDealershipMenu(MenuTypes.MAIN_MOD));
+                MenuTypes.PICK_DEALERSHIP.setMenu(new PickDealershipMenu(THIS_MENU_TYPE));
                 return MenuTypes.PICK_DEALERSHIP;
             case (2):
-                //return MenuTypes.ADD_DEALERSHIP;
+                MenuTypes.ADD_DEALERSHIP.setMenu(new AddDealershipMenu(THIS_MENU_TYPE));
+                return MenuTypes.ADD_DEALERSHIP;
             case (3):
-                //return MenuTypes.REMOVE_DEALERSHIP;
+                MenuTypes.REMOVE_DEALERSHIP.setMenu(new RemoveDealershipMenu(THIS_MENU_TYPE));
+                return MenuTypes.REMOVE_DEALERSHIP;
             case (4):
                 return MenuTypes.MY_ACCOUNT;
         }
 
-        return MenuTypes.MAIN_MOD;
+        return THIS_MENU_TYPE;
     }
 
     private int doSelection(){

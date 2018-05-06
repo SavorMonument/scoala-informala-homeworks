@@ -1,6 +1,6 @@
-package ro.siit.java10.evp.Console.Menues;
+package ro.siit.java10.evp.UI.Menues;
 
-import ro.siit.java10.evp.Console.Selector;
+import ro.siit.java10.evp.UI.Selector;
 import ro.siit.java10.evp.Dealership;
 import ro.siit.java10.evp.VehicleData;
 
@@ -32,10 +32,6 @@ public class SellMenu extends Menu {
 
         int option = doSelection();
 
-        if (option == -1){
-            return THIS_MENU_TYPE;
-        }
-
         boolean successful = false;
 
         if (option == 0) {
@@ -47,7 +43,7 @@ public class SellMenu extends Menu {
 
         if (successful)
             consIO.printString("Congratulations!! You can see your purchase in your account" +
-                    "(Not yet implemented)\n");
+                    "(Not yet implemented)\n\n");
         else
             consIO.printString("Something went wrong, Please try again\n");
 

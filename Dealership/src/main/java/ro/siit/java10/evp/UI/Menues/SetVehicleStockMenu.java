@@ -5,12 +5,12 @@ import ro.siit.java10.evp.VehicleData;
 
 public class SetVehicleStockMenu extends Menu {
 
-    private MenuTypes callingMenu;
     private VehicleData vehicleD;
     private Dealership deals;
 
-    public SetVehicleStockMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
-        this.callingMenu = callingMenu;
+    protected SetVehicleStockMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
+
+        super(callingMenu);
         this.vehicleD = vehicleD;
         this.deals = deals;
     }

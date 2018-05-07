@@ -174,7 +174,7 @@ public class DealershipTest {
         VehicleData alreadyAddedVehicle = oneDealsVehicleList.get(1);
         Client testClient = new Client("Ale", "Zar");
 
-        oneDeals.makeSell(alreadyAddedVehicle.HASH, testClient);
+        oneDeals.tryMakeSell(alreadyAddedVehicle.HASH, testClient);
 
         assertEquals(1, oneDeals.getInvoiceList(testClient).size());
     }
@@ -186,7 +186,7 @@ public class DealershipTest {
         Client testClient = new Client("Ale", "Zar");
         testClient.setCredit(10000);
 
-        oneDeals.makeSell(alreadyAddedVehicle.HASH, testClient);
+        oneDeals.tryMakeSell(alreadyAddedVehicle.HASH, testClient);
 
         assertEquals(0, oneDeals.getAmountOfVehiclesInStock(alreadyAddedVehicle.HASH));
     }
@@ -200,7 +200,7 @@ public class DealershipTest {
 
         oneDeals.addVehicle(vehicleD);
 
-        assertFalse(oneDeals.makeSell(vehicleD.buildVehicle().hashCode(), testClient));
+        assertFalse(oneDeals.tryMakeSell(vehicleD.buildVehicle().hashCode(), testClient));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -209,7 +209,7 @@ public class DealershipTest {
         Client testClient = new Client("Ale", "Zar");
         testClient.setCredit(10000);
 
-        oneDeals.makeSell(0, testClient);
+        oneDeals.tryMakeSell(0, testClient);
     }
 
     @Test
@@ -221,7 +221,7 @@ public class DealershipTest {
 
         oneDeals.addVehicle(vehicleD);
 
-        assertTrue(oneDeals.makeGreenBonusSell(vehicleD.buildVehicle().hashCode(), testClient));
+        assertTrue(oneDeals.tryMakeGreenBonusSell(vehicleD.buildVehicle().hashCode(), testClient));
 
     }
 
@@ -234,7 +234,7 @@ public class DealershipTest {
 
         oneDeals.addVehicle(vehicleD);
 
-        assertFalse(oneDeals.makeGreenBonusSell(vehicleD.buildVehicle().hashCode(), testClient));
+        assertFalse(oneDeals.tryMakeGreenBonusSell(vehicleD.buildVehicle().hashCode(), testClient));
 
     }
 }

@@ -6,13 +6,9 @@ import java.util.List;
 
 public class PickDealershipMenu extends Menu {
 
-    private static final MenuTypes THIS_MENU_TYPE = MenuTypes.PICK_DEALERSHIP;
+    protected PickDealershipMenu(MenuTypes callingMenu) {
 
-    private MenuTypes callingMenu;
-
-    public PickDealershipMenu(MenuTypes callingMenu) {
-
-        this.callingMenu = callingMenu;
+        super(callingMenu);
     }
 
     @Override

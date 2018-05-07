@@ -1,17 +1,13 @@
 package ro.siit.java10.evp.UI.Menues;
 
 import ro.siit.java10.evp.Dealership;
-import ro.siit.java10.evp.UI.Selector;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddDealershipMenu extends Menu {
 
-    private MenuTypes callingMenu;
+    protected AddDealershipMenu(MenuTypes callingMenu) {
 
-    public AddDealershipMenu(MenuTypes callingMenu) {
-        this.callingMenu = callingMenu;
+        super(callingMenu);
     }
 
     @Override

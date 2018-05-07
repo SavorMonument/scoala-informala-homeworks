@@ -2,7 +2,6 @@ package ro.siit.java10.evp.UI.Menues;
 
 import ro.siit.java10.evp.*;
 import ro.siit.java10.evp.UI.Selector;
-import ro.siit.java10.evp.VehicleData.Options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +10,11 @@ public class PerDealershipModMenu extends PerDealershipMenuFactory {
 
     private static final MenuTypes THIS_MENU_TYPE = MenuTypes.PER_DEALERSHIP;
 
-    private MenuTypes callingMenu;
     private Dealership deals;
 
-    public PerDealershipModMenu(MenuTypes callingMenu, Dealership deals) {
+    protected PerDealershipModMenu(MenuTypes callingMenu, Dealership deals) {
 
-        this.callingMenu = callingMenu;
+        super(callingMenu);
         this.deals = deals;
     }
 
@@ -29,7 +27,8 @@ public class PerDealershipModMenu extends PerDealershipMenuFactory {
 
         switch (option) {
             case (0):
-                MenuTypes.PICK_VEHICLE.setMenu(new PickVehicleMenu.PickVehicleAllList(deals, THIS_MENU_TYPE));
+                MenuTypes.PICK_VEHICLE.setMenu(PickVehicleMenu.PickVehicleListType.ALL
+                        .getMenuInstance(deals, THIS_MENU_TYPE));
                 return MenuTypes.PICK_VEHICLE;
             case (1):
                 MenuTypes.ADD_VEHICLE.setMenu(new AddVehicleMenu(THIS_MENU_TYPE, deals));

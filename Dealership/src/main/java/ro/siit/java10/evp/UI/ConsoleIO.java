@@ -5,6 +5,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ *  Basically a wrapper for a BufferedReader and BufferedWriter with some utility methods
+ */
 public class ConsoleIO {
 
     private BufferedWriter bWriter;

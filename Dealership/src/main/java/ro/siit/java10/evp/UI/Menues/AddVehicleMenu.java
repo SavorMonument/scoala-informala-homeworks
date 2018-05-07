@@ -4,11 +4,11 @@ import ro.siit.java10.evp.*;
 
 public class AddVehicleMenu extends Menu {
 
-    private MenuTypes callingMenu;
     private Dealership deals;
 
-    public AddVehicleMenu(MenuTypes callingMenu, Dealership deals) {
-        this.callingMenu = callingMenu;
+    protected AddVehicleMenu(MenuTypes callingMenu, Dealership deals) {
+
+        super(callingMenu);
         this.deals = deals;
     }
 

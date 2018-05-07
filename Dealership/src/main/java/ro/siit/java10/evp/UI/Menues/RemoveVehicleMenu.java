@@ -9,12 +9,12 @@ import java.util.List;
 
 public class RemoveVehicleMenu extends Menu {
 
-    private MenuTypes callingMenu;
     private VehicleData vehicleD;
     private Dealership deals;
 
-    public RemoveVehicleMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
-        this.callingMenu = callingMenu;
+    protected RemoveVehicleMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
+
+        super(callingMenu);
         this.vehicleD = vehicleD;
         this.deals = deals;
     }

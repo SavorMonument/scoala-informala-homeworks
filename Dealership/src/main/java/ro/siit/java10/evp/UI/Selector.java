@@ -48,8 +48,7 @@ public class Selector {
         return strList;
     }
 
-    public static List<String> vehicleDataListToStringList(List<VehicleData> list,
-                                                           VehicleData.Options... options){
+    public static List<String> vehicleDataListToStringList(List<VehicleData> list, VehicleData.Options... options){
 
         List<String> strList = new ArrayList<>();
 

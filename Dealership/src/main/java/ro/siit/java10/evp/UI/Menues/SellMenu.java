@@ -11,13 +11,12 @@ public class SellMenu extends Menu {
 
     private static final MenuTypes THIS_MENU_TYPE = MenuTypes.SELL;
 
-    private MenuTypes callingMenu;
     private Dealership deals;
     private VehicleData vehicleD;
 
-    public SellMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
+    protected SellMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
 
-        this.callingMenu = callingMenu;
+        super(callingMenu);
         this.deals = deals;
         this.vehicleD = vehicleD;
     }
@@ -25,7 +24,7 @@ public class SellMenu extends Menu {
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
 
-        if (!isLoggedIn()) {
+        if (isNotLoggedIn()) {
             MenuTypes.LOGIN.setMenu(new LoginMenu(THIS_MENU_TYPE));
             return MenuTypes.LOGIN;
         }
@@ -67,7 +66,7 @@ public class SellMenu extends Menu {
 
         if (deals.isGreenBonusAvailable(vehicleD.HASH)){
 
-            return deals.makeGreenBonusSell(vehicleD.HASH, currentClient);
+            return deals.tryMakeGreenBonusSell(vehicleD.HASH, currentClient);
 
         } else{
             consIO.printString("No GreenBonus for you  ");
@@ -79,7 +78,7 @@ public class SellMenu extends Menu {
     private boolean tryNormalSell() {
         assert (null != currentClient);
 
-        return deals.makeSell(vehicleD.HASH, currentClient);
+        return deals.tryMakeSell(vehicleD.HASH, currentClient);
     }
 
 }

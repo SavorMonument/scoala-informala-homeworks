@@ -140,19 +140,25 @@ public class Dealership {
         return false;
     }
 
-    public boolean makeGreenBonusSell(int hash, Client buyer){
+    public boolean tryMakeGreenBonusSell(int hash, Client buyer){
 
         if (isGreenBonusAvailable(hash)) {
-            return (makeSell(hash, buyer));
+            buyer.setCredit(buyer.getCredit() + GreenBonus.getBonusAmount());
+
+            if (tryMakeSell(hash, buyer)) {
+                GreenBonus.subtractMoneyFromBudget();
+                return true;
+            }
+            buyer.setCredit(buyer.getCredit() - GreenBonus.getBonusAmount());
         }
 
         return false;
     }
 
-    public boolean makeSell(int hash, Client buyer){
+    public boolean tryMakeSell(int hash, Client buyer){
         assert  (null != buyer);
 
-        if (buyer.getCredit() < getVehiclePrice(hash))
+        if (buyer.getCredit() < getVehiclePrice(hash) || (getAmountOfVehiclesInStock(hash) == 0))
             return false;
 
         Stock vehicleStock = stock.get(getVehicleLocationInStock(hash));
@@ -161,8 +167,6 @@ public class Dealership {
         Invoice invoice = new Invoice(buyer, vehicleStock.getVehicle(), vehicleStock.getPrice());
         addInvoice(invoice);
         vehicleStock.decreaseAmount();
-        GreenBonus.subtractMoneyFromBudget();
-        GreenBonus.addCompletedInvoice(invoice);
 
         return (true);
 

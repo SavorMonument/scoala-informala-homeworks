@@ -4,6 +4,11 @@ import ro.siit.java10.evp.Dealership;
 
 public abstract class PerDealershipMenuFactory extends Menu {
 
+    protected PerDealershipMenuFactory(MenuTypes callingMenu) {
+
+        super(callingMenu);
+    }
+
     public static PerDealershipMenuFactory getDealershipMenu(MenuTypes callingMenu, Dealership deal){
 
         if (isModLogged())

@@ -9,15 +9,14 @@ import java.util.List;
 
 public class PerVehicleModMenu extends PerVehicleMenuFactory {
 
-    private MenuTypes callingMenu;
     private Dealership deals;
     private VehicleData vehicleD;
 
-    public PerVehicleModMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
+    protected PerVehicleModMenu(MenuTypes callingMenu, Dealership deals, VehicleData vehicleD) {
 
+        super(callingMenu);
         this.deals = deals;
         this.vehicleD = vehicleD;
-        this.callingMenu = callingMenu;
     }
 
     @Override

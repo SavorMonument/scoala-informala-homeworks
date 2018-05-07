@@ -12,9 +12,14 @@ import java.util.List;
 public abstract class PickVehicleMenu extends Menu {
 
     protected Dealership deals;
-    private MenuTypes callingMenu;
 
-    public enum VehicleListType{
+    private PickVehicleMenu(Dealership deals, MenuTypes callingMenu) {
+
+        super(callingMenu);
+        this.deals = deals;
+    }
+
+    public enum PickVehicleListType {
 
         ALL{
             @Override
@@ -56,11 +61,6 @@ public abstract class PickVehicleMenu extends Menu {
         public abstract PickVehicleMenu getMenuInstance(Dealership deals, MenuTypes callingMenu);
     }
 
-    private PickVehicleMenu(Dealership deals, MenuTypes callingMenu) {
-        this.deals = deals;
-        this.callingMenu = callingMenu;
-    }
-
     protected MenuTypes makePick(List<VehicleData> vehicleList, List<String> vehicleStrRepres){
 
         if (vehicleList.size() == 0){
@@ -85,7 +85,7 @@ public abstract class PickVehicleMenu extends Menu {
         return selector.printListAndGetOption();
     }
 
-    public static class PickVehicleAllList extends PickVehicleMenu {
+    private static class PickVehicleAllList extends PickVehicleMenu {
 
         public PickVehicleAllList(Dealership deals, MenuTypes callingMenu) {
 
@@ -105,7 +105,7 @@ public abstract class PickVehicleMenu extends Menu {
         }
     }
 
-    public static class PickVehicleStockList extends PickVehicleMenu {
+    private static class PickVehicleStockList extends PickVehicleMenu {
 
         public PickVehicleStockList(Dealership deals, MenuTypes callingMenu) {
 
@@ -125,7 +125,7 @@ public abstract class PickVehicleMenu extends Menu {
         }
     }
 
-    public static class PickVehicleFastChargingList extends PickVehicleMenu {
+    private static class PickVehicleFastChargingList extends PickVehicleMenu {
 
         public PickVehicleFastChargingList(Dealership deals, MenuTypes callingMenu) {
 
@@ -146,7 +146,7 @@ public abstract class PickVehicleMenu extends Menu {
         }
     }
 
-    public static class PickVehicleHorsepowerList extends PickVehicleMenu {
+    private static class PickVehicleHorsepowerList extends PickVehicleMenu {
 
         public PickVehicleHorsepowerList(Dealership deals, MenuTypes callingMenu) {
 
@@ -166,7 +166,7 @@ public abstract class PickVehicleMenu extends Menu {
         }
     }
 
-    public static class PickVehiclePriceList extends PickVehicleMenu {
+    private static class PickVehiclePriceList extends PickVehicleMenu {
 
         public PickVehiclePriceList(Dealership deals, MenuTypes callingMenu) {
             super(deals, callingMenu);
@@ -185,7 +185,7 @@ public abstract class PickVehicleMenu extends Menu {
         }
     }
 
-    public static class PickVehicleRangeList extends PickVehicleMenu {
+    private static class PickVehicleRangeList extends PickVehicleMenu {
 
         public PickVehicleRangeList(Dealership deals, MenuTypes callingMenu) {
             super(deals, callingMenu);

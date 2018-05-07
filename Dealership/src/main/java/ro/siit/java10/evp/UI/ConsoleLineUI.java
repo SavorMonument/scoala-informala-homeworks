@@ -1,7 +1,7 @@
 package ro.siit.java10.evp.UI;
 
 import ro.siit.java10.evp.*;
-import ro.siit.java10.evp.UI.Menues.*;
+import ro.siit.java10.evp.UI.Menues.Menu;
 
 import java.io.*;
 
@@ -9,7 +9,6 @@ public class ConsoleLineUI {
 
     private DealershipsCentral dCentral = new DealershipsCentral();
     private ConsoleIO consIO;
-    private Menu.MenuTypes currentMenuType = Menu.MenuTypes.MAIN_MENU;
 
     public ConsoleLineUI() {
 
@@ -31,9 +30,7 @@ public class ConsoleLineUI {
 
     public void Do(){
 
-        Menu menu = currentMenuType.getMenu();
-
-        currentMenuType = menu.resolveMenuAndGetNextType();
+        Menu.resolveMenuInstance();
 
         dCentral.saveData();
     }

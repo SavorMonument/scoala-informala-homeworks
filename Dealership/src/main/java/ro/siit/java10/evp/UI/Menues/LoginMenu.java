@@ -10,11 +10,9 @@ public class LoginMenu extends Menu {
 
     private static final MenuTypes THIS_MENU_TYPE = MenuTypes.LOGIN;
 
-    private MenuTypes callingMenu;
+    protected LoginMenu(MenuTypes callingMenu) {
 
-    public LoginMenu(MenuTypes callingMenu) {
-
-        this.callingMenu = callingMenu;
+        super(callingMenu);
     }
 
     @Override

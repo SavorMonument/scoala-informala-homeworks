@@ -12,6 +12,11 @@ public class MainClientMenu extends Menu {
 
     private static final MenuTypes THIS_MENU_TYPE = MenuTypes.MAIN_MENU;
 
+    protected MainClientMenu() {
+
+        super(THIS_MENU_TYPE);
+    }
+
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
 

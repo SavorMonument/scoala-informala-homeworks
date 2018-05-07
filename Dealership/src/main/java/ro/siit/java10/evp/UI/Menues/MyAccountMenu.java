@@ -11,17 +11,15 @@ public class MyAccountMenu extends Menu {
 
     private static final MenuTypes THIS_MENU_TYPE = MenuTypes.MY_ACCOUNT;
 
-    private MenuTypes callingMenu;
+    protected MyAccountMenu(MenuTypes callingMenu) {
 
-    public MyAccountMenu(MenuTypes callingMenu) {
-
-        this.callingMenu = callingMenu;
+        super(callingMenu);
     }
 
     @Override
     public MenuTypes resolveMenuAndGetNextType() {
 
-        if (!isLoggedIn()){
+        if (isNotLoggedIn()){
             MenuTypes.LOGIN.setMenu(new LoginMenu(callingMenu));
             return MenuTypes.LOGIN;
         }

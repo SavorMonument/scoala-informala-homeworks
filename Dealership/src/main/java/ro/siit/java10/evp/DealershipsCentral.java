@@ -1,37 +1,40 @@
 package ro.siit.java10.evp;
 
+import ro.siit.java10.evp.Serialization.*;
+
 import java.io.File;
 import java.util.*;
 
 public class DealershipsCentral{
 
-    private ArrayList<Dealership> availableDealerships = new ArrayList<>();
-    private ArrayList<Client> clients = new ArrayList<>();
+    private List<Dealership> availableDealerships = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
 
     public DealershipsCentral() {
     }
 
     public void saveData(){
-        DealershipSerializer dealerSaver = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
+
+        DealershipSaver dealerSaver = new CsvDealershipSaver(new File("./ProgramData/dealerships.csv"));
         ClientSerializer clientSaver = new ObjectClientSerializer(new File("./ProgramData/Binary_Clients.dat"));
 
-        dealerSaver.saveDelearships(availableDealerships);
+        dealerSaver.saveDealerships(availableDealerships);
         clientSaver.saveClients(clients);
     }
 
     public void loadData(){
-        CsvDealershipSerializer dealerLoader = new CsvDealershipSerializer(new File("./ProgramData/dealerships.csv"));
-        CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./ProgramData/clients.csv"));
 
-        availableDealerships = (ArrayList<Dealership>) dealerLoader.loadDealerships();
-        clients = (ArrayList<Client>) clientLoader.loadClients();
+        try {
 
-        //If it can't load for some reason wait for it to print the exception before continuing
-        try{
-            Thread.sleep(1000);
-        } catch (InterruptedException e){
+            CsvDealershipLoader dealerLoader = new CsvDealershipLoader(new File("./ProgramData/dealerships.csv"));
+            CsvClientSerializer clientLoader = new CsvClientSerializer(new File("./ProgramData/clients.csv"));
+
+            availableDealerships = dealerLoader.loadDealerships();
+            clients = clientLoader.loadClients();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     public void addDealership(Dealership newDealership){
@@ -80,50 +83,13 @@ public class DealershipsCentral{
     public Client getClient(String firstName, String lastName){
 
         for (Client instance : clients){
-            if (instance.getFirstName().equals(firstName))
-                if (instance.getLastName().equals(lastName)){
+            if (instance.getFirstName().compareToIgnoreCase(firstName) == 0)
+                if (instance.getLastName().compareToIgnoreCase(lastName) == 0){
                     return instance;
                 }
         }
 
         return null;
-    }
-
-    public boolean isGreenBonusAvailable(Vehicle vehicle){
-
-        if (vehicle.getProductionYear() == Calendar.getInstance().get(Calendar.YEAR)){
-            if (GreenBonus.hasEnoughBudget()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean makeGreenBonusSell(Dealership dealership, Vehicle toSell, Client buyer){
-
-        if (isGreenBonusAvailable(toSell)){
-            return (makeSell(dealership, toSell, buyer));
-        }
-
-        return false;
-    }
-
-    public boolean makeSell(Dealership dealership, Vehicle toSell, Client buyer){
-
-        if ((null == dealership) || (toSell == null))
-            throw new IllegalArgumentException("No null pointer allowed");
-
-        if(dealership.getVehicleAvailability(toSell.hashCode()) > 0){
-            Invoice invoice = new Invoice(buyer, toSell);
-
-            dealership.decreaseStock(toSell.hashCode());
-            dealership.addInvoice(invoice);
-            GreenBonus.addCompletedInvoice(invoice);
-
-            return (true);
-        }
-
-        return (false);
     }
 
 }

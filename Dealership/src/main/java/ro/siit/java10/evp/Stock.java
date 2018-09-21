@@ -17,6 +17,7 @@ public class Stock implements Cloneable{
     }
 
     public Vehicle getVehicle() {
+
         return vehicle;
     }
 
@@ -26,7 +27,7 @@ public class Stock implements Cloneable{
             throw new IllegalArgumentException("Not a valid vehicle");
         }
 
-        this.vehicle = vehicle.clone();
+        this.vehicle = new Vehicle(vehicle);
     }
 
     public void setPrice(float price){
@@ -39,11 +40,22 @@ public class Stock implements Cloneable{
     }
 
     public float getPrice() {
+
         return price;
     }
 
     public int getAmount() {
         return amount;
+    }
+
+    public void addAmount(int amount){
+
+        setAmount(this.amount + amount);
+    }
+
+    public void decreaseAmount(){
+
+        setAmount(amount - 1);
     }
 
     public void setAmount(int amount){
@@ -52,38 +64,5 @@ public class Stock implements Cloneable{
             throw new IllegalArgumentException("Can't have negative stock");
 
         this.amount = amount;
-    }
-
-    public void decreaseAmount(){
-
-        if (amount <= 0)
-            throw new IllegalStateException("Can't have a negative number of vehicles");
-
-        amount--;
-    }
-
-    public Stock clone(){
-
-        Stock underConstruction = new Stock(vehicle.clone(), price);
-
-        underConstruction.setAmount(amount);
-
-        return (underConstruction);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Stock stock = (Stock) o;
-        return Float.compare(stock.price, price) == 0 &&
-                amount == stock.amount &&
-                Objects.equals(vehicle, stock.vehicle);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(vehicle, price, amount);
     }
 }

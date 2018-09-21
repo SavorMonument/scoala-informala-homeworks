@@ -1,4 +1,6 @@
-package ro.siit.java10.evp;
+package ro.siit.java10.evp.Serialization;
+
+import ro.siit.java10.evp.Client;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package ro.siit.java10.evp;
 import java.security.InvalidParameterException;
 import java.util.Objects;
 
-public class Battery implements Cloneable {
+public class Battery {
 
     private String manufacturer = "No manufacturer";
     private String model = "No model";
@@ -17,6 +17,13 @@ public class Battery implements Cloneable {
         this.model = model;
 
         setCapacityKWh(capacity);
+    }
+
+    public Battery(Battery battery){
+
+        this.manufacturer = battery.manufacturer;
+        this.model = battery.model;
+        this.capacityKWh = battery.capacityKWh;
     }
 
     private void setCapacityKWh(int capacityKWh) {
@@ -37,12 +44,6 @@ public class Battery implements Cloneable {
 
     public int getCapacityKWh() {
         return capacityKWh;
-    }
-
-    @Override
-    public Battery clone(){
-
-        return new Battery(manufacturer, model, capacityKWh);
     }
 
     @Override

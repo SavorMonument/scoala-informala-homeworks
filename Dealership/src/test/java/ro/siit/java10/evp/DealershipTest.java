@@ -4,130 +4,237 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class DealershipTest {
 
-    private Dealership one_deals;
-    private ArrayList<Vehicle> vehicles;
+    private Dealership oneDeals;
+    private List<VehicleData> oneDealsVehicleList;
 
     @Before
     public void setUp() {
 
-        one_deals = new Dealership("One Deals", "somewhere");
-        vehicles = new ArrayList<>();
+        oneDeals = new Dealership("One Deals", "somewhere");
+        oneDealsVehicleList = new ArrayList<>();
 
-        vehicles.add(new Vehicle("series 3"));
-        vehicles.add(new Vehicle("Alto"));
-        vehicles.add(new Vehicle("Grand Vitara"));
+        VehicleData genericVehicle = buildGenericVehicleData();
 
-        one_deals.addVehicle(vehicles.get(0), 0.0f);
-        one_deals.addVehicle(vehicles.get(1), 0.0f);
-        one_deals.addVehicle(vehicles.get(2), 0.0f);
+        oneDeals.addVehicle(genericVehicle.model("series 3"));
+        oneDeals.addVehicle(genericVehicle.model("Alto"));
+        oneDeals.addVehicle(genericVehicle.model("Grand Vitara"));
+
+        oneDealsVehicleList = oneDeals.getVehicleSorter().getVehicleList(
+                VehicleSorter.SortingOptions.NORMAL);
 
     }
 
     @After
     public void tearDown() {
 
-        one_deals = null;
-        vehicles = null;
+        oneDeals = null;
+        oneDealsVehicleList = null;
+    }
+
+    private VehicleData buildGenericVehicleData() {
+
+        return new VehicleData().model("Generic").productionYear(1999).energyConsumptionKWperKm(20)
+                .motor(new Motor()).battery(new Battery()).stock(1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addVehicle_priceBelowZero_ExceptionThrown() {
 
-        one_deals.addVehicle(vehicles.get(0), -1);
+        VehicleData genericVehicle = buildGenericVehicleData().price(-1);
+
+        oneDeals.addVehicle(genericVehicle);
+    }
+
+    @Test
+    public void addVehicle() {
+
+        VehicleData vehicleD = buildGenericVehicleData();
+
+        oneDeals.addVehicle(vehicleD);
+
+        assertEquals(1, oneDeals.getAmountOfVehiclesInStock(vehicleD.buildVehicle().hashCode()));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addVehicle_nullVehicle_ExceptionThrown() {
+    public void addVehicle_NegativePrice() {
 
-        one_deals.addVehicle(null, 0);
+        VehicleData vehicleD = buildGenericVehicleData().price(-1);
+
+        oneDeals.addVehicle(vehicleD);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addVehicle_NegativeYear() {
+
+        VehicleData vehicleD = buildGenericVehicleData().productionYear(-1);
+
+        oneDeals.addVehicle(vehicleD);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addVehicle_NullBattery() {
+
+        VehicleData vehicleD = buildGenericVehicleData().battery(null);
+
+        oneDeals.addVehicle(vehicleD);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addVehicle_NullMotor() {
+
+        VehicleData vehicleD = buildGenericVehicleData().motor(null);
+
+        oneDeals.addVehicle(vehicleD);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addVehicle_NegativeStock() {
+
+        VehicleData vehicleD = buildGenericVehicleData().stock(-1);
+
+        oneDeals.addVehicle(vehicleD);
     }
 
     @Test
     public void addVehicle_DuplicateHash() {
 
-        one_deals.addVehicle(vehicles.get(0), 0.0f);
+        VehicleData alreadyAddedVehicle = oneDealsVehicleList.get(0);
 
-        assertEquals(2, one_deals.getVehicleAvailability(vehicles.get(0).hashCode()));
+        oneDeals.addVehicle(alreadyAddedVehicle);
+
+        assertEquals(2, oneDeals.getAmountOfVehiclesInStock(alreadyAddedVehicle.HASH));
     }
 
     @Test
-    public void decreaseStock_ValidHash(){
+    public void getVehicleStockNumber() {
 
-        int vehicleHash = vehicles.get(0).hashCode();
+        VehicleData alreadyAddedVehicle = oneDealsVehicleList.get(0);
 
-        one_deals.decreaseStock(vehicleHash);
+        assertEquals(1, oneDeals.getAmountOfVehiclesInStock(alreadyAddedVehicle.HASH));
+    }
 
-        assertEquals(0, one_deals.getVehicleAvailability(vehicleHash));
+    @Test
+    public void setVehicleStock(){
+
+        VehicleData vehicleD = oneDealsVehicleList.get(0);
+        final int stockAmount = 20;
+
+        oneDeals.setVehicleStock(vehicleD.HASH, stockAmount);
+
+        assertEquals(stockAmount, oneDeals.getAmountOfVehiclesInStock(vehicleD.HASH));
     }
 
     @Test
     public void removeVehicle_validHash() {
 
-        int removedID = vehicles.get(0).hashCode();
-        one_deals.removeVehicle(removedID);
+        VehicleData alreadyAddedVehicle = oneDealsVehicleList.get(0);
+        oneDeals.removeVehicle(alreadyAddedVehicle.HASH);
 
-        assertEquals(0, one_deals.getVehicleAvailability(removedID));
+        assertEquals(0, oneDeals.getAmountOfVehiclesInStock(alreadyAddedVehicle.HASH));
+    }
+
+    @Test
+    public void isGreenBonusAvailable_NewCar() {
+
+        VehicleData vehicleD = buildGenericVehicleData().productionYear(
+                Calendar.getInstance().get(Calendar.YEAR));
+
+        oneDeals.addVehicle(vehicleD);
+
+        assertTrue(oneDeals.isGreenBonusAvailable(vehicleD.buildVehicle().hashCode()));
+    }
+
+    @Test
+    public void isGreenBonusAvailable_OldCar() {
+
+        VehicleData vehicleD = buildGenericVehicleData().productionYear(1999);
+
+        oneDeals.addVehicle(vehicleD);
+
+        assertFalse(oneDeals.isGreenBonusAvailable(vehicleD.buildVehicle().hashCode()));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setStockNumber_NegativeAmount(){
+    public void isGreenBonusAvailable_InvalidHash() {
 
-        int vehicleHash = vehicles.get(0).hashCode();
-
-        one_deals.setStockNumber(vehicleHash, -1);
+        oneDeals.isGreenBonusAvailable(0);
     }
 
     @Test
-    public void setStockNumber_Valid(){
+    public void makeSell_CheckInvoices(){
 
-        int vehicleHash = vehicles.get(0).hashCode();
+        VehicleData alreadyAddedVehicle = oneDealsVehicleList.get(1);
+        Client testClient = new Client("Ale", "Zar");
 
-        one_deals.setStockNumber(vehicleHash, 2);
+        oneDeals.tryMakeSell(alreadyAddedVehicle.HASH, testClient);
 
-        assertEquals(2, one_deals.getVehicleAvailability(vehicleHash));
+        assertEquals(1, oneDeals.getInvoiceList(testClient).size());
+    }
+
+    @Test
+    public void makeSell_CheckStock(){
+
+        VehicleData alreadyAddedVehicle = oneDealsVehicleList.get(1);
+        Client testClient = new Client("Ale", "Zar");
+        testClient.setCredit(10000);
+
+        oneDeals.tryMakeSell(alreadyAddedVehicle.HASH, testClient);
+
+        assertEquals(0, oneDeals.getAmountOfVehiclesInStock(alreadyAddedVehicle.HASH));
+    }
+
+    @Test
+    public void makeSell_ClientNotEnoughCredit() {
+
+        VehicleData vehicleD = buildGenericVehicleData().price(1.0f);
+        Client testClient = new Client("Ale", "Zar");
+        testClient.setCredit(0);
+
+        oneDeals.addVehicle(vehicleD);
+
+        assertFalse(oneDeals.tryMakeSell(vehicleD.buildVehicle().hashCode(), testClient));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getVehiclePrice_invalidHash_ExceptionThrown() {
+    public void makeSell_InvalidHash() {
 
-        one_deals.getVehiclePrice(1);
+        Client testClient = new Client("Ale", "Zar");
+        testClient.setCredit(10000);
+
+        oneDeals.tryMakeSell(0, testClient);
     }
 
     @Test
-    public void getVehiclePrice_validHash() {
+    public void makeGreenBonusSell(){
+        VehicleData vehicleD = buildGenericVehicleData().price(1.0f).productionYear(
+                Calendar.getInstance().get(Calendar.YEAR));
+        Client testClient = new Client("Ale", "Zar");
+        testClient.setCredit(10.0f);
 
-        Vehicle testVehicle = new Vehicle("z");
-        int testPrice = 1298;
+        oneDeals.addVehicle(vehicleD);
 
-        one_deals.addVehicle(testVehicle, testPrice);
+        assertTrue(oneDeals.tryMakeGreenBonusSell(vehicleD.buildVehicle().hashCode(), testClient));
 
-        assertEquals(testPrice, one_deals.getVehiclePrice(testVehicle.hashCode()), 0.1);
     }
 
     @Test
-    public void getVehicleAvailability_validHash() {
+    public void makeGreenBonusSell_WrongCarYear(){
+        VehicleData vehicleD = buildGenericVehicleData().price(1.0f).productionYear(
+                Calendar.getInstance().get(Calendar.YEAR) - 1);
+        Client testClient = new Client("Ale", "Zar");
+        testClient.setCredit(10.0f);
 
-        assertEquals(1, one_deals.getVehicleAvailability(vehicles.get(0).hashCode()));
-    }
+        oneDeals.addVehicle(vehicleD);
 
-    @Test
-    public void getVehicleAvailability_invalidHash(){
+        assertFalse(oneDeals.tryMakeGreenBonusSell(vehicleD.buildVehicle().hashCode(), testClient));
 
-        assertEquals(0, one_deals.getVehicleAvailability(1));
-    }
-
-    @Test
-    public void getVehicleSorter_validStock(){
-
-        VehicleSorter vSorter = one_deals.getVehicleSorter();
-
-        assert( null != vSorter );
     }
 }

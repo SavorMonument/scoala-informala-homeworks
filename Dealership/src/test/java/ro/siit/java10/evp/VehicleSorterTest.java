@@ -1,132 +1,143 @@
 package ro.siit.java10.evp;
 
-import com.sun.javafx.fxml.builder.JavaFXFontBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import ro.siit.java10.evp.VehicleSorter.FilterOptions;
+import ro.siit.java10.evp.VehicleSorter.SortingOptions;
+import ro.siit.java10.evp.Vehicle.VehicleBuilder;
+import java.util.*;
+
+import static junit.framework.TestCase.assertEquals;
 
 public class VehicleSorterTest {
 
-    List<Stock> stocks;
-    VehicleSorter vehicleSorter;
+    private List<VehicleData> vehicleDs;
+    private VehicleSorter vehicleSorter;
 
     @Before
     public void setUp(){
-        stocks = new ArrayList<>();
 
-        stocks.add(new Stock(new Vehicle("Zoro"), 15.0f));
-        stocks.add(new Stock(new Vehicle("Vara"), 16.0f));
-        stocks.add(new Stock(new Vehicle("Miri"), 13.0f));
+        vehicleDs = new ArrayList<>();
 
-        vehicleSorter = new VehicleSorter(stocks);
+        vehicleDs.add(buildGenericVehicleData().model("Zoro").price(15.0f).stock(1));
+        vehicleDs.add(buildGenericVehicleData().model("Vara").price(16.0f).stock(1));
+        vehicleDs.add(buildGenericVehicleData().model("Miri").price(13.0f).stock(1));
+
+        vehicleSorter = new VehicleSorter(vehicleDs);
     }
 
     @After
     public void tearDown(){
 
-        stocks = null;
         vehicleSorter = null;
     }
 
-    @Test
-    public void getAllVehicleList(){
+    private VehicleData buildGenericVehicleData(){
 
-        List<Vehicle> result;
-        List<Vehicle> expected = new ArrayList<>();
-
-        stocks.get(0).decreaseAmount();
-
-        for(Stock instance : stocks){
-            expected.add(instance.getVehicle());
-        }
-
-        result = vehicleSorter.getAllVehicleList();
-
-        assert (expected.equals(result));
+        return new VehicleData().model("Generic").productionYear(1999).energyConsumptionKWperKm(20)
+                .motor(new Motor()).battery(new Battery()).stock(1);
     }
 
     @Test
-    public void getStockVehicleList(){
+    public void normalSort(){
 
-        List<Vehicle> result;
-        List<Vehicle> expected = new ArrayList<>();
+        List<VehicleData> result;
 
-        expected.add(stocks.get(0).getVehicle());
-        expected.add(stocks.get(1).getVehicle());
-        stocks.get(2).decreaseAmount();
-        result = vehicleSorter.getStockVehicleList();
+        result = vehicleSorter.getVehicleList(SortingOptions.NORMAL);
 
-        assert (expected.equals(result));
+        assertEquals (vehicleDs, result);
     }
 
     @Test
-    public void getFastChargingList() {
+    public void priceSort(){
 
-        List<Vehicle> expected = new ArrayList<>();
+        List<VehicleData> result;
+        List<VehicleData> expected = new ArrayList<>();
 
-        stocks.get(1).getVehicle().setFastCharging(true);
-        stocks.get(2).getVehicle().setFastCharging(true);
-        expected.add(stocks.get(1).getVehicle().clone());
-        expected.add(stocks.get(2).getVehicle().clone());
+        expected.add(vehicleDs.get(2));
+        expected.add(vehicleDs.get(0));
+        expected.add(vehicleDs.get(1));
+        result = vehicleSorter.getVehicleList(SortingOptions.PRICE);
 
-        List<Vehicle> result = vehicleSorter.getFastChargingList();
-
-
-        assert(expected.equals(result));
+        assertEquals(expected, result);
     }
 
     @Test
-    public void getSortedPrice() {
+    public void horsepowerSort(){
 
-        List<Vehicle> expected = new ArrayList<>();
-        List<Vehicle> result;
+        List<VehicleData> result;
+        List<VehicleData> expected = new ArrayList<>();
+        addMotors(vehicleDs);
 
-        expected.add(stocks.get(2).getVehicle().clone());
-        expected.add(stocks.get(0).getVehicle().clone());
-        expected.add(stocks.get(1).getVehicle().clone());
+        expected.add(vehicleDs.get(0));
+        expected.add(vehicleDs.get(2));
+        expected.add(vehicleDs.get(1));
+        result = vehicleSorter.getVehicleList(SortingOptions.HORSEPOWER);
 
-        result = vehicleSorter.getSortedPriceList();
+        assertEquals(expected, result);
 
-        assert (expected.equals(result));
+    }
+
+    private void addMotors(List<VehicleData> list){
+
+        list.get(0).motor = new Motor("a", "b", 10);
+        list.get(1).motor = new Motor("a", "b", 30);
+        list.get(2).motor = new Motor("a", "b", 20);
     }
 
     @Test
-    public void getSortedHorsepowerList(){
+    public void rangeSort(){
 
-        List<Vehicle> expected = new ArrayList<>();
-        List<Vehicle> result;
+        List<VehicleData> result;
+        List<VehicleData> expected = new ArrayList<>();
 
-        stocks.get(0).getVehicle().setMotor(new Motor("", "", 15));
-        stocks.get(1).getVehicle().setMotor(new Motor("", "", 8));
-        stocks.get(2).getVehicle().setMotor(new Motor("", "", 18));
-        expected.add(stocks.get(1).getVehicle());
-        expected.add(stocks.get(0).getVehicle());
-        expected.add(stocks.get(2).getVehicle());
-        result = vehicleSorter.getSortedHorsepowerList();
+        expected.add(vehicleDs.get(0).rangePerCharge_Km(10));
+        expected.add(vehicleDs.get(2).rangePerCharge_Km(20));
+        expected.add(vehicleDs.get(1).rangePerCharge_Km(30));
+        result = vehicleSorter.getVehicleList(SortingOptions.RANGE);
 
-        assert(expected.equals(result));
+        assertEquals(expected, result);
     }
 
     @Test
-    public void getSortedRangePerCharge(){
+    public void normalSort_StockFilter() {
 
-        List<Vehicle> expected = new ArrayList<>();
-        List<Vehicle> result;
+        List<VehicleData> result;
+        List<VehicleData> expected = new ArrayList<>(vehicleDs);
+        vehicleDs.add(new VehicleData(new VehicleBuilder().model("Sairi").build(), 13.0f, 0));
 
-        stocks.get(0).getVehicle().setEnergyConsumptionKWperKm(20);
-        stocks.get(0).getVehicle().setBattery(new Battery("", "", 100));
-        stocks.get(1).getVehicle().setEnergyConsumptionKWperKm(20);
-        stocks.get(1).getVehicle().setBattery(new Battery("", "", 300));
-        stocks.get(2).getVehicle().setEnergyConsumptionKWperKm(20);
-        stocks.get(2).getVehicle().setBattery(new Battery("", "", 200));
-        expected.add(stocks.get(0).getVehicle());
-        expected.add(stocks.get(2).getVehicle());
-        expected.add(stocks.get(1).getVehicle());
-        result = vehicleSorter.getSortedRangePerChargeList();
+        result = vehicleSorter.getVehicleList(SortingOptions.NORMAL, FilterOptions.STOCK);
 
-        assert (expected.equals(result));
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void normalSort_FastChargeFilter() throws InterruptedException {
+
+        List<VehicleData> result;
+        List<VehicleData> expected = new ArrayList<>();
+        vehicleDs.get(1).fastCharging(true);
+        expected.add(vehicleDs.get(1));
+
+        result = vehicleSorter.getVehicleList(SortingOptions.NORMAL, FilterOptions.FAST_CHARGING);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void normalSort_StockAndFastChargeFilter(){
+
+        List<VehicleData> result;
+        List<VehicleData> expected = new ArrayList<>();
+        vehicleDs.get(1).fastCharging = true;
+        expected.add(vehicleDs.get(1));
+
+        result = vehicleSorter.getVehicleList(SortingOptions.NORMAL, FilterOptions.STOCK,
+                FilterOptions.FAST_CHARGING);
+
+        assertEquals(expected, result);
+
     }
 }

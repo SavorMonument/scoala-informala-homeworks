@@ -4,101 +4,150 @@ import java.util.*;
 
 public class VehicleSorter {
 
-    private List<Stock> stocks;
+    private List<VehicleData> vehicleDataList;
 
-    public VehicleSorter(List<Stock> stock) {
+    public VehicleSorter(List<VehicleData> vehicleDataList) {
+        assert (null != vehicleDataList);
 
-        this.stocks = stock;
+        this.vehicleDataList = vehicleDataList;
     }
 
-    public  List<Vehicle> getAllVehicleList(){
+    public enum FilterOptions {
 
-        List<Vehicle> allVehicles = new ArrayList<>();
+        STOCK(new Filter.StockVehicles()),
+        FAST_CHARGING(new Filter.FastChargingVehicles());
 
-        for(Stock instance : stocks){
-                allVehicles.add(instance.getVehicle().clone());
+        Filter fi;
+
+        FilterOptions(Filter f) {
+            this.fi = f;
         }
 
-        return allVehicles;
+        public Filter getFilter() {
+            return fi;
+        }
     }
 
-    public  List<Vehicle> getStockVehicleList(){
+    public enum SortingOptions {
 
-        List<Vehicle> stockVehicles = new ArrayList<>();
+        NORMAL(new Sorter.NormalSortedVehicles()),
+        PRICE(new Sorter.PriceSortedVehicles()),
+        HORSEPOWER(new Sorter.HorsepowerVehicles()),
+        RANGE(new Sorter.RangeVehicles());
 
-        for(Stock instance : stocks){
-            if (instance.getAmount() > 0)
-                stockVehicles.add(instance.getVehicle().clone());
+        Sorter so;
+
+        SortingOptions(Sorter so) {
+            this.so = so;
         }
 
-        return stockVehicles;
+        public Sorter getSorter() {
+            return so;
+        }
     }
 
-    public List<Vehicle> getFastChargingList() {
+    public List<VehicleData> getVehicleList(SortingOptions sOption, FilterOptions... fOptions){
 
-        List<Vehicle> fastChargingList = new ArrayList<Vehicle>();
+        List<VehicleData> copyList = getCopyList(vehicleDataList);
 
-        for (Stock  instance : stocks){
-            if (instance.getVehicle().hasFastCharging()){
-                fastChargingList.add(instance.getVehicle().clone());
-            }
+        for(FilterOptions fo: fOptions){
+
+            copyList = fo.getFilter().filter(copyList);
         }
 
-        return  (fastChargingList);
+        copyList = sOption.getSorter().sort(copyList);
+
+        return copyList;
     }
 
-    public List<Vehicle> getSortedPriceList() {
+    private static abstract class Sorter{
 
-        List<Vehicle> sortedPriceList = new ArrayList<>();
-        List<Stock> stockCopy = new ArrayList<>();
+        private static List<VehicleData> getSorted(List<VehicleData> list, Comparator<VehicleData> comp){
 
-        for (Stock instance : stocks) {
-            stockCopy.add(instance.clone());
+            quickSort(list, 0, list.size() - 1, comp);
+
+            return list;
         }
 
-        quickSort(stockCopy, 0, stockCopy.size() - 1, new Comparator<Stock>() {
+        abstract List<VehicleData> sort(List<VehicleData> list);
+
+        private static class NormalSortedVehicles extends Sorter{
+
             @Override
-            public int compare(Stock o1, Stock o2) {
-                return (int) (o1.getPrice() - o2.getPrice());
-            }
-        });
+            List<VehicleData> sort(List<VehicleData> list) {
 
-        for (Stock instance : stockCopy){
-            sortedPriceList.add(instance.getVehicle());
+                return list;
+            }
         }
 
-        return sortedPriceList;
-    }
+        private static class PriceSortedVehicles extends Sorter{
 
-    public List<Vehicle> getSortedHorsepowerList() {
-
-        List<Vehicle> sortedHorsepowerList = getStockVehicleList();
-
-         quickSort(sortedHorsepowerList, 0, sortedHorsepowerList.size() - 1, new Comparator<Vehicle>() {
             @Override
-            public int compare(Vehicle o1, Vehicle o2) {
-                return o1.getMotor().getHorsepower() - o2.getMotor().getHorsepower();
+            List<VehicleData> sort(List<VehicleData> list) {
+
+                Comparator<VehicleData> comp = (o1, o2) -> (int) (o1.price - o2.price);
+
+                return getSorted(list, comp);
             }
-        });
+        }
 
-        return sortedHorsepowerList;
-    }
+        private static class HorsepowerVehicles extends Sorter{
 
-    public List<Vehicle> getSortedRangePerChargeList(){
-
-        List<Vehicle> sortedRangePerChargeArray = getStockVehicleList();
-
-        quickSort(sortedRangePerChargeArray, 0, sortedRangePerChargeArray.size() - 1, new Comparator<Vehicle>() {
             @Override
-            public int compare(Vehicle o1, Vehicle o2) {
-                return o1.getRangePerCharge_Km() - o2.getRangePerCharge_Km();
-            }
-        });
+            List<VehicleData> sort(List<VehicleData> list) {
 
-        return sortedRangePerChargeArray;
+                Comparator<VehicleData> comp = (o1, o2) -> (o1.motor.getHorsepower() - o2.motor.getHorsepower());
+
+                return getSorted(list, comp);
+            }
+        }
+
+        private static class RangeVehicles extends Sorter{
+
+            @Override
+            List<VehicleData> sort(List<VehicleData> list) {
+
+                Comparator<VehicleData> comp = (o1, o2) -> (o1.rangePerCharge_Km - o2.rangePerCharge_Km);
+
+                return getSorted(list, comp);
+            }
+        }
+
     }
 
-    private <T> void quickSort(List<T> list, int left, int right, Comparator<T> comp){
+    private static abstract class Filter{
+
+        abstract List<VehicleData> filter(List<VehicleData> list);
+
+        private static class StockVehicles extends Filter{
+
+            public List<VehicleData> filter(List<VehicleData> list){
+
+                list.removeIf(vehicleData -> vehicleData.stock <= 0);
+
+                return list;
+            }
+        }
+
+        private static class FastChargingVehicles extends Filter{
+
+            @Override
+            List<VehicleData> filter(List<VehicleData> list) {
+
+                list.removeIf(vehicleData -> !vehicleData.fastCharging);
+
+                return list;
+            }
+        }
+    }
+
+
+    private static List<VehicleData> getCopyList(List<VehicleData> list){
+
+        return new ArrayList<>(list);
+    }
+
+    private static <T> void quickSort(List<T> list, int left, int right, Comparator<T> comp){
 
         if (left < right){
 
@@ -109,7 +158,7 @@ public class VehicleSorter {
         }
     }
 
-    private <T> int getPivot(List<T> list, int left, int right, Comparator<T> comp){
+    private static <T> int getPivot(List<T> list, int left, int right, Comparator<T> comp){
 
         T pivot = list.get(right);
 
@@ -127,7 +176,7 @@ public class VehicleSorter {
         return i + 1;
     }
 
-    private <T> void swap(List<T> list, int i, int j){
+    private static <T> void swap(List<T> list, int i, int j){
 
         T temp = list.get(i);
         list.set(i, list.get(j));
